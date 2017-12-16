@@ -37,6 +37,7 @@ class LoginForm extends Component {
     render() {
         return(
           <View>
+              
                     <Input
                         label='Email'
                         placeholder='Email@gmail.com'

@@ -12,10 +12,10 @@ class RouterComponent extends Component {
       <Router>
         <Scene hideNavBar={true} key='root'>
         <Scene key='login' component={LoginForm} />
-        <Scene key='register' initial component={RegistrationForm} />
-        <Scene key='choosingRoleForm' component={ChoosingRoleForm} />
+        <Scene key='register' component={RegistrationForm} />
+        <Scene key='choosingRoleForm' initial component={ChoosingRoleForm} />
         <Scene key='urgentSearch' component= {UrgentSearch} />
-          <Scene key='lang' component={LanguageForm} />
+          <Scene key='lang'  component={LanguageForm} />
         </Scene>
       </Router>
     )
