@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, Image,TouchableOpacity } from 'react-native'
-import { connect } from 'react-redux'
-import { emailChanged, passwordChanged, loginUser } from '../actions'
-import { Card, CardSection, Input, Button, Spinner } from './common'
+import { Actions } from 'react-native-router-flux'
 
 class ChoosingRoleForm extends Component {
   render() {
@@ -17,7 +15,7 @@ class ChoosingRoleForm extends Component {
           </View>
         </View>
         
-          <Text style={{fontSize: 20,marginLeft: 150,marginTop: 120, color: '#BF4747', fontWeight: 'bold'}}>Кто вы ?</Text>
+          <Text style={{fontSize: 20,marginLeft: 150,marginTop: 120, color: '#BF4747', fontWeight: 'bold'}}>Выберите роль</Text>
           <View style={{flex : 1,alignItems:'center',backgroundColor:'#fff'}}>
           
           <View style={{flex:1}}>
@@ -29,14 +27,18 @@ class ChoosingRoleForm extends Component {
               />
               </View> 
               <View style={{flex: 2}}>
-          <TouchableOpacity style={{width: 170,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginRight: 200,marginBottom:0,}}>
+          <TouchableOpacity
+            onPress={() => {Actions.register({role: 'donator'})}}
+            style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginRight: 200,marginBottom:0,}}>
           <Text style={styles.textStyle}>
             Донор
           </Text>
       </TouchableOpacity>
       </View>
       <View>
-      <TouchableOpacity style={{width: 170,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginLeft: 200,marginTop:0}}>
+      <TouchableOpacity
+        onPress={() => Actions.register({role: 'recipient'})}
+        style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginLeft: 200,marginTop:0}}>
           <Text style={styles.textStyle}>
             Реципиент
           </Text>

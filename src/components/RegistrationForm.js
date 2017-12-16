@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
-import { Card, CardSection, Input, Button, Spinner } from './common'
+import { Input, Spinner } from './common'
 
 class RegistrationForm extends Component {
   constructor(props) {
@@ -37,9 +37,21 @@ class RegistrationForm extends Component {
       return <Spinner size='large' />
     }
     return (
-      <Button onPress={this.onButtonPress.bind(this)}>
-        Sign Up
-      </Button>
+    <TouchableOpacity style={{width: 170,
+      borderRadius: 15,
+      borderWidth: 0.6,
+      borderColor: '#fff',
+      backgroundColor:'#BF4747',
+      height:50,
+      marginLeft: 150,
+      alignItems:'center',
+      justifyContent: 'center',
+
+    }}>
+      <Text style={{color: '#fff', fontSize:20, fontWeight:'bold'}}>
+        Отправить
+      </Text>
+    </TouchableOpacity>
     )
   }
   render() {
@@ -92,6 +104,8 @@ const styles = {
     alignSelf: 'center',
   },
   mainView: {
+    marginTop: 20,
+    backgroundColor: '#3B3836',
     flex: 1,
   },
 }
