@@ -14,7 +14,7 @@ class RouterComponent extends Component {
         <Scene key='lang' initial component={LanguageForm} />
         <Scene key='login' component={LoginForm} />
         <Scene key='register' component={RegistrationForm} />
-        <Scene key='choosingRoleForm' component={ChoosingRoleForm} />
+        <Scene key='choosingRoleForm' initial component={ChoosingRoleForm} />
         <Scene key='urgentSearch' component= {UrgentSearch} />
         </Scene>
       </Router>
