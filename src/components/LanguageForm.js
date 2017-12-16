@@ -1,10 +1,14 @@
 import React, { Component } from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View, Image, TouchableHighlight, } from 'react-native'
+import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, loginUser } from '../actions'
 import { Card, CardSection, Input, Button, Spinner } from './common'
 
 class LanguageForm extends Component {
+  getNextScreen() {
+    Actions.choosingRoleForm()
+  }
   render() {
     return (
       <View style={styles.mainView}>
@@ -25,9 +29,11 @@ class LanguageForm extends Component {
             <Image source={require('../../assets/eng_flag.png')}
                    style={styles.flagImage}
                    />
+            <TouchableHighlight onPress={() => this.getNextScreen()}>
             <Image source={require('../../assets/russ_flag.png')}
                    style={styles.flagImage}
                    />
+            </TouchableHighlight>
           </View>
         </View>
       </View>
