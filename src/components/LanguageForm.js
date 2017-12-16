@@ -7,7 +7,8 @@ import { Card, CardSection, Input, Button, Spinner } from './common'
 
 class LanguageForm extends Component {
   getNextScreen() {
-    Actions.choosingRoleForm()
+    // Actions.choosingRoleForm()
+    Actions.register({role: 'donator'})
   }
   render() {
     return (

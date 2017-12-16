@@ -29,6 +29,9 @@ const styles = StyleSheet.create({
         lineHeight: 23,
         height: 30,
         width: 500,
+        borderWidth: 0.4,
+        borderRadius: 5,
+        borderColor: '#000',
         flex: 2,
     },
     labelStyle: {
