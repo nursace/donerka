@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View } from 'react-native'
+import { Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, loginUser } from '../actions'
 import { Card, CardSection, Input, Button, Spinner } from './common'
@@ -8,7 +8,28 @@ class LanguageForm extends Component {
   render() {
     return (
       <View style={styles.mainView}>
-        <Text style={styles.text}>Hello World!</Text>
+        <View style={styles.subView1}>
+          <View style={styles.imageView}>
+            <Image source={require('../../assets/logo.png')}
+                   style={{alignSelf: 'center',  height: 110, width: 285}}
+                   resizeMode='stretch'
+              />
+          </View>
+        </View>
+        <View style={styles.subView2}>
+          <Text style={{fontSize: 20, color: '#BF4747', fontWeight: 'bold'}}>ВЫБЕРИТЕ ВАШ ЯЗЫК</Text>
+          <View style={styles.flagsView}>
+            <Image source={require('../../assets/kyrg_flag.png')}
+                   style={styles.flagImage}
+                   />
+            <Image source={require('../../assets/eng_flag.png')}
+                   style={styles.flagImage}
+                   />
+            <Image source={require('../../assets/russ_flag.png')}
+                   style={styles.flagImage}
+                   />
+          </View>
+        </View>
       </View>
     )
   }
@@ -18,11 +39,36 @@ const styles = {
   mainView: {
     flex: 1,
     alignContent: 'center',
+    backgroundColor: '#fff'
   },
+  subView1: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  subView2: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  flagsView: {
+    flex: 1,
+    flexDirection: 'row',
+    paddingTop: 20,
+  },
+  flagImage: {margin: 5, width: 50, height: 50},
+  imageView:{
+    flex: 1,
+  },
+  textView:{
+    flex: 3,
+    backgroundColor: 'yellow',
+  },
+
   text: {
     fontSize: 20,
     fontWeight: 'bold',
-  }
+  },
+
 }
 
 export default LanguageForm
