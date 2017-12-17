@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
 import { Text, View, Image,TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
+import {Icon} from 'react-native-elements'
 
 class ChoosingRoleForm extends Component {
   render() {
     return (
       <View style={styles.mainView}>
+        <View style= {{flexDirection : 'row',marginLeft: 20,marginTop:10}}>
+      <TouchableOpacity onPress= {()=>{Actions.login()}} style={{height:30,width:30}} >
+<Icon name = 'reply' style={{height : 100,width: 100}} />
+       </TouchableOpacity>
+       </View>
         <View>
           <View style={styles.imageView}>
             <Image source={require('../../assets/logo.png')}
@@ -38,7 +44,7 @@ class ChoosingRoleForm extends Component {
       <View>
       <TouchableOpacity
         onPress={() => Actions.register({role: 'recipient'})}
-        style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginLeft: 200,marginTop:0}}>
+        style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginLeft: 200,marginBottom:10}}>
           <Text style={styles.textStyle}>
             Реципиент
           </Text>
@@ -75,7 +81,7 @@ buttonStyle: {
   mainView: {
     flex: 1,
     alignContent: 'center',
-    paddingTop: 120,
+    paddingTop: 20,
     backgroundColor:'#fff'
   },
   subView2: {

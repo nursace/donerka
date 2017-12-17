@@ -44,7 +44,7 @@ export const registerUser = ({email,password}) => {
             })
         })
         .catch(()=>{
-            registerUser(dispatch)
+            registerUserFail(dispatch)
         })
     }
 }
@@ -59,6 +59,7 @@ const loginUserSuccess = (dispatch, user) => {
         type: LOGIN_USER_SUCCESS,
         payload: user
     })
-    Actions.choosingRoleForm({type : 'reset'})
+    
+    Actions.candidatesRec()
 
 }
