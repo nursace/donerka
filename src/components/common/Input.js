@@ -22,20 +22,20 @@ const Input = props =>  {
 
 const styles = StyleSheet.create({
     inputStyle: {
-      color: '#fff',
+      color: 'black',
       paddingRight: 5,
       paddingLeft: 5,
       fontSize: 18,
       lineHeight: 23,
       height: 30,
       width: 500,
-      borderWidth: 0.4,
+      borderBottomWidth: 0.4,
       borderRadius: 5,
-      borderColor: '#fff',
+      borderColor: 'black',
       flex: 2,
     },
     labelStyle: {
-      color: '#fff',
+      color: 'black',
       fontSize: 18,
       paddingLeft: 20,
       flex: 1,

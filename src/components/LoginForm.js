@@ -1,84 +1,132 @@
 import React, { Component } from 'react'
-import { Text } from 'react-native'
+import { Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import {Actions} from 'react-native-router-flux'
 import { emailChanged, passwordChanged, loginUser } from '../actions'
-import { Card, CardSection, Input, Button, Spinner } from './common'
+import { Input, Spinner } from './common'
+import firebase from 'firebase'
+import { Actions } from 'react-native-router-flux'
+import {Icon} from 'react-native-elements'
 
 class LoginForm extends Component {
-    onEmailChange(text) {
-        this.props.emailChanged(text)
+  constructor(props) {
+    super(props)
+    this.state = {
+      fullname: 'ijoji',
+      phone: '38274438',
+      username: 'fdfeunfe',
+      loading: false
     }
-    onPasswordChange(text) {
-        this.props.passwordChanged(text)
+  }
+  onEmailChange(text) {
+    this.props.emailChanged(text)
+  }
+  onPasswordChange(text) {
+    this.props.passwordChanged(text)
+  }
+  onFullnameChange(fullname) {
+    this.setState({fullname})
+  }
+  onPhoneChange(phone) {
+    this.setState({phone})
+  }
+  onUsernameChange(username) {
+    this.setState({username})
+  }
+  onButtonPress() {
+    const { email, password } = this.props
+    this.props.loginUser({ email, password })
+  }
+
+
+  renderButton() {
+    if (this.props.loading||this.state.loading) {
+      return <Spinner size='large' />
     }
-    onButtonPress() {
-        const { email, password } = this.props
-        this.props.loginUser({ email, password })
-    }
-    onButtonPressRegistration() {
-        const { email, password } = this.props
-        Actions.register()
-    }
-      onButtonPressUrgent() {
-        const { email, password } = this.props
-        Actions.urgentSearch()
-    }
-    renderButton() {
-        if (this.props.loading) {
-            return <Spinner size='large' />
-        }
-        return (
-                <Button onPress={this.onButtonPress.bind(this)}>
-                    Login
-                </Button>
-        )
-    }
-    render() {
-        return(
-          <View>
-              
-                    <Input
-                        label='Email'
-                        placeholder='Email@gmail.com'
-                        onChangeText={this.onEmailChange.bind(this)}
-                        value={this.props.email}
-                    />
-                    <Input
-                        secureTextEntry
-                        label='Password'
-                        placeholder='password'
-                        onChangeText={this.onPasswordChange.bind(this)}
-                        value={this.props.password}
-                    />
-                <Text style={styles.errorTextStyle}>
-                    {this.props.error}
-                </Text>
-                    {this.renderButton()}
-                <Button onPress={this.onButtonPressRegistration.bind(this)}>
-                    Sign Up
-                </Button>
-                <Button onPress={this.onButtonPressUrgent.bind(this)}>
-                    Urgent Search
-                </Button>
-                    </View>
-        )
-    }
+    return (
+    <TouchableOpacity style={{width: 170,
+      borderRadius: 15,
+      borderWidth: 0.6,
+      borderColor: '#fff',
+      backgroundColor:'#BF4747',
+      height:50,
+      marginLeft: 150,
+      alignItems:'center',
+      justifyContent: 'center',
+
+    }}
+    onPress={this.submitToFirebase.bind(this)}>
+      <Text style={{color: '#fff', fontSize:20, fontWeight:'bold'}}>
+        Отправить
+      </Text>
+    </TouchableOpacity>
+    )
+  }
+  render() {
+
+    return(
+      <View style={styles.mainView}>
+  
+       <View style={{marginTop : 70}}>
+        <Input
+          label='ФИО'
+          placeholder='ФИО'
+          onChangeText={this.onFullnameChange.bind(this)}
+          value={this.state.fullname}
+        />
+        <Input
+          label='Телефон'
+          placeholder='555-555-555'
+          onChangeText={this.onPhoneChange.bind(this)}
+          value={this.state.phone}
+        />
+        <Input
+          label='Username'
+          placeholder='username'
+          onChangeText={this.onUsernameChange.bind(this)}
+          value={this.state.username}
+        />
+        <Input
+          label='Email'
+          placeholder='Email'
+          onChangeText={this.onEmailChange.bind(this)}
+          value={this.props.email}
+        />
+        <Input
+          secureTextEntry
+          label='Password'
+          placeholder='password'
+          onChangeText={this.onPasswordChange.bind(this)}
+          value={this.props.password}
+        />
+        <Text style={styles.errorTextStyle}>
+          {this.props.error}
+        </Text>
+        <View style={{marginTop:10}}>
+        {this.renderButton()}
+        </View></View>
+      </View>
+    )
+  }
 }
 
 const styles = {
-    errorTextStyle: {
-        fontSize: 20,
-        color: 'red',
-        alignSelf: 'center',
-    }
+  errorTextStyle: {
+    fontSize: 20,
+    color: 'red',
+    alignSelf: 'center',
+  },
+  mainView: {
+    marginTop: 20,
+    backgroundColor: '#fff',
+    flex: 1,
+  },
 }
 
 const mapStateToProps = ({ auth }) => {
     const { email, password, error, loading } = auth
-    return { email, password, error, loading }
+    return {email, password, error, loading }
 }
 
 export default connect(mapStateToProps, {
-    emailChanged, passwordChanged, loginUser,
+  emailChanged, passwordChanged, loginUser,
 })(LoginForm)

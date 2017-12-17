@@ -5,14 +5,16 @@ import { emailChanged, passwordChanged, registerUser } from '../actions'
 import { Input, Spinner } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
+import {Icon} from 'react-native-elements'
 
 class RegistrationForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      fullname: '',
-      phone: '',
-      username: '',
+      fullname: 'ijoji',
+      phone: '38274438',
+      username: 'fdfeunfe',
+      loading: false
     }
   }
   onEmailChange(text) {
@@ -34,8 +36,35 @@ class RegistrationForm extends Component {
     const { email, password } = this.props
     this.props.registerUser({ email, password })
   }
+
+  submitToFirebase() {
+
+this.setState({loading : true})
+    const {fullname,phone,username } = this.state
+    const {email,password } = this.props
+    let s = ''
+    let email1 = email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      s += email1.charAt(i)
+    }
+   firebase.database().ref(`/users/`).child(s).set({
+      fullname: fullname,
+      phone: phone,
+      username: username,
+      role: this.props.role,
+    }).then(() => {
+  this.setState({loading:false})
+      this.props.registerUser({ email, password})
+    }).then(() => {
+      if (this.props.role === 'donator')
+        Actions.fillingDoner()
+
+     // else
+   })
+  }
   renderButton() {
-    if (this.props.loading) {
+    if (this.props.loading||this.state.loading) {
       return <Spinner size='large' />
     }
     return (
@@ -50,37 +79,23 @@ class RegistrationForm extends Component {
       justifyContent: 'center',
 
     }}
-    onPress={() => this.submitToFirebase()}>
+    onPress={this.submitToFirebase.bind(this)}>
       <Text style={{color: '#fff', fontSize:20, fontWeight:'bold'}}>
         Отправить
       </Text>
     </TouchableOpacity>
     )
   }
-  submitToFirebase() {
-    let s = ''
-    let email = this.props.email
-    for(let i = 0; i < email.length; i++) {
-      if (email.charAt(i) === '@') break;
-      s += email.charAt(i)
-    }
-   firebase.database().ref(`/users/`).child(s).set({
-      fullname: this.state.fullname,
-      phone: this.state.phone,
-      username: this.state.username,
-      role: this.props.role,
-    }).then(() => {
-      this.props.registerUser({ email: this.state.email, password: this.state.password})
-    }).then(() => {
-      if (this.props.role === 'donator')
-        Actions.fillingDoner()
-     // else
-   })
-  }
   render() {
 
     return(
       <View style={styles.mainView}>
+      <View style= {{flexDirection : 'row',marginLeft: 20,marginTop:10}}>
+      <TouchableOpacity onPress= {()=>{Actions.pop({key: 'login'})}} style={{height:20,width:20}} >
+<Icon name = 'reply' style={{height : 100,width: 100}} />
+       </TouchableOpacity>
+       </View>
+       <View style={{marginTop : 50}}>
         <Input
           label='ФИО'
           placeholder='ФИО'
@@ -115,7 +130,9 @@ class RegistrationForm extends Component {
         <Text style={styles.errorTextStyle}>
           {this.props.error}
         </Text>
+        <View style={{marginTop:10}}>
         {this.renderButton()}
+        </View></View>
       </View>
     )
   }
@@ -129,7 +146,7 @@ const styles = {
   },
   mainView: {
     marginTop: 20,
-    backgroundColor: '#3B3836',
+    backgroundColor: '#fff',
     flex: 1,
   },
 }
