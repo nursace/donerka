@@ -3,6 +3,8 @@ import { Text, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
 import { Input, Spinner } from './common'
+import firebase from 'firebase'
+import { Actions } from 'react-native-router-flux'
 
 class RegistrationForm extends Component {
   constructor(props) {
@@ -47,14 +49,36 @@ class RegistrationForm extends Component {
       alignItems:'center',
       justifyContent: 'center',
 
-    }}>
+    }}
+    onPress={() => this.submitToFirebase()}>
       <Text style={{color: '#fff', fontSize:20, fontWeight:'bold'}}>
         Отправить
       </Text>
     </TouchableOpacity>
     )
   }
+  submitToFirebase() {
+    let s = ''
+    let email = this.props.email
+    for(let i = 0; i < email.length; i++) {
+      if (email.charAt(i) === '@') break;
+      s += email.charAt(i)
+    }
+   firebase.database().ref(`/users/`).child(s).set({
+      fullname: this.state.fullname,
+      phone: this.state.phone,
+      username: this.state.username,
+      role: this.props.role,
+    }).then(() => {
+      this.props.registerUser({ email: this.state.email, password: this.state.password})
+    }).then(() => {
+      if (this.props.role === 'donator')
+        Actions.fillingDoner()
+     // else
+   })
+  }
   render() {
+
     return(
       <View style={styles.mainView}>
         <Input
