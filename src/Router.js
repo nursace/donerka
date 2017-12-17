@@ -14,9 +14,9 @@ class RouterComponent extends Component {
       <Router>
         <Scene key='root' hideNavBar={true}>
         <Scene key='lang' component={LanguageForm} />
-        <Scene key='login' component={LoginForm} />
+        <Scene key='login' initial component={LoginForm} />
         <Scene key='register' component={RegistrationForm} />
-        <Scene key='choosingRoleForm' initial component={ChoosingRoleForm} />
+        <Scene key='choosingRoleForm' component={ChoosingRoleForm} />
         <Scene key='urgentSearch'  component= {UrgentSearch} />
         <Scene key='fillingDoner' component= {FillingDoner} />
         <Scene key='candidatesRec'  component= {CandidatesRec} />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text,Image, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, loginUser } from '../actions'
 import { Input, Spinner } from './common'
@@ -49,14 +49,15 @@ class LoginForm extends Component {
       borderColor: '#fff',
       backgroundColor:'#BF4747',
       height:50,
-      marginLeft: 150,
+      marginLeft: 120,
+      marginTop : 24,
       alignItems:'center',
       justifyContent: 'center',
 
     }}
-    onPress={this.submitToFirebase.bind(this)}>
+    onPress={this.onButtonPress.bind(this)}>
       <Text style={{color: '#fff', fontSize:20, fontWeight:'bold'}}>
-        Отправить
+        Войти
       </Text>
     </TouchableOpacity>
     )
@@ -65,26 +66,14 @@ class LoginForm extends Component {
 
     return(
       <View style={styles.mainView}>
-  
-       <View style={{marginTop : 70}}>
-        <Input
-          label='ФИО'
-          placeholder='ФИО'
-          onChangeText={this.onFullnameChange.bind(this)}
-          value={this.state.fullname}
-        />
-        <Input
-          label='Телефон'
-          placeholder='555-555-555'
-          onChangeText={this.onPhoneChange.bind(this)}
-          value={this.state.phone}
-        />
-        <Input
-          label='Username'
-          placeholder='username'
-          onChangeText={this.onUsernameChange.bind(this)}
-          value={this.state.username}
-        />
+     <View style={{marginTop: 100}} >
+            <Image source={require('../../assets/logo.png')}
+                   style={{alignSelf: 'center',  height: 110, width: 285}}
+                   resizeMode='stretch'
+              />
+          </View>
+       <View style={{marginTop : 60}}>
+    
         <Input
           label='Email'
           placeholder='Email'
@@ -103,7 +92,28 @@ class LoginForm extends Component {
         </Text>
         <View style={{marginTop:10}}>
         {this.renderButton()}
-        </View></View>
+        </View>
+        
+    <TouchableOpacity style={{
+      width: 200,
+      height : 40,
+      borderRadius: 19,
+      borderWidth: 0.6,
+      borderColor: '#fff',
+      backgroundColor:'#fff',
+      height:50,
+      marginLeft: 160,
+      marginTop : 0,
+      alignItems:'center',
+      justifyContent: 'center',
+
+    }}
+    onPress={Actions.choosingRoleForm}>
+      <Text style={{color: 'red', fontSize:15, fontWeight:'bold'}}>
+        Зарегистрироваться
+      </Text>
+    </TouchableOpacity>
+        </View>
       </View>
     )
   }
