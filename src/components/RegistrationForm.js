@@ -108,7 +108,7 @@ class RegistrationForm extends Component {
         <Input
           secureTextEntry
           label='Password'
-          placeholder='password'
+          placeholder='password'row3
           onChangeText={this.onPasswordChange.bind(this)}
           value={this.props.password}
         />
