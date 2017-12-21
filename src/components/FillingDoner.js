@@ -34,10 +34,10 @@ class FillingDoner extends Component {
     ];
     let data1 = [
       {
-        value: '1'
+        value: '+'
       },
       {
-        value: '2'
+        value: '-'
       }
     ];
     return (
@@ -67,19 +67,24 @@ class FillingDoner extends Component {
             source={require('../../assets/logo.png')}
             style={{
               alignSelf: 'center',
-              height: '50%',
-              width: '70%',
-              backgroundColor: 'cyan'
+              height: 110,
+              width: 285
             }}
             resizeMode="stretch"
           />
         </View>
+
+        <View style={{
+          flex:1,
+          marginLeft: '10%',
+          marginRight: '10%',
+          marginTop: '-50%'
+        }}
+        >
         <Text
           style={{
             fontSize: 20,
-            marginLeft: 80,
             color: '#BF4747',
-            width: 300,
             fontWeight: 'bold'
           }}
         >
@@ -89,9 +94,7 @@ class FillingDoner extends Component {
         <View
           style={{
             flex: 1,
-            marginLeft: '10%',
-            marginRight: '10%',
-            backgroundColor: 'blue'
+            marginBottom: '50%'
           }}
         >
           <Dropdown
@@ -112,47 +115,50 @@ class FillingDoner extends Component {
             }}
             value={this.state.factor}
           />
+
+          {this.state.loading ? (
+            <Spinner size="large" />
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ loading: true });
+                let s = '';
+                let email = firebase.auth().currentUser.email;
+                for (let i = 0; i < email.length; i++) {
+                  if (email.charAt(i) === '@') break;
+                  s += email.charAt(i);
+                }
+                console.log('blood', this.state.blood);
+                console.log('factor', this.state.factor);
+                firebase
+                  .database()
+                  .ref('/users/')
+                  .child(s)
+                  .update({ blood: this.state.blood, factor: this.state.factor })
+                  .then(() => {
+                    Actions.candidatesRec({});
+                  })
+                  .catch(() => {
+                    if (this.state.blood === '' || this.state.factor === '') {
+                      Actions.refresh();
+                    }
+                  });
+              }}
+              style={{
+                marginTop: '10%',
+                borderRadius: 25,
+                backgroundColor: '#BF4747',
+                height: 50,
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              <Text style={styles.textStyle}>Отправить</Text>
+            </TouchableOpacity>
+          )}
         </View>
-        {this.state.loading ? (
-          <Spinner size="large" />
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({ loading: true });
-              let s = '';
-              let email = firebase.auth().currentUser.email;
-              for (let i = 0; i < email.length; i++) {
-                if (email.charAt(i) === '@') break;
-                s += email.charAt(i);
-              }
-              console.log('blood', this.state.blood);
-              console.log('factor', this.state.factor);
-              firebase
-                .database()
-                .ref('/users/')
-                .child(s)
-                .update({ blood: this.state.blood, factor: this.state.factor })
-                .then(() => {
-                  Actions.candidatesRec({});
-                })
-                .catch(() => {
-                  if (this.state.blood === '' || this.state.factor === '') {
-                    Actions.refresh();
-                  }
-                });
-            }}
-            style={{
-              width: 150,
-              borderRadius: 25,
-              backgroundColor: '#BF4747',
-              height: 50,
-              alignItems: 'center',
-              marginTop: 50
-            }}
-          >
-            <Text style={styles.textStyle}>Отправить</Text>
-          </TouchableOpacity>
-        )}
+
+      </View>
       </View>
     );
   }
@@ -177,9 +183,8 @@ const styles = {
   },
   mainView: {
     flex: 1,
-    alignContent: 'center',
     paddingTop: '10%',
-    backgroundColor: 'yellow'
+    backgroundColor: '#fff'
   },
   subView2: {
     flex: 1,
