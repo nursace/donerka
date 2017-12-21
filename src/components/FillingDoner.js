@@ -6,12 +6,15 @@ import { Card, CardSection, Input, Button, Spinner } from './common'
 import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase'
 import {Actions} from 'react-native-router-flux'
+import {Icon} from 'react-native-elements'
+
 class FillingDoner extends Component {
     constructor(props){
         super(props)
         this.state={
             blood:'',
-            positive: ''
+            positive: '',
+            loading: false,
         }
     }
     render() {
@@ -34,6 +37,12 @@ class FillingDoner extends Component {
 ];
     return (
       <View style={styles.mainView}>
+
+<View style= {{flexDirection : 'row',marginLeft: 20,marginTop:10}}>
+      <TouchableOpacity onPress= {()=>{firebase.auth().signOut().then(() => Actions.login())}} style={{height:30,width:30}} >
+<Icon name = 'reply' style={{height : 100,width: 100}} />
+       </TouchableOpacity>
+       </View>
     
           <View style={styles.imageView}>
             <Image source={require('../../assets/logo.png')}
@@ -49,7 +58,7 @@ class FillingDoner extends Component {
           fontSize ={25}
         label='Группа крови'
        data = {data}
-       onChangeText = {() => this.setState({blood : this.value})}
+       onChangeText = {(blood) => this.setState({blood})}
        value = {this.state.blood}
       /><View style={{marginTop:20}}>
       <Dropdown
@@ -57,30 +66,41 @@ class FillingDoner extends Component {
           fontSize ={25}
         label='Резус-Фактор'
         data={data1}
-        onChangeText = {()=>{this.setState({positive : this.value})}}
-        value = {this.state.positive}
+        onChangeText = {(factor)=>{this.setState({factor})}}
+        value = {this.state.factor}
       />
       </View>
           </View>
+          {this.state.loading ? 
           
+          <Spinner size='large'/>
+        :
           <TouchableOpacity
         onPress={() => {
+            this.setState({loading: true})
             let s =''
-            let email = firebase.auth().currentUser.email()
+            let email = firebase.auth().currentUser.email
             for(let i=0;i<email.length;i++){
                if(email.charAt(i)==='@') break;
                s+=email.charAt(i)
             }
-            firebase.database().ref('/users/').child(s).set({blood: this.state.blood,factor: this.state.positive})
+            console.log('blood', this.state.blood)
+            console.log('factor', this.state.factor)
+            firebase.database().ref('/users/').child(s).update({blood: this.state.blood,factor: this.state.factor})
             .then(()=>{
                 Actions.candidatesRec({})
+
+            }).catch(() => {
+                if (this.state.blood === '' || this.state.factor === '') {
+                    Actions.refresh()
+                }
             })
         }}
         style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginLeft: 150,marginTop:50}}>
           <Text style={styles.textStyle}>
             Отправить
           </Text>
-      </TouchableOpacity>
+    </TouchableOpacity> }
       </View>
     )
   } 

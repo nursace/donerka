@@ -1,84 +1,80 @@
 import React, { Component } from 'react'
-import { Text,View } from 'react-native'
+import { ListView, View, Text } from 'react-native'
 import { connect } from 'react-redux'
-import {Actions} from 'react-native-router-flux'
-import { emailChanged, passwordChanged, loginUser } from '../actions'
-import { Card, CardSection, Input, Button, Spinner } from './common'
-
+import ListItem from './ListItem'
+import _ from 'lodash'
+import firebase from 'firebase'
 class CandidatesRec extends Component {
-    onEmailChange(text) {
-        this.props.emailChanged(text)
+    componentWillMount() {
+
+        this.createDataSource(this.props)
     }
-    onPasswordChange(text) {
-        this.props.passwordChanged(text)
+
+    componentWillReceiveProps(nextProps) {
+        // nextProps are the next set of props that this component
+        // will render with
+        // this.props is still the old set of props
+        this.createDataSource(nextProps)
     }
-    onButtonPress() {
-        const { email, password } = this.props
-        this.props.loginUser({ email, password })
+
+    createDataSource({ employees }) {
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        })
+
+        this.dataSource = ds.cloneWithRows(employees)
+
     }
-    onButtonPressRegistration() {
-        const { email, password } = this.props
-        Actions.register()
+
+    renderRow(employee) {
+        return <ListItem employee={employee} />
     }
-      onButtonPressUrgent() {
-        const { email, password } = this.props
-        Actions.urgentSearch()
-    }
-    renderButton() {
-        if (this.props.loading) {
-            return <Spinner size='large' />
-        }
-        return (
-                <Button onPress={this.onButtonPress.bind(this)}>
-                    Login
-                </Button>
-        )
-    }
+
     render() {
-        return(
-          <View>
-              
-                    <Input
-                        label='Email'
-                        placeholder='Email@gmail.com'
-                        onChangeText={this.onEmailChange.bind(this)}
-                        value={this.props.email}
-                    />
-                    <Input
-                        secureTextEntry
-                        label='Password'
-                        placeholder='password'
-                        onChangeText={this.onPasswordChange.bind(this)}
-                        value={this.props.password}
-                    />
-                <Text style={styles.errorTextStyle}>
-                    {this.props.error}
-                </Text>
-                    {this.renderButton()}
-                <Button onPress={this.onButtonPressRegistration.bind(this)}>
-                    Sign Up
-                </Button>
-                <Button onPress={this.onButtonPressUrgent.bind(this)}>
-                    Urgent Search
-                </Button>
-                    </View>
+        return (
+            <ListView
+                enableEmptySections
+                dataSource={this.dataSource}
+               renderRow={this.renderRow}>
+
+            </ListView>
         )
     }
 }
 
-const styles = {
-    errorTextStyle: {
-        fontSize: 20,
-        color: 'red',
-        alignSelf: 'center',
+const mapStateToProps = state => {
+    let s = ''
+    let email1 = firebase.auth().currentUser.email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      s += email1.charAt(i)
     }
+    let user ;
+    let appropriatives = []
+    firebase.database().ref(`/users/`)
+    .on('value',function(snapshot){
+        snapshot.forEach(function(childSnapshot) {
+            let obj = childSnapshot.val()
+            
+            if(obj.email === firebase.auth().currentUser.email){
+                user=obj
+            }    
+        })
+        snapshot.forEach(function(childSnapshot) {
+            let obj = childSnapshot.val()
+            
+            if(obj.role != user.role && obj.blood === user.blood && user !== obj){
+                let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username }
+                appropriatives.push(app)
+            }    
+            
+        }) 
+    }
+)
+    const employees = _.map(appropriatives, (val, uid) => {
+        return { ...val, uid }
+    })
+    return { employees }
 }
 
-const mapStateToProps = ({ auth }) => {
-    const { email, password, error, loading } = auth
-    return { email, password, error, loading }
-}
-
-export default connect(mapStateToProps, {
-    emailChanged, passwordChanged, loginUser,
-})(CandidatesRec)
+export default connect(mapStateToProps, {  })(CandidatesRec)

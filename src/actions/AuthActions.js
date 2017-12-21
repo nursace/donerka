@@ -60,6 +60,6 @@ const loginUserSuccess = (dispatch, user) => {
         payload: user
     })
     
-    Actions.candidatesRec()
+    Actions.fillingDoner()
 
 }

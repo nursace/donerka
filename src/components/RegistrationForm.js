@@ -41,9 +41,10 @@ class RegistrationForm extends Component {
 
 this.setState({loading : true})
     const {fullname,phone,username } = this.state
-    const {email,password } = this.props
+    const {email,password, role } = this.props
     let s = ''
     let email1 = email
+    
     for(let i = 0; i < email1.length; i++) {
       if (email1.charAt(i) === '@') break;
       s += email1.charAt(i)
@@ -52,15 +53,13 @@ this.setState({loading : true})
       fullname: fullname,
       phone: phone,
       username: username,
-      role: this.props.role,
+      role: role,
+      email : email
     }).then(() => {
   this.setState({loading:false})
-      this.props.registerUser({ email, password})
+      this.props.registerUser({ email, password, role})
     }).then(() => {
-      if (this.props.role === 'donator')
-        Actions.fillingDoner()
-
-     // else
+      Actions.fillingDoner()
    })
   }
   renderButton() {
@@ -123,7 +122,7 @@ this.setState({loading : true})
         <Input
           secureTextEntry
           label='Password'
-          placeholder='password'
+          placeholder='password'row3
           onChangeText={this.onPasswordChange.bind(this)}
           value={this.props.password}
         />
