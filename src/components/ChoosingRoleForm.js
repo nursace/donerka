@@ -4,6 +4,7 @@ import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
 import {roleChanged} from '../actions'
 import firebase from 'firebase'
+import {connect} from 'react-redux'
 
 class ChoosingRoleForm extends Component {
   render() {

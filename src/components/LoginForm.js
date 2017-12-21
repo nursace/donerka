@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
-import { Text, Image, View, TouchableOpacity } from 'react-native';
-import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
-import { Input, Spinner } from './common';
-import firebase from 'firebase';
-import { Actions } from 'react-native-router-flux';
-import { Icon } from 'react-native-elements';
+import React, { Component } from 'react'
+import { Text,Image, View, TouchableOpacity } from 'react-native'
+import { connect } from 'react-redux'
+import { emailChanged, passwordChanged, loginUser } from '../actions'
+import { Input, Spinner } from './common'
+import firebase from 'firebase'
+import { Actions } from 'react-native-router-flux'
+import {Icon} from 'react-native-elements'
 
 class LoginForm extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       fullname: 'ijoji',
       phone: '38274438',
