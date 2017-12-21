@@ -31,13 +31,14 @@ class CandidatesRec extends Component {
     }
 
     render() {
-        return (
+        return (<View style = {{}}>
             <ListView
                 enableEmptySections
                 dataSource={this.dataSource}
                renderRow={this.renderRow}>
-
+s
             </ListView>
+            </View>
         )
     }
 }

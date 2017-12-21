@@ -54,7 +54,8 @@ this.setState({loading : true})
       phone: phone,
       username: username,
       role: role,
-      email : email
+      email : email,
+      rescue_count : 0
     }).then(() => {
   this.setState({loading:false})
       this.props.registerUser({ email, password, role})

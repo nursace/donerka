@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text,Image, View, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { emailChanged, passwordChanged, loginUser } from '../actions'
+import { emailChanged, passwordChanged, loginUser } from '../   '
 import { Input, Spinner } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
