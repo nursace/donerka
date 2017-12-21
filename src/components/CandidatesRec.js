@@ -1,81 +1,96 @@
 import React, { Component } from 'react'
-import { ListView, View, Text } from 'react-native'
+import { ListView, View, Text, FlatList } from 'react-native'
 import { connect } from 'react-redux'
 import ListItem from './ListItem'
-import _ from 'lodash'
 import firebase from 'firebase'
+import { dataSourceChanged } from '../actions'
+import { Spinner } from './common'
+
 class CandidatesRec extends Component {
+
+    constructor(props) {
+        super(props)
+        this.state = {
+            ok: false,
+            snapshot: {},
+        }
+    }
+
     componentWillMount() {
-
-        this.createDataSource(this.props)
+        firebase.database().ref(`/users/`)
+            .once('value')
+            .then(snapshot => {
+                this.setState({ snapshot, ok: true })
+            })
     }
 
-    componentWillReceiveProps(nextProps) {
-        // nextProps are the next set of props that this component
-        // will render with
-        // this.props is still the old set of props
-        this.createDataSource(nextProps)
-    }
-
-    createDataSource({ employees }) {
-        const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2
-        })
-
-        this.dataSource = ds.cloneWithRows(employees)
-
-    }
-
-    renderRow(employee) {
-        return <ListItem employee={employee} />
+    mainRender() {
+        if (this.state.ok) {
+            let s = ''
+            let email1 = firebase.auth().currentUser.email
+            for (let i = 0; i < email1.length; i++) {
+                if (email1.charAt(i) === '@') break;
+                s += email1.charAt(i)
+            }
+            let user = {}
+            var appropriatives = []
+            let { snapshot } = this.state
+            console.log('*', this.state.snapshot)
+            snapshot.forEach(childSnapshot => {
+                let obj = childSnapshot.val()
+                if (obj.email === firebase.auth().currentUser.email) {
+                    user = obj
+                }
+            })
+            snapshot.forEach(childSnapshot => {
+                let obj = childSnapshot.val()
+                if (obj.role != user.role && obj.blood === user.blood && user !== obj) {
+                    let app = { email: obj.email, fullname: obj.fullname, phone: obj.phone, username: obj.username }
+                    appropriatives.push(app)
+                }
+            })
+            return (
+                <FlatList
+                    data={appropriatives}
+                    renderItem={({ item }) => {
+                        <ListItem item={item} />
+                    }}
+                    keyExtractor={item => item.email}
+                />
+            )
+        }
+        else {
+            return <Spinner size='large' />
+        }
     }
 
     render() {
-        return (<View style = {{}}>
-            <ListView
-                enableEmptySections
-                dataSource={this.dataSource}
-               renderRow={this.renderRow}>
-s
-            </ListView>
-            </View>
-        )
+        return this.mainRender()
     }
+
+    _renderItem(item) {
+        return (
+            <ListItem item={item} />
+        );
+    }
+
 }
 
-const mapStateToProps = state => {
-    let s = ''
-    let email1 = firebase.auth().currentUser.email
-    for(let i = 0; i < email1.length; i++) {
-      if (email1.charAt(i) === '@') break;
-      s += email1.charAt(i)
-    }
-    let user ;
-    let appropriatives = []
-    firebase.database().ref(`/users/`)
-    .on('value',function(snapshot){
-        snapshot.forEach(function(childSnapshot) {
-            let obj = childSnapshot.val()
-            
-            if(obj.email === firebase.auth().currentUser.email){
-                user=obj
-            }    
-        })
-        snapshot.forEach(function(childSnapshot) {
-            let obj = childSnapshot.val()
-            
-            if(obj.role != user.role && obj.blood === user.blood && user !== obj){
-                let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username }
-                appropriatives.push(app)
-            }    
-            
-        }) 
-    }
-)
-    const employees = _.map(appropriatives, (val, uid) => {
-        return { ...val, uid }
-    })
-    return { employees }
+
+const styles = {
+    container: {
+        flex: 1,
+        backgroundColor: '#000',
+    },
+    songList: {
+        flex: 1,
+        marginRight: 10,
+        marginLeft: 10,
+    },
 }
 
-export default connect(mapStateToProps, {  })(CandidatesRec)
+const mapStateToProps = ({ auth }) => {
+    const { dataSource } = auth
+    return { dataSource }
+}
+export default connect(mapStateToProps, { dataSourceChanged })(CandidatesRec)

@@ -7,6 +7,7 @@ import { EMAIL_CHANGED,
   LOGIN_USER,
   REGISTER_USER_FAIL,
   ROLE_CHANGED,
+  DATASOURCE_CHANGED
 } from './types'
 
 export const emailChanged = text => {
@@ -78,3 +79,17 @@ export const roleChanged = role => {
         payload: role,
     }
 }
+
+export const dataSourceChanged = data => {
+    let dataSource = new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2,
+      })
+
+      dataSource = dataSource.cloneWithRows(data)
+      
+    return {
+        type: DATASOURCE_CHANGED,
+        payload: dataSource,
+    }
+}
+

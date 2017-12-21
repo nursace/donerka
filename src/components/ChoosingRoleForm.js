@@ -38,8 +38,9 @@ class ChoosingRoleForm extends Component {
               <View style={{flex: 2}}>
           <TouchableOpacity
             onPress={() => {
-              if(firebase.auth().currentUser)
+              if(firebase.auth().currentUser){
                 this.props.roleChanged('donator')
+                Actions.candidatesRec()}
              else { Actions.register({role: 'donator'})}
               
                 }
@@ -54,8 +55,12 @@ class ChoosingRoleForm extends Component {
       <TouchableOpacity
         onPress={() => {
               if(firebase.auth().currentUser)
-                this.props.roleChanged('recepient')
-             else { Actions.register({role: 'recepient'})}
+              {
+                  this.props.roleChanged('recepient')  
+                  Actions.candidatesRec()
+                } 
+             else { 
+              Actions.register({role: 'recepient'})}
               
                 }
                 }

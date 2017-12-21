@@ -5,6 +5,8 @@ export const LOGIN_USER_FAIL = 'login_user_fail'
 export const LOGIN_USER = 'login_user'
 export const REGISTER_USER_FAIL = 'register_user_fail'
 export const ROLE_CHANGED = 'role_changed'
+export const DATASOURCE_CHANGED = 'datasource_changed'
+
 
 export const EMPLOYEE_UPDATE = 'employee_update'
 export const EMPLOYEE_CREATE = 'employee_create'

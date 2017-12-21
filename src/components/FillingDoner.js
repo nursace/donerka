@@ -125,8 +125,6 @@ class FillingDoner extends Component {
                 if (email.charAt(i) === '@') break;
                 s += email.charAt(i);
               }
-              console.log('blood', this.state.blood);
-              console.log('factor', this.state.factor);
               firebase
                 .database()
                 .ref('/users/')
