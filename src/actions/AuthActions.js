@@ -6,6 +6,7 @@ import { EMAIL_CHANGED,
   LOGIN_USER_FAIL,
   LOGIN_USER,
   REGISTER_USER_FAIL,
+  ROLE_CHANGED,
 } from './types'
 
 export const emailChanged = text => {
@@ -62,4 +63,18 @@ const loginUserSuccess = (dispatch, user) => {
     
     Actions.fillingDoner()
 
+}
+
+export const roleChanged = role => {
+    let s=''
+    for(let i;i<firebase.auth().currentUser.email.length;i++){
+        if(firebase.auth().currentUser.email.charAt(i)==='@')break
+        s+=firebase.auth().currentUser.email.charAt(i)
+    }
+    firebase.database().ref(`/users/${s}`).update({role : role})
+  
+    return {
+        type: ROLE_CHANGED,
+        payload: role,
+    }
 }

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Text, View, Image,TouchableOpacity } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
+import {roleChanged} from '../actions'
+import firebase from 'firebase'
 
 class ChoosingRoleForm extends Component {
   render() {
@@ -34,7 +36,13 @@ class ChoosingRoleForm extends Component {
               </View> 
               <View style={{flex: 2}}>
           <TouchableOpacity
-            onPress={() => {Actions.register({role: 'donator'})}}
+            onPress={() => {
+              if(firebase.auth().currentUser)
+                this.props.roleChanged('donator')
+             else { Actions.register({role: 'donator'})}
+              
+                }
+              }
             style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginRight: 200,marginBottom:0,}}>
           <Text style={styles.textStyle}>
             Донор
@@ -43,7 +51,13 @@ class ChoosingRoleForm extends Component {
       </View>
       <View>
       <TouchableOpacity
-        onPress={() => Actions.register({role: 'recipient'})}
+        onPress={() => {
+              if(firebase.auth().currentUser)
+                this.props.roleChanged('recepient')
+             else { Actions.register({role: 'recepient'})}
+              
+                }
+                }
         style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginLeft: 200,marginBottom:10}}>
           <Text style={styles.textStyle}>
             Реципиент
@@ -108,5 +122,11 @@ buttonStyle: {
   },
 
 }
+const mapStateToProps = ({ auth }) => {
+    const { email, password, error, loading } = auth
+    return {email, password, error, loading }
+}
 
-export default ChoosingRoleForm
+export default connect(mapStateToProps, {
+  roleChanged
+})(ChoosingRoleForm)

@@ -4,7 +4,8 @@ import {
     LOGIN_USER_SUCCESS,
     LOGIN_USER_FAIL,
     LOGIN_USER,
-    REGISTER_USER_FAIL
+    REGISTER_USER_FAIL,
+    ROLE_CHANGED,
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
     user: null,
     error: '',
     loading: false,
+    role:''
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -29,6 +31,8 @@ export default (state = INITIAL_STATE, action) => {
             return {...state, error: 'Authentication Failed', password: '', loading: false }
         case REGISTER_USER_FAIL:
         return {...state, error : 'Registration Failed', password : '' , loading: false}
+        case ROLE_CHANGED:
+        return {...state , role : action.payload,...INITIAL_STATE}
         default:
             return state
     }
