@@ -1,43 +1,55 @@
-import React, { Component } from 'react'
-import { Text, View, Image, TouchableHighlight, } from 'react-native'
-import { Actions } from 'react-native-router-flux'
-import { connect } from 'react-redux'
-import { emailChanged, passwordChanged, loginUser } from '../actions'
-import { Card, CardSection, Input, Button, Spinner } from './common'
+import React, { Component } from 'react';
+import { Text, View, Image, TouchableHighlight } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { connect } from 'react-redux';
+import { emailChanged, passwordChanged, loginUser } from '../actions';
+import { Card, CardSection, Input, Button, Spinner } from './common';
 
 class LanguageForm extends Component {
   getNextScreen() {
-    Actions.login()
+    Actions.login();
   }
   render() {
     return (
       <View style={styles.mainView}>
         <View style={styles.subView1}>
           <View style={styles.imageView}>
-            <Image source={require('../../assets/logo.png')}
-                   style={{alignSelf: 'center',  height: 110, width: 285}}
-                   resizeMode='stretch'
-              />
+            <Image
+              source={require('../../assets/logo.png')}
+              style={{ alignSelf: 'center', height: 110, width: 285 }}
+              resizeMode="stretch"
+            />
           </View>
         </View>
         <View style={styles.subView2}>
-          <Text style={{fontSize: 20, color: '#BF4747', fontWeight: 'bold'}}>ВЫБЕРИТЕ ВАШ ЯЗЫК</Text>
+          <Text style={{ fontSize: 20, color: '#BF4747', fontWeight: 'bold' }}>
+            ВЫБЕРИТЕ ВАШ ЯЗЫК
+          </Text>
+          <Text style={{ fontSize: 20, color: '#BF4747', fontWeight: 'bold' }}>
+            ТИЛ ТАНДАГЫЛА
+          </Text>
+          <Text style={{ fontSize: 20, color: '#BF4747', fontWeight: 'bold' }}>
+            CHOOSE YOUR LANGUAGE
+          </Text>
           <View style={styles.flagsView}>
-            <Image source={require('../../assets/kyrg_flag.png')}
-                   style={styles.flagImage}
-                   />
-            <Image source={require('../../assets/eng_flag.png')}
-                   style={styles.flagImage}
-                   />
+            <Image
+              source={require('../../assets/kyrg_flag.png')}
+              style={styles.flagImage}
+            />
+            <Image
+              source={require('../../assets/eng_flag.png')}
+              style={styles.flagImage}
+            />
             <TouchableHighlight onPress={() => this.getNextScreen()}>
-            <Image source={require('../../assets/russ_flag.png')}
-                   style={styles.flagImage}
-                   />
+              <Image
+                source={require('../../assets/russ_flag.png')}
+                style={styles.flagImage}
+              />
             </TouchableHighlight>
           </View>
         </View>
       </View>
-    )
+    );
   }
 }
 
@@ -50,33 +62,33 @@ const styles = {
   subView1: {
     flex: 1,
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   subView2: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   flagsView: {
-    flex: 1,
     flexDirection: 'row',
-    paddingTop: 20,
+    paddingTop: 20
   },
-  flagImage: {margin: 5, width: 50, height: 50},
-  imageView:{
-    flex: 1,
+  flagImage: {
+    margin: 5,
+    width: 50,
+    height: 50
   },
-  textView:{
+  imageView: {
+    flex: 1
+  },
+  textView: {
     flex: 3,
-    backgroundColor: 'yellow',
+    backgroundColor: 'yellow'
   },
 
   text: {
     fontSize: 20,
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
+};
 
-}
-
-export default LanguageForm
-
-
+export default LanguageForm;
