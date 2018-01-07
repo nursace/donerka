@@ -128,8 +128,6 @@ class FillingDoner extends Component {
                   if (email.charAt(i) === '@') break;
                   s += email.charAt(i);
                 }
-                console.log('blood', this.state.blood);
-                console.log('factor', this.state.factor);
                 firebase
                   .database()
                   .ref('/users/')
@@ -157,49 +155,8 @@ class FillingDoner extends Component {
             </TouchableOpacity>
           )}
         </View>
-<<<<<<< HEAD
-        {this.state.loading ? (
-          <Spinner size="large" />
-        ) : (
-          <TouchableOpacity
-            onPress={() => {
-              this.setState({ loading: true });
-              let s = '';
-              let email = firebase.auth().currentUser.email;
-              for (let i = 0; i < email.length; i++) {
-                if (email.charAt(i) === '@') break;
-                s += email.charAt(i);
-              }
-              firebase
-                .database()
-                .ref('/users/')
-                .child(s)
-                .update({ blood: this.state.blood, factor: this.state.factor })
-                .then(() => {
-                  Actions.candidatesRec({});
-                })
-                .catch(() => {
-                  if (this.state.blood === '' || this.state.factor === '') {
-                    Actions.refresh();
-                  }
-                });
-            }}
-            style={{
-              width: 150,
-              borderRadius: 25,
-              backgroundColor: '#BF4747',
-              height: 50,
-              alignItems: 'center',
-              marginTop: 50
-            }}
-          >
-            <Text style={styles.textStyle}>Отправить</Text>
-          </TouchableOpacity>
-        )}
-=======
 
       </View>
->>>>>>> 287d14430519c3d360778f8776362fd60a58ab54
       </View>
     );
   }

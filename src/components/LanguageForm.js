@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableHighlight } from 'react-native';
 import { Actions } from 'react-native-router-flux';
-import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
-
+import firebase from 'firebase'
 class LanguageForm extends Component {
   getNextScreen() {
     Actions.login();
   }
   render() {
-    return (
+        return (  
       <View style={styles.mainView}>
         <View style={styles.subView1}>
           <View style={styles.imageView}>
@@ -27,9 +25,6 @@ class LanguageForm extends Component {
           </Text>
           <Text style={{ fontSize: 20, color: '#BF4747', fontWeight: 'bold' }}>
             ТИЛ ТАНДАГЫЛА
-          </Text>
-          <Text style={{ fontSize: 20, color: '#BF4747', fontWeight: 'bold' }}>
-            CHOOSE YOUR LANGUAGE
           </Text>
           <View style={styles.flagsView}>
             <Image

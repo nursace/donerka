@@ -11,9 +11,6 @@ class LoginForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      fullname: 'ijoji',
-      phone: '38274438',
-      username: 'fdfeunfe',
       loading: false
     };
   }
@@ -23,21 +20,12 @@ class LoginForm extends Component {
   onPasswordChange(text) {
     this.props.passwordChanged(text);
   }
-  onFullnameChange(fullname) {
-    this.setState({ fullname });
-  }
-  onPhoneChange(phone) {
-    this.setState({ phone });
-  }
-  onUsernameChange(username) {
-    this.setState({ username });
-  }
   onButtonPress() {
     const { email, password } = this.props;
     this.props.loginUser({ email, password });
   }
 
-  renderButton() {
+  renderButton() {  
     if (this.props.loading || this.state.loading) {
       return <Spinner size="large" />;
     }
@@ -63,6 +51,7 @@ class LoginForm extends Component {
     );
   }
   render() {
+    console.log(firebase.auth().currentUser)
     return (
       <View style={styles.mainView}>
         <View style={{ marginTop: 100 }}>
@@ -108,7 +97,7 @@ class LoginForm extends Component {
               alignItems: 'center',
               justifyContent: 'center'
             }}
-            onPress={Actions.choosingRoleForm}
+            onPress={Actions.register}
           >
             <Text style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>
               Зарегистрироваться
@@ -141,5 +130,5 @@ const mapStateToProps = ({ auth }) => {
 export default connect(mapStateToProps, {
   emailChanged,
   passwordChanged,
-  loginUser
+  loginUser,
 })(LoginForm);

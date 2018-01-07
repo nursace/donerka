@@ -22,6 +22,7 @@ export default class App extends React.Component {
         firebase.initializeApp(config)
     }
   render() {
+    
     const store = createStore(reducer, {}, applyMiddleware(ReduxThunk))
     return (
         <Provider store={store}>

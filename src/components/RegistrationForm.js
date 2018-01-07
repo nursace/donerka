@@ -87,7 +87,6 @@ this.setState({loading : true})
     )
   }
   render() {
-
     return(
       <View style={styles.mainView}>
       <View style= {{flexDirection : 'row',marginLeft: 20,marginTop:10}}>

@@ -9,8 +9,8 @@ class ListItem extends Component {
       console.log(this.props.item)
     return (
 <View style={styles.li}>
-          <View style={styles.radioUserName}>
-            <Text style={styles.songTitle}>{this.props.item.email}</Text>
+          <View style={styles.name}>
+            <Text style={styles.title}>{this.props.item.email}</Text>
           </View>
         </View>
     );
@@ -32,14 +32,14 @@ var styles = {
         marginTop: 8,
         backgroundColor: '#f25170'
       },
-      songTitle: {
+      title: {
         fontSize: 16,
         color: 'black',
       },
-      radioUserName: {
+      name: {
         flex: 1,
         marginLeft: 16,
         marginRight: 20,
       },
     }
-module.exports = ListItem;
+export default ListItem
