@@ -22,7 +22,8 @@ class StartingComponent extends Component {
             }
             else{
                  this.setState({firstLaunch: false});
-            }})
+            }}
+        )
 */
       firebase.auth().onAuthStateChanged((user)=> {
         if (user) {
@@ -37,10 +38,13 @@ class StartingComponent extends Component {
 
       rendersmth(){
           if(this.state.user === '0'){
-return(
-
+            if(this.state.firstLaunch)
+            return(
        <LanguageForm />     
-       )   }
+       ) 
+       else 
+       return (<LoginForm />)
+      }
           else if(this.state.user === '1'){
               return (
                   <FillingDoner />
