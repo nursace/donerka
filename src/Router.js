@@ -8,7 +8,7 @@ import UrgentSearch from './components/UrgentSearch'
 import FillingDoner from './components/FillingDoner'
 import CandidatesRec from './components/CandidatesRec'
 import firebase from 'firebase'
-import SpinnerSupport from './components/SpinnerSupport'
+import StartingComponent from './components/StartingComponent'
 class RouterComponent extends Component {
   constructor(props){
     super(props)
@@ -43,7 +43,7 @@ class RouterComponent extends Component {
         <Scene key='lang' component={LanguageForm} />
         <Scene key='fillingDoner' component= {FillingDoner} />
         <Scene key='candidatesRec'   component= {CandidatesRec} />
-        <Scene key='spin' initial component = {SpinnerSupport} /> 
+        <Scene key='start' initial component = {StartingComponent} /> 
       
         
         </Scene>
