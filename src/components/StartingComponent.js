@@ -15,16 +15,17 @@ class StartingComponent extends Component {
       }
     }
       componentDidMount(){
-     /*   AsyncStorage.getItem("alreadyLaunched").then(value => {
-            if(value == null){
-                 AsyncStorage.setItem('alreadyLaunched', true);
-                 this.setState({firstLaunch: true});
+   AsyncStorage.getItem("alreadyLaunched").then(alreadyLaunched => {
+            if(alreadyLaunched === 'true'){                                
+                this.setState({firstLaunch: false});
             }
             else{
-                 this.setState({firstLaunch: false});
-            }}
-        )
-*/
+                AsyncStorage.setItem('alreadyLaunched', 'true');                
+                 this.setState({firstLaunch: true});
+            }
+        }
+    )
+
       firebase.auth().onAuthStateChanged((user)=> {
         if (user) {
           this.setState({user : '1'})
