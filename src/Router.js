@@ -10,29 +10,7 @@ import CandidatesRec from './components/CandidatesRec'
 import firebase from 'firebase'
 import StartingComponent from './components/StartingComponent'
 class RouterComponent extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      user : false
-
-  }
-}
-  componentDidMount(){
-  /*firebase.auth().onAuthStateChanged((user)=> {
-    if (user) {
-      this.setState({user : true})
-    Actions.fillingDoner()
-    }
-    else {
-      this.setState({user : false})
-      Actions.lang()
-    }
-  })  
-*/
-  }
   render() {    
-    console.log(this.state.user)
-    console.log(firebase.auth().currentUser)
     return (
       <Router>
         <Scene key='root' hideNavBar={true}>

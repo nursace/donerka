@@ -6,7 +6,6 @@ const { View, TouchableHighlight, Text } = ReactNative;
 class ListItem extends Component {
 
   render() {
-      console.log(this.props.item)
     return (
 <View style={styles.li}>
           <View style={styles.name}>
@@ -20,7 +19,8 @@ var styles = {
     li: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderColor: '#f11d45',
+        justifyContent : 'center',
+        borderColor: 'red',
         borderRadius: 13,
         borderWidth: 1,
         paddingLeft: 7,
@@ -30,14 +30,15 @@ var styles = {
         marginRight: 10,
         marginBottom: 5,
         marginTop: 8,
-        backgroundColor: '#f25170'
+        backgroundColor: '#fff'
       },
       title: {
-        fontSize: 16,
+        fontSize: 20,
         color: 'black',
       },
       name: {
         flex: 1,
+        marginBottom:10,
         marginLeft: 16,
         marginRight: 20,
       },

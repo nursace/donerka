@@ -3,18 +3,20 @@ import { ListView, View, Text } from 'react-native'
 import { connect } from 'react-redux'
 import ListItem from './ListItem'
 import firebase from 'firebase'
+import {Spinner} from './common'
 class CandidatesRec extends Component {
-
-    constructor(props) {
-        super(props);
-        const dataSource = new ListView.DataSource({
-          rowHasChanged: (row1, row2) => row1 !== row2,
-        });
-        this.state = {
-          dataSource: dataSource
-        };
-      }
+  constructor(props) {
+    super(props);
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
+    });
+    this.state = {
+        loading : false,
+      dataSource: dataSource
+    };
+  }
       componentDidMount() {
+          this.setState({loading:true})
         let s = ''
         let email1 = firebase.auth().currentUser.email
         for(let i = 0; i < email1.length; i++) {
@@ -22,6 +24,7 @@ class CandidatesRec extends Component {
           s += email1.charAt(i)
         }
         let user ;
+        var that = this 
         firebase.database().ref(`/users/`)
         .on('value',function(snapshot){
             var appropriates = []            
@@ -41,23 +44,39 @@ class CandidatesRec extends Component {
                 }    
                 
             }) 
-            console.log(appropriates)
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(appropriates)
-              });   
+            that.setState({  
+                dataSource: that.state.dataSource.cloneWithRows(appropriates),
+                loading : false
+              });
         }
     )
       
 
       }
+renderList(){
+    if(this.state.loading){
+        return (
+            <Spinner size = 'large' />
+        )
 
+    }
+    else
+    return(
+    <ListView
+    dataSource={this.state.dataSource}
+    enableEmptySections={true}
+    renderRow={this._renderItem.bind(this)}
+    style={styles.listView}/>
+    )
+}
     render() {
-        return (<View style = {styles.container}>
-                   <ListView
-                   dataSource={this.state.dataSource}
-                   renderRow={this._renderItem.bind(this)}
-                   enableEmptySections={true}
-                   style={styles.songList} />
+        return (
+        <View style = {styles.container}>
+        <View style = {styles.header}>
+
+            </View>
+            {this.renderList()}
+        
             </View>
         )
 
@@ -76,9 +95,14 @@ class CandidatesRec extends Component {
     const styles= {
         container: {
             flex: 1,
-            backgroundColor: '#000',
+            backgroundColor: '#fff',
           },
-        songList: {
+          header : {
+              
+            backgroundColor:'red',
+            paddingTop : 70
+          },
+        listView: {
             flex: 1,
             marginRight: 10,
             marginLeft: 10,

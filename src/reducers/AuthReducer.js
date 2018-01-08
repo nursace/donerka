@@ -6,7 +6,6 @@ import {
     LOGIN_USER,
     REGISTER_USER_FAIL,
     ROLE_CHANGED,
-    DATASOURCE_CHANGED
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -16,7 +15,6 @@ const INITIAL_STATE = {
     error: '',
     loading: false,
     role:'',
-    datasource: null
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -34,9 +32,7 @@ export default (state = INITIAL_STATE, action) => {
         case REGISTER_USER_FAIL:
         return {...state, error : 'Registration Failed', password : '' , loading: false}
         case ROLE_CHANGED:
-        return {...state , role : action.payload,...INITIAL_STATE}
-        case DATASOURCE_CHANGED:
-        return {...state,datasource:action.payload}
+        return {...state , role : action.payload,}
         default:
             return state
     }

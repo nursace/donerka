@@ -51,7 +51,6 @@ class LoginForm extends Component {
     );
   }
   render() {
-    console.log(firebase.auth().currentUser)
     return (
       <View style={styles.mainView}>
         <View style={{ marginTop: 100 }}>
