@@ -23,6 +23,7 @@ class LoginForm extends Component {
   onButtonPress() {
     const { email, password } = this.props;
     this.props.loginUser({ email, password });
+    this.setState({loading:false})
   }
 
   renderButton() {  
@@ -72,6 +73,7 @@ class LoginForm extends Component {
             placeholder="Email"
             onChangeText={this.onEmailChange.bind(this)}
             value={this.props.email}
+          
           />
           <Input
             secureTextEntry

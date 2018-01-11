@@ -38,13 +38,10 @@ class ChoosingRoleForm extends Component {
               <View style={{flex: 2}}>
           <TouchableOpacity
             onPress={() => {
-              if(firebase.auth().currentUser){
                 this.props.roleChanged('donator')
-                Actions.candidatesRec()}
-             else { Actions.register({role: 'donator'})}
+                Actions.candidatesRec()
               
-                }
-              }
+            }}
             style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginRight: 200,marginBottom:0,}}>
           <Text style={styles.textStyle}>
             Донор
@@ -54,16 +51,11 @@ class ChoosingRoleForm extends Component {
       <View>
       <TouchableOpacity
         onPress={() => {
-              if(firebase.auth().currentUser)
-              {
+           
                   this.props.roleChanged('recepient')  
-                  Actions.candidatesRec()
-                } 
-             else { 
-              Actions.register({role: 'recepient'})}
-              
-                }
-                }
+                  Actions.waiting()
+           
+              }}
         style={{width: 150,borderRadius:25,backgroundColor:'#BF4747',height:50,alignItems:'center',marginLeft: 200,marginBottom:10}}>
           <Text style={styles.textStyle}>
             Реципиент

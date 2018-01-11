@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, ActivityIndicator,AsyncStorage } from 'react-native'
+import { View,Image, ActivityIndicator,AsyncStorage } from 'react-native'
 import LanguageForm from './LanguageForm'
 import LoginForm from './LoginForm'
 import FillingDoner from './FillingDoner'
@@ -53,8 +53,17 @@ class StartingComponent extends Component {
           }
           else
           return (
-            <View style={styles.SpinnerStyle}>
+            <View style ={styles.SpinnerStyle}>
+            <View style ={styles.logo}>
+            <Image
+              source={require('../../assets/logo.png')}
+              style={{ alignSelf: 'center', height: 110, width: 285 }}
+              resizeMode="stretch"
+            />
+         </View>
+         <View style = {styles.spinner}>
             <ActivityIndicator size='large' />
+        </View>
         </View>
           )
       }
@@ -71,9 +80,18 @@ class StartingComponent extends Component {
 const styles = {
     SpinnerStyle: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        flexDirection : 'column',
+        backgroundColor:'#fff'
     },
+    logo : {
+flex:2,      
+justifyContent: 'center',
+alignItems: 'center'
+    },
+    spinner : {
+
+flex:3,
+    }
 }
 
 export default StartingComponent;

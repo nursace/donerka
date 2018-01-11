@@ -41,7 +41,7 @@ class RegistrationForm extends Component {
 
 this.setState({loading : true})
     const {fullname,phone,username } = this.state
-    const {email,password, role } = this.props
+    const {email,password } = this.props
     let s = ''
     let email1 = email
     
@@ -49,19 +49,15 @@ this.setState({loading : true})
       if (email1.charAt(i) === '@') break;
       s += email1.charAt(i)
     }
-   firebase.database().ref(`/users/`).child(s).set({
-      fullname: fullname,
-      phone: phone,
-      username: username,
-      role: role,
-      email : email,
-      rescue_count : 0
-    }).then(() => {
-  this.setState({loading:false})
-      this.props.registerUser({ email, password, role})
-    }).then(() => {
-      Actions.fillingDoner()
-   })
+    this.props.registerUser({ email, password,fullname,phone,username,email})
+
+this.setState({loading:false})
+  console.log(firebase.auth().currentUser)
+
+    
+ 
+    
+    
   }
   renderButton() {
     if (this.props.loading||this.state.loading) {

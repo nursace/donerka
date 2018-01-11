@@ -7,8 +7,12 @@ import ChoosingRoleForm from './components/ChoosingRoleForm'
 import UrgentSearch from './components/UrgentSearch'
 import FillingDoner from './components/FillingDoner'
 import CandidatesRec from './components/CandidatesRec'
+import WaitingRoom from './components/WaitingRoom'
 import firebase from 'firebase'
 import StartingComponent from './components/StartingComponent'
+import FirstMain from './components/FirstMain'
+import SecondMain from './components/SecondMain'
+import ThirdMain from './components/ThirdMain'
 class RouterComponent extends Component {
   render() {    
     return (
@@ -21,9 +25,11 @@ class RouterComponent extends Component {
         <Scene key='lang' component={LanguageForm} />
         <Scene key='fillingDoner' component= {FillingDoner} />
         <Scene key='candidatesRec'   component= {CandidatesRec} />
+        <Scene key='waiting' component = {WaitingRoom} />
         <Scene key='start' initial component = {StartingComponent} /> 
-      
-        
+      <Scene key='firstMain' component = {FirstMain} />
+      <Scene key='secondMain' initial component = {SecondMain} />
+      <Scene key='thirdMain' component = {ThirdMain} />
         </Scene>
       </Router>
     )

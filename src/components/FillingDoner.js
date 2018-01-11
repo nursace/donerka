@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
+import { emailChanged, passwordChanged, loginUser,logoutUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 import { Dropdown } from 'react-native-material-dropdown';
 import firebase from 'firebase';
@@ -51,10 +51,7 @@ class FillingDoner extends Component {
         >
           <TouchableOpacity
             onPress={() => {
-              firebase
-                .auth()
-                .signOut()
-                .then(() => Actions.login());
+           this.props.logoutUser()
             }}
             style={{ height: 30, width: 30 }}
           >
@@ -207,5 +204,9 @@ const styles = {
     fontWeight: 'bold'
   }
 };
+const mapStateToProps = state => {
+  
+  return {  }
+}
 
-export default FillingDoner;
+export default connect(mapStateToProps, { logoutUser })(FillingDoner)

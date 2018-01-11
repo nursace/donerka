@@ -7,7 +7,7 @@ import { EMAIL_CHANGED,
   LOGIN_USER,
   REGISTER_USER_FAIL,
   ROLE_CHANGED,
-  DATASOURCE_CHANGED
+  LOGOUT_USER  
 } from './types'
 
 export const emailChanged = text => {
@@ -34,18 +34,30 @@ export const loginUser = ({ email, password }) => {
             })
     }
 }
-export const registerUser = ({email,password}) => {
+export const registerUser = ({email,password,fullname,phone,username}) => {
     return dispatch => {
         dispatch({ type: LOGIN_USER})
     firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(() => { 
-            firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(user => loginUserSuccess(dispatch,user))
-            .catch(() => {
-                loginUserFail(dispatch)
-            })
+        .then(() => {
+            let s = ''
+            let email1 = email
+            
+            for(let i = 0; i < email1.length; i++) {
+              if (email1.charAt(i) === '@') break;
+              s += email1.charAt(i)
+            }
+             firebase.database().ref(`/users/`).child(s).set({
+                fullname: fullname,
+                phone: phone,
+                username: username,
+                currentRole: '',
+                email : email,
+                rescue_count : 0
+              }).then(()=>{
+                  Actions.choosingRoleForm()
+              })
         })
-        .catch(()=>{
+        .catch((error)=>{
             registerUserFail(dispatch)
         })
     }
@@ -61,18 +73,18 @@ const loginUserSuccess = (dispatch, user) => {
         type: LOGIN_USER_SUCCESS,
         payload: user
     })
-    
-    Actions.fillingDoner()
 
 }
 
 export const roleChanged = role => {
-    let s=''
-    for(let i;i<firebase.auth().currentUser.email.length;i++){
-        if(firebase.auth().currentUser.email.charAt(i)==='@')break
-        s+=firebase.auth().currentUser.email.charAt(i)
+    let s = ''
+    let email1 = firebase.auth().currentUser.email
+    
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      s += email1.charAt(i)
     }
-    firebase.database().ref(`/users/${s}`).update({role : role})
+    firebase.database().ref(`/users/${s}`).update({currentRole : role})
   
     return {
         type: ROLE_CHANGED,
@@ -80,16 +92,13 @@ export const roleChanged = role => {
     }
 }
 
-export const dataSourceChanged = data => {
-    let dataSource = new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-      })
 
-      dataSource = dataSource.cloneWithRows(data)
-      
-    return {
-        type: DATASOURCE_CHANGED,
-        payload: dataSource,
-    }
-}
-
+export const logoutUser = () => {
+    return dispatch => {
+        firebase
+        .auth()
+        .signOut()
+        .then(()=>{
+            dispatch({ type: LOGOUT_USER})
+        })
+    }}
