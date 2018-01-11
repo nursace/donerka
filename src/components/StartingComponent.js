@@ -5,6 +5,9 @@ import LoginForm from './LoginForm'
 import FillingDoner from './FillingDoner'
 import CandidatesRec from './CandidatesRec'
 import firebase from 'firebase'
+import FirstMain from './FirstMain'
+import SecondMain from './SecondMain'
+import ThirdMain from './ThirdMain'
 class StartingComponent extends Component {
     constructor(props){
         super(props)
@@ -48,22 +51,13 @@ class StartingComponent extends Component {
       }
           else if(this.state.user === '1'){
               return (
-                  <FillingDoner />
+                  <SecondMain />
               ) 
           }
           else
           return (
             <View style ={styles.SpinnerStyle}>
-            <View style ={styles.logo}>
-            <Image
-              source={require('../../assets/logo.png')}
-              style={{ alignSelf: 'center', height: 110, width: 285 }}
-              resizeMode="stretch"
-            />
-         </View>
-         <View style = {styles.spinner}>
             <ActivityIndicator size='large' />
-        </View>
         </View>
           )
       }
@@ -80,8 +74,9 @@ class StartingComponent extends Component {
 const styles = {
     SpinnerStyle: {
         flex: 1,
-        flexDirection : 'column',
-        backgroundColor:'#fff'
+        backgroundColor:'#fff',
+justifyContent:'center',
+alignItems: 'center'
     },
     logo : {
 flex:2,      

@@ -7,6 +7,9 @@ export const REGISTER_USER_FAIL = 'register_user_fail'
 export const ROLE_CHANGED = 'role_changed'
 export const LOGOUT_USER = 'logout_user'
 
+export const USER_FETCH_SUCCESS = 'user_fetch_success'
+export const USER_FETCH = 'user_fetch'
+
 export const EMPLOYEE_UPDATE = 'employee_update'
 export const EMPLOYEE_CREATE = 'employee_create'
 export const EMPLOYEES_FETCH_SUCCESS = 'employees_fetch_success'

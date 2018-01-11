@@ -58,7 +58,7 @@ class Ripple extends Component {
        const size = this.props.size
        return(
 <TouchableWithoutFeedback onPress={this.props.onPressButton}  onPressIn={this.onPressedIn} onPressOut={this.onPressedOut}>
- <View style={{paddingBottom:15,justifyContent:'center',alignItems:'center',height:2*size,width:2*size}}>
+ <View style={{paddingBottom:8,justifyContent:'center',alignItems:'center',height:2*size,width:2*size}}>
  {this.renderRippleView()}
  <View >
      <Icon name={this.props.name} color={this.props.color} type='ionicon' size={size} />
@@ -87,12 +87,16 @@ Actions.replace('secondMain')
 
     return (
       <View style={styles.mainView}>
-   <View style={{flex:11}}>
+         <View style={{flex:5}}>
+      
+      </View>
+   
+   <View style={{flex:40}}>
    </View>
-   <View style={{flex:1,borderTopWidth:1,flexDirection : 'row',justifyContent:'space-around',marginTop:0,height:Dimensions.get('window').height*0.1-10}}>
-          <Ripple text='Albums' name='ios-albums-outline' color='red' size={33}  />
-          <Ripple text='Main' name='ios-beaker-outline' onPressButton={this.onPressSecond} size={33}  />
-          <Ripple text='Setting' name='ios-settings-outline' onPressButton={this.onPressThird} size={33}  />
+   <View style={{flex:4,borderTopWidth:1,flexDirection : 'row',justifyContent:'space-around',marginTop:0,height:Dimensions.get('window').height*0.1-10}}>
+          <Ripple text='Albums' name='md-list-box' color='#ca1414' size={30}  />
+          <Ripple text='Main' color='#434A54' name='md-beaker' onPressButton={this.onPressSecond} size={30}  />
+          <Ripple text='Setting' name='ios-cog' color='#434A54' onPressButton={this.onPressThird} size={30}  />
       </View>
       </View>
 

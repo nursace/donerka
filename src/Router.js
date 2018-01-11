@@ -18,7 +18,6 @@ class RouterComponent extends Component {
     return (
       <Router>
         <Scene key='root' hideNavBar={true}>
-        <Scene key='login'  component={LoginForm} />
         <Scene key='register' component={RegistrationForm} />
         <Scene key='choosingRoleForm' component={ChoosingRoleForm} />
         <Scene key='urgentSearch'  component= {UrgentSearch} />
@@ -26,9 +25,12 @@ class RouterComponent extends Component {
         <Scene key='fillingDoner' component= {FillingDoner} />
         <Scene key='candidatesRec'   component= {CandidatesRec} />
         <Scene key='waiting' component = {WaitingRoom} />
+        
         <Scene key='start' initial component = {StartingComponent} /> 
+        <Scene key='login'  component={LoginForm} />
+
       <Scene key='firstMain' component = {FirstMain} />
-      <Scene key='secondMain' initial component = {SecondMain} />
+      <Scene key='secondMain' component = {SecondMain} />
       <Scene key='thirdMain' component = {ThirdMain} />
         </Scene>
       </Router>

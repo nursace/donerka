@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Text,Image, View, TouchableOpacity } from 'react-native'
+import { Text,Image, View,Dimensions, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, loginUser } from '../actions'
-import { Input, Spinner } from './common'
+import { InputIcon, Spinner } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
@@ -21,32 +21,34 @@ class LoginForm extends Component {
     this.props.passwordChanged(text);
   }
   onButtonPress() {
-    const { email, password } = this.props;
+    const { email, password,error } = this.props;
     this.props.loginUser({ email, password });
     this.setState({loading:false})
   }
 
   renderButton() {  
     if (this.props.loading || this.state.loading) {
-      return <Spinner size="large" />;
+      return <View style={{paddingTop:40}}><Spinner size="large" /></View>;
     }
     return (
       <TouchableOpacity
         style={{
           width: 170,
+          alignSelf:'center',
+          marginRight:20,
           borderRadius: 15,
           borderWidth: 0.6,
-          borderColor: '#fff',
-          backgroundColor: '#BF4747',
-          height: 50,
+          borderColor: 'red',
+          backgroundColor: '#fff',
+          height: 40,
           marginTop: 24,
           alignItems: 'center',
           justifyContent: 'center'
         }}
         onPress={this.onButtonPress.bind(this)}
       >
-        <Text style={{ color: '#fff', fontSize: 20, fontWeight: 'bold' }}>
-          Войти
+        <Text style={{ color: '#ca1414', fontSize: 20, fontWeight: 'bold' }}>
+          Login
         </Text>
       </TouchableOpacity>
     );
@@ -54,56 +56,42 @@ class LoginForm extends Component {
   render() {
     return (
       <View style={styles.mainView}>
-        <View style={{ marginTop: 100 }}>
-          <Image
-            source={require('../../assets/logo.png')}
-            style={{ alignSelf: 'center', height: 110, width: 285 }}
-            resizeMode="stretch"
-          />
-        </View>
         <View
           style={{
-            marginTop: 60,
-            flex: 1,
-            alignItems: 'center'
+            marginLeft:Dimensions.get('window').width*0.1,
+            marginTop: Dimensions.get('window').height/5,
+            flex: 12,
           }}
         >
-          <Input
-            label="Email"
+        <Text style={{fontSize:60,color:'#ca1414'}}>Login</Text>
+          <View style={{marginTop:65,}}>
+          <InputIcon
+            label="ios-contact-outline"
             placeholder="Email"
             onChangeText={this.onEmailChange.bind(this)}
             value={this.props.email}
-          
+            size={33}
           />
-          <Input
+          <InputIcon
             secureTextEntry
-            label="Password"
-            placeholder="password"
+            label="ios-lock-outline"
+            placeholder="Password"
+            size={37}
+            marL={3}
             onChangeText={this.onPasswordChange.bind(this)}
             value={this.props.password}
           />
+          </View>
           <Text style={styles.errorTextStyle}>{this.props.error}</Text>
           <View style={{ marginTop: 10 }}>{this.renderButton()}</View>
 
-          <TouchableOpacity
-            style={{
-              width: 200,
-              height: 40,
-              borderRadius: 19,
-              borderWidth: 0.6,
-              borderColor: '#fff',
-              backgroundColor: '#fff',
-              height: 50,
-              marginTop: 0,
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}
-            onPress={Actions.register}
-          >
-            <Text style={{ color: 'red', fontSize: 15, fontWeight: 'bold' }}>
-              Зарегистрироваться
-            </Text>
-          </TouchableOpacity>
+        </View>
+        <View style={{justifyContent:'center',flexDirection:'row',alignItems:'center',flex:1}}> 
+            
+            <Text style={{color:'#ca1414'}}>Don't have an account? </Text>
+            <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{if(!firebase.auth().currentUser)Actions.replace('register')}}>
+            <Text style={{   color:'#ca1414', textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>
+      
         </View>
       </View>
     );
@@ -113,11 +101,10 @@ class LoginForm extends Component {
 const styles = {
   errorTextStyle: {
     fontSize: 20,
-    color: 'red',
+    color: '#ca1414',
     alignSelf: 'center'
   },
   mainView: {
-    marginTop: 20,
     backgroundColor: '#fff',
     flex: 1
   }
