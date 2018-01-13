@@ -9,11 +9,5 @@ export const LOGOUT_USER = 'logout_user'
 
 export const USER_FETCH_SUCCESS = 'user_fetch_success'
 export const USER_FETCH = 'user_fetch'
-
-export const EMPLOYEE_UPDATE = 'employee_update'
-export const EMPLOYEE_CREATE = 'employee_create'
-export const EMPLOYEES_FETCH_SUCCESS = 'employees_fetch_success'
-export const EMPLOYEE_SAVE_SUCCESS = 'employee_save_success'
-
-
-
+export const USER_FILLING_FORM = 'user_filling_form'
+export const USER_FILLING = 'user_filling'

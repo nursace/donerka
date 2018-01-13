@@ -50,9 +50,9 @@ export const registerUser = ({email,password,fullname,phone,username}) => {
                 fullname: fullname,
                 phone: phone,
                 username: username,
-                currentRole: '',
                 email : email,
-                rescue_count : 0
+                rescue_count : 0,
+            
               }).then(()=>{
                   Actions.choosingRoleForm()
               })
@@ -101,5 +101,6 @@ export const logoutUser = () => {
         .signOut()
         .then(()=>{
             dispatch({ type: LOGOUT_USER})
+            Actions.replace('login')
         })
     }}

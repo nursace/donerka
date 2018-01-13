@@ -22,7 +22,7 @@ class Ripple extends Component {
     onPressedIn() {
         Animated.timing(this.state.scaleValue, {
             toValue: 1,
-            duration: 100,
+            duration: 50,
             easing: Easing.bezier(0.0, 0.0, 0.2, 1),
         }).start();
     }
@@ -42,10 +42,10 @@ class Ripple extends Component {
             <Animated.View
                 style={{
                     position: 'absolute',
-                    top: -10,
-                    left:-2,
-                    width: this.props.size*2+5,
-                    height: this.props.size*2+5,
+                    top: -15,
+                    left:-5,
+                    width: this.props.size*2+10,
+                    height: this.props.size*2+10,
                     borderRadius: this.props.size*2,
                     transform: [{ scale: scaleValue }],
                     opacity: opacityValue,

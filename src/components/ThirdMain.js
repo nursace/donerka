@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
-import {roleChanged} from '../actions'
+import {logoutUser} from '../actions'
 import firebase from 'firebase'
 import {connect} from 'react-redux'
 
@@ -22,7 +22,7 @@ class Ripple extends Component {
     onPressedIn() {
         Animated.timing(this.state.scaleValue, {
             toValue: 1,
-            duration: 100,
+            duration: 50,
             easing: Easing.bezier(0.0, 0.0, 0.2, 1),
         }).start();
     }
@@ -42,10 +42,10 @@ class Ripple extends Component {
             <Animated.View
                 style={{
                     position: 'absolute',
-                    top: -10,
-                    left:-2,
-                    width: this.props.size*2+5,
-                    height: this.props.size*2+5,
+                    top: -15,
+                    left:-5,
+                    width: this.props.size*2+10,
+                    height: this.props.size*2+10,
                     borderRadius: this.props.size*2,
                     transform: [{ scale: scaleValue }],
                     opacity: opacityValue,
@@ -93,6 +93,7 @@ Actions.replace('firstMain')
       </View>
    
    <View style={{flex:40}}>
+   <TouchableOpacity onPress={()=>this.props.logoutUser()}><Text>logout</Text></TouchableOpacity>
    </View>
    <View style={{flex:4,borderTopWidth:1,flexDirection : 'row',justifyContent:'space-around',marginTop:0,height:Dimensions.get('window').height*0.1-10}}>
           <Ripple text='Albums' name='md-list-box' color='#434A54' onPressButton={this.onPressFirst} size={30}  />
@@ -174,5 +175,4 @@ const mapStateToProps = ({ auth }) => {
 }
 
 export default connect(mapStateToProps, {
-  roleChanged
-})(ThirdMain)
+logoutUser})(ThirdMain)

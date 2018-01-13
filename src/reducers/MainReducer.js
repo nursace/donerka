@@ -1,6 +1,8 @@
 import {
     USER_FETCH_SUCCESS,
-    USER_FETCH
+    USER_FETCH,
+    USER_FILLING,
+    USER_FILLING_FORM
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -17,6 +19,10 @@ export default (state = INITIAL_STATE, action) => {
         return {...state , loading : true}
         case USER_FETCH_SUCCESS :
     return {...state , role : action.role,blood:action.blood,factor:action.factor,filled:action.filled,loading:false}
+    case USER_FILLING :
+    return {...state , loading : true}
+    case USER_FILLING_FORM :
+return {...state , role : action.role,blood:action.blood,factor:action.factor,filled:action.filled,loading:false}
 
     default:
             return state

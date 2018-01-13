@@ -35,7 +35,7 @@ export default (state = INITIAL_STATE, action) => {
         case ROLE_CHANGED:
         return {...state , role : action.payload,}
         case LOGOUT_USER:
-        return {...state, error : '',loading: false }
+        return {...state,error : '',loading: false }
         default:
             return state
     }
