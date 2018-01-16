@@ -42,7 +42,7 @@ class Ripple extends Component {
             <Animated.View
                 style={{
                     position: 'absolute',
-                    top: -15,
+                    top: -10,
                     left:-5,
                     width: this.props.size*2+10,
                     height: this.props.size*2+10,
@@ -94,9 +94,9 @@ Actions.replace('secondMain')
    <View style={{flex:40}}>
    </View>
    <View style={{flex:4,borderTopWidth:1,flexDirection : 'row',justifyContent:'space-around',marginTop:0,height:Dimensions.get('window').height*0.1-10}}>
-          <Ripple text='Albums' name='md-list-box' color='#ca1414' size={30}  />
-          <Ripple text='Main' color='#434A54' name='md-beaker' onPressButton={this.onPressSecond} size={30}  />
-          <Ripple text='Setting' name='ios-cog' color='#434A54' onPressButton={this.onPressThird} size={30}  />
+          <Ripple text='Albums' name='md-list-box' color='#FE3562' size={30}  />
+          <Ripple text='Main' color='#9C9495' name='md-beaker' onPressButton={this.onPressSecond} size={30}  />
+          <Ripple text='Setting' name='ios-cog' color='#9C9495' onPressButton={this.onPressThird} size={30}  />
       </View>
       </View>
 

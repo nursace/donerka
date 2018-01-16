@@ -3,7 +3,7 @@ import { Text, View, TextInput,Dimensions, StyleSheet} from 'react-native'
 import {Icon} from 'react-native-elements'
 const InputIcon = props =>  {
     const { inputStyle, labelStyle, containerStyle }  = styles
-    const { value,size, label, onChangeText,marL, placeholder, secureTextEntry } = props
+    const { value,size, label, onChangeText,marL,pad1L, placeholder, secureTextEntry } = props
     return(
       <View style={{
         height: 40,
@@ -12,22 +12,22 @@ const InputIcon = props =>  {
         marginTop:10,
         }}>
         <Icon
-        iconStyle={{margin : 15,marginLeft:0}}
-        color = '#ca1414'
+        iconStyle={{margin : 15,paddingLeft:pad1L}}
+        color = '#fff'
         name={label}
         type='ionicon'
         size = {size}
         />
         <TextInput
           placeholder={placeholder}
-          placeholderTextColor='#ca1414'
+          placeholderTextColor='#fff'
           autoCorrect={false}
           value={value}
           secureTextEntry={secureTextEntry}
           onChangeText={onChangeText}
           style={[inputStyle,{marginLeft:marL}]}
           underlineColorAndroid='transparent'
-          selectionColor='#ca1414'
+          selectionColor='#fff'
         />
       </View>
     )
@@ -35,17 +35,17 @@ const InputIcon = props =>  {
 
 const styles = StyleSheet.create({
     inputStyle: {
-      color: '#ca1414',
+      color: '#fff',
       paddingRight: 5,
       paddingLeft: 5,
-      marginBottom: 15,
-      fontSize: 18,
+      marginBottom: 25,
+      fontSize: 20,
       lineHeight: 23,
       height: 30,
       width: Dimensions.get('window').width*0.5,
       borderBottomWidth: 0.4,
       borderRadius: 5,
-      borderColor: '#ca1414',
+      borderColor: '#fff',
       flex: 2,
     },
     containerStyle: {

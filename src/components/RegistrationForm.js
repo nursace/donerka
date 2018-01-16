@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { Text, View,Button,Image,Animated,Easing, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
 import { Input, Spinner } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
+import {ImagePicker} from 'expo'
+import b64 from 'base64-js'
 
 class RegistrationForm extends Component {
   constructor(props) {
@@ -14,7 +16,9 @@ class RegistrationForm extends Component {
       fullname: 'ijoji',
       phone: '38274438',
       username: 'fdfeunfe',
-      loading: false
+      loading: false,
+      image : null,
+      opacityValue: new Animated.Value(0.12),
     }
   }
   onEmailChange(text) {
@@ -37,6 +41,7 @@ class RegistrationForm extends Component {
     this.props.registerUser({ email, password })
   }
 
+  
   submitToFirebase() {
 
 this.setState({loading : true})
@@ -52,10 +57,6 @@ this.setState({loading : true})
     this.props.registerUser({ email, password,fullname,phone,username,email})
 
 this.setState({loading:false})
-  console.log(firebase.auth().currentUser)
-
-    
- 
     
     
   }
@@ -82,15 +83,28 @@ this.setState({loading:false})
     </TouchableOpacity>
     )
   }
+  componentWillMount(){
+    Animated.timing(this.state.opacityValue, {
+      toValue: 1,
+      duration: 500,
+  }).start();
+  }
   render() {
     return(
+      <Animated.View style={{flex:1,opacity: this.state.opacityValue}}>
       <View style={styles.mainView}>
       <View style= {{flexDirection : 'row',marginLeft: 20,marginTop:10}}>
-      <TouchableOpacity onPress= {()=>{Actions.pop({key: 'login'})}} style={{height:20,width:20}} >
+      <TouchableOpacity onPress= {()=>{Actions.replace('login')}} style={{height:20,width:20}} >
 <Icon name = 'reply' style={{height : 100,width: 100}} />
        </TouchableOpacity>
        </View>
        <View style={{marginTop : 50}}>
+       <Button
+          title="Pick an image from camera roll"
+          onPress={this._pickImage}
+        />
+        {this.state.image &&
+          <Image source={{ uri: this.state.image }} style={{ width: 200, height: 200 }} />}
         <Input
           label='ФИО'
           placeholder='ФИО'
@@ -129,8 +143,28 @@ this.setState({loading:false})
         {this.renderButton()}
         </View></View>
       </View>
+      </Animated.View>
     )
   }
+
+
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [4, 3],
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      this.setState({ image: result.uri });
+    }
+    const byteArray = b64.toByteArray(result.uri)
+    const metadata = {contentType: 'image/jpg'};
+    firebase.storage().ref('/images').child('my_pic.jpg').put(byteArray, metadata).then(snapshot => {
+        console.log("uploaded image!")
+    })
+  };
 }
 
 const styles = {

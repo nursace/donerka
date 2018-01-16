@@ -31,11 +31,11 @@ class StartingComponent extends Component {
 
       firebase.auth().onAuthStateChanged((user)=> {
         if (user) {
-          this.setState({user : '1'})
-        }
-        else {
-          this.setState({user : '0'})
-        }
+            this.setState({user : '1'})
+          }
+          else {
+            this.setState({user : '0'})
+          }
       })  
     
       }

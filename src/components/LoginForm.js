@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text,Image, View,Dimensions, TouchableOpacity } from 'react-native'
+import { Text,Image,ImageBackground,Animated,Easing, View,Dimensions, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, loginUser } from '../actions'
 import { InputIcon, Spinner } from './common'
@@ -11,7 +11,11 @@ class LoginForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false
+      loading: false,
+      logo : null,
+      background : null,
+      loadingComponent : true,
+      opacityValue: new Animated.Value(1),
     };
   }
   onEmailChange(text) {
@@ -26,58 +30,61 @@ class LoginForm extends Component {
     this.setState({loading:false})
   }
 
+
   renderButton() {  
     if (this.props.loading || this.state.loading) {
-      return <View style={{paddingTop:40}}><Spinner size="large" /></View>;
+      return <View style={{marginTop:20,height:40,marginRight: 150}}><Spinner size="large" /></View>;
     }
     return (
       <TouchableOpacity
         style={{
           width: 170,
           alignSelf:'center',
-          marginRight:20,
+          marginRight: 150,
           borderRadius: 15,
           borderWidth: 0.6,
-          borderColor: 'red',
+          borderColor: '#FE3562',
           backgroundColor: '#fff',
           height: 40,
-          marginTop: 24,
+          marginTop: 20,
           alignItems: 'center',
           justifyContent: 'center'
         }}
         onPress={this.onButtonPress.bind(this)}
       >
-        <Text style={{ color: '#ca1414', fontSize: 20, fontWeight: 'bold' }}>
-          Login
-        </Text>
+        <Icon name='sign-in' type='font-awesome' color='#FE3562' size={20} />
       </TouchableOpacity>
     );
   }
   render() {
     return (
-      <View style={styles.mainView}>
-        <View
+      <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
+      <ImageBackground   source={require('../../assets/back.png')} style={{height:Dimensions.get('window').height,width: Dimensions.get('window').width*1.3,position:'absolute'}} resizeMode='stretch'>
+        <View style={styles.mainView} />
+       <View
           style={{
-            marginLeft:Dimensions.get('window').width*0.1,
-            marginTop: Dimensions.get('window').height/5,
+            marginLeft:Dimensions.get('window').width*0.2,
+            justifyContent:'center',
             flex: 12,
+            backgroundColor:'transparent'
           }}
         >
-        <Text style={{fontSize:60,color:'#ca1414'}}>Login</Text>
-          <View style={{marginTop:65,}}>
+        <Image source={require('../../assets/testf.png')} style={{marginTop: 80,alignSelf:'flex-start',marginLeft:20}}></Image>
+          <View style={{marginTop:50}}>
           <InputIcon
             label="ios-contact-outline"
             placeholder="Email"
             onChangeText={this.onEmailChange.bind(this)}
             value={this.props.email}
-            size={33}
+            size={40}
           />
           <InputIcon
             secureTextEntry
             label="ios-lock-outline"
             placeholder="Password"
-            size={37}
-            marL={3}
+            size={44}
+            marL={1}
+            pad1L={2}
             onChangeText={this.onPasswordChange.bind(this)}
             value={this.props.password}
           />
@@ -86,14 +93,25 @@ class LoginForm extends Component {
           <View style={{ marginTop: 10 }}>{this.renderButton()}</View>
 
         </View>
-        <View style={{justifyContent:'center',flexDirection:'row',alignItems:'center',flex:1}}> 
+        <View style={{justifyContent:'center',backgroundColor:'transparent',flexDirection:'row',alignItems:'center',marginRight:90,flex:1}}> 
             
-            <Text style={{color:'#ca1414'}}>Don't have an account? </Text>
-            <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{if(!firebase.auth().currentUser)Actions.replace('register')}}>
-            <Text style={{   color:'#ca1414', textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>
+            <Text style={{color:'#fff'}}>Don't have an account? </Text>
+            
+            <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
+                Animated.timing(this.state.opacityValue, {
+                  toValue: 0,
+                  duration:300, 
+                  easing: Easing.bezier(0.0, 0.0, 0.2, 1),
+                  
+              }).start(() => {
+                  Actions.replace('register')
+                });
+              }}>
+            <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>
       
         </View>
-      </View>
+      </ImageBackground>
+      </Animated.View>
     );
   }
 }
@@ -101,12 +119,15 @@ class LoginForm extends Component {
 const styles = {
   errorTextStyle: {
     fontSize: 20,
-    color: '#ca1414',
+    color: '#FE3562',
     alignSelf: 'center'
   },
   mainView: {
-    backgroundColor: '#fff',
-    flex: 1
+    height:Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    opacity:0.6,
+    backgroundColor:'#FE3562',
+    position:'absolute',  
   }
 };
 

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ReactNative, {Image} from 'react-native';
-
+import {Icon} from 'react-native-elements'
 const { View, TouchableHighlight, Text } = ReactNative;
 
 class ListItem extends Component {
@@ -9,38 +9,33 @@ class ListItem extends Component {
     return (
 <View style={styles.li}>
           <View style={styles.name}>
-            <Text style={styles.title}>{this.props.item.email}</Text>
+            <Text style={styles.title}>{this.props.item.username}</Text>
           </View>
+<View style={{marginLeft:210,width:30,height:30}}>
+          <Icon name = 'ios-arrow-forward-outline' type='ionicon' />
+      </View>
         </View>
     );
   }
 }
 var styles = {
     li: {
-        flexDirection: 'row',
+flex : 1,
+      flexDirection: 'row',
+    
         alignItems: 'center',
-        justifyContent : 'center',
-        borderColor: 'red',
+        borderColor: 'black',
         borderRadius: 13,
-        borderWidth: 1,
-        paddingLeft: 7,
-        paddingTop: 14,
-        paddingBottom: 9,
-        marginLeft: 10,
-        marginRight: 10,
-        marginBottom: 5,
-        marginTop: 8,
-        backgroundColor: '#fff'
+        borderBottomWidth: 1,
+        margin : 15,
       },
       title: {
         fontSize: 20,
         color: 'black',
+        marginLeft : 5
       },
       name: {
-        flex: 1,
-        marginBottom:10,
-        marginLeft: 16,
-        marginRight: 20,
+   margin : 8,
       },
     }
 export default ListItem

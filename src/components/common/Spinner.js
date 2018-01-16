@@ -6,7 +6,7 @@ class Spinner extends Component {
         const { size } = this.props
         return(
             <View style={styles.SpinnerStyle}>
-                <ActivityIndicator size={size || 'large'}/>
+                <ActivityIndicator color='#fff' size={size || 'large'}/>
             </View>
         )
     }
