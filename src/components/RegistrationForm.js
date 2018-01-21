@@ -92,6 +92,102 @@ this.setState({loading:false})
   render() {
     return(
       <Animated.View style={{flex:1,opacity: this.state.opacityValue}}>
+       <ImageBackground   source={require('../../assets/back.png')} style={{height:Dimensions.get('window').height,width: Dimensions.get('window').width*1.3,position:'absolute'}} resizeMode='stretch'>
+        <View style={styles.mainView} />
+       <View
+          style={{
+            marginLeft:Dimensions.get('window').width*0.2,
+            justifyContent:'center',
+            flex: 12,
+            backgroundColor:'transparent'
+          }}
+        >
+        <Image source={require('../../assets/testf.png')} style={{marginTop: 80,alignSelf:'flex-start',marginLeft:20}}></Image>
+          <View style={{marginTop:50}}>
+          <Input
+          label='ФИО'
+          placeholder='ФИО'
+          onChangeText={this.onFullnameChange.bind(this)}
+          value={this.state.fullname}
+        />
+        <Input
+          label='Телефон'
+          placeholder='555-555-555'
+          onChangeText={this.onPhoneChange.bind(this)}
+          value={this.state.phone}
+        />
+        <Input
+          label='Nickname'
+          placeholder='Nickname'
+          onChangeText={this.onUsernameChange.bind(this)}
+          value={this.state.username}
+        />
+        <Input
+          label='Email'
+          placeholder='Email'
+          onChangeText={this.onEmailChange.bind(this)}
+          value={this.props.email}
+        />
+        <Input
+          secureTextEntry
+          label='Password'
+          placeholder='password'row3
+          onChangeText={this.onPasswordChange.bind(this)}
+          value={this.props.password}
+        />
+          </View>
+          <Text style={styles.errorTextStyle}>{this.props.error}</Text>
+          <View style={{ marginTop: 10 }}>{this.renderButton()}</View>
+
+        </View>
+        <View style={{justifyContent:'center',backgroundColor:'transparent',flexDirection:'row',alignItems:'center',marginRight:90,flex:1}}> 
+            
+            <Text style={{color:'#fff'}}>Don't have an account? </Text>
+            
+            <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
+                Animated.timing(this.state.opacityValue, {
+                  toValue: 0,
+                  duration:300, 
+                  easing: Easing.bezier(0.0, 0.0, 0.2, 1),
+                  
+              }).start(() => {
+                  Actions.replace('register')
+                });
+              }}>
+            <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>
+      
+        </View>
+      </ImageBackground>
+     
+      </Animated.View>
+    )
+  }
+
+}
+
+const styles = {
+  errorTextStyle: {
+    fontSize: 20,
+    color: 'red',
+    alignSelf: 'center',
+  },
+  mainView: {
+    marginTop: 20,
+    backgroundColor: '#fff',
+    flex: 1,
+  },
+}
+
+const mapStateToProps = ({ auth }) => {
+    const { email, password, error, loading } = auth
+    return {email, password, error, loading }
+}
+
+export default connect(mapStateToProps, {
+  emailChanged, passwordChanged, registerUser,
+})(RegistrationForm)
+/*
+
       <View style={styles.mainView}>
       <View style= {{flexDirection : 'row',marginLeft: 20,marginTop:10}}>
       <TouchableOpacity onPress= {()=>{Actions.replace('login')}} style={{height:20,width:20}} >
@@ -99,12 +195,6 @@ this.setState({loading:false})
        </TouchableOpacity>
        </View>
        <View style={{marginTop : 50}}>
-       <Button
-          title="Pick an image from camera roll"
-          onPress={this._pickImage}
-        />
-        {this.state.image &&
-          <Image source={{ uri: this.state.image }} style={{ width: 200, height: 200 }} />}
         <Input
           label='ФИО'
           placeholder='ФИО'
@@ -143,48 +233,6 @@ this.setState({loading:false})
         {this.renderButton()}
         </View></View>
       </View>
-      </Animated.View>
-    )
-  }
 
 
-  _pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      this.setState({ image: result.uri });
-    }
-    const byteArray = b64.toByteArray(result.uri)
-    const metadata = {contentType: 'image/jpg'};
-    firebase.storage().ref('/images').child('my_pic.jpg').put(byteArray, metadata).then(snapshot => {
-        console.log("uploaded image!")
-    })
-  };
-}
-
-const styles = {
-  errorTextStyle: {
-    fontSize: 20,
-    color: 'red',
-    alignSelf: 'center',
-  },
-  mainView: {
-    marginTop: 20,
-    backgroundColor: '#fff',
-    flex: 1,
-  },
-}
-
-const mapStateToProps = ({ auth }) => {
-    const { email, password, error, loading } = auth
-    return {email, password, error, loading }
-}
-
-export default connect(mapStateToProps, {
-  emailChanged, passwordChanged, registerUser,
-})(RegistrationForm)
+      */
