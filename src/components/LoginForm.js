@@ -104,7 +104,7 @@ class LoginForm extends Component {
                   easing: Easing.bezier(0.0, 0.0, 0.2, 1),
                   
               }).start(() => {
-                  Actions.replace('register')
+                  Actions.register()
                 });
               }}>
             <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>

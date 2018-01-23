@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Scene, Router, Actions } from 'react-native-router-flux'
 import LanguageForm from './components/LanguageForm'
 import LoginForm from './components/LoginForm'
-import RegistrationForm from './components/RegistrationForm'
+import Register from './components/Register'
 import ChoosingRoleForm from './components/ChoosingRoleForm'
 import UrgentSearch from './components/UrgentSearch'
 import FillingDoner from './components/FillingDoner'
@@ -18,7 +18,7 @@ class RouterComponent extends Component {
     return (
       <Router>
         <Scene key='root' hideNavBar={true}>
-        <Scene key='register' component={RegistrationForm} />
+        <Scene key='register' component={Register} />
         <Scene key='choosingRoleForm' component={ChoosingRoleForm} />
         <Scene key='urgentSearch'  component= {UrgentSearch} />
         <Scene key='lang' component={LanguageForm} />

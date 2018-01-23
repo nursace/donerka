@@ -2,14 +2,12 @@ import React, { Component } from 'react'
 import { Text, View,Button,Image,ImageBackground,Dimensions,Animated,Easing, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
-import { Input, Spinner } from './common'
+import { Input, Spinner,InputIcon } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
-import {ImagePicker} from 'expo'
-import b64 from 'base64-js'
 
-class RegistrationForm extends Component {
+class Register extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -91,8 +89,7 @@ this.setState({loading:false})
   }
   render() {
     return(
-      <Animated.View style={{flex:1,opacity: this.state.opacityValue}}>
-       <ImageBackground   source={require('../../assets/back.png')} style={{height:Dimensions.get('window').height,width: Dimensions.get('window').width*1.3,position:'absolute'}} resizeMode='stretch'>
+        <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
         <View style={styles.mainView} />
        <View
           style={{
@@ -102,7 +99,9 @@ this.setState({loading:false})
             backgroundColor:'transparent'
           }}
         >
-        <Image source={require('../../assets/testf.png')} style={{marginTop: 80,alignSelf:'flex-start',marginLeft:20}}></Image>
+        <TouchableOpacity onPress={()=>{console.log('UPLOAD')}}>
+        <Image source={require('../../assets/LO.png')} style={{width: 80,height: 80,marginLeft : 75,borderRadius: 40}}></Image>
+          </TouchableOpacity>
           <View style={{marginTop:50}}>
           <Input
           label='ФИО'
@@ -131,7 +130,7 @@ this.setState({loading:false})
         <Input
           secureTextEntry
           label='Password'
-          placeholder='password'row3
+          placeholder='password'
           onChangeText={this.onPasswordChange.bind(this)}
           value={this.props.password}
         />
@@ -151,14 +150,12 @@ this.setState({loading:false})
                   easing: Easing.bezier(0.0, 0.0, 0.2, 1),
                   
               }).start(() => {
-                  Actions.replace('register')
+                  Actions.register()
                 });
               }}>
             <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>
       
         </View>
-      </ImageBackground>
-     
       </Animated.View>
     )
   }
@@ -172,10 +169,12 @@ const styles = {
     alignSelf: 'center',
   },
   mainView: {
-    marginTop: 20,
-    backgroundColor: '#fff',
-    flex: 1,
-  },
+    height:Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
+    opacity:0.6,
+    backgroundColor:'#FE3562',
+    position:'absolute',  
+  }
 }
 
 const mapStateToProps = ({ auth }) => {
@@ -185,54 +184,4 @@ const mapStateToProps = ({ auth }) => {
 
 export default connect(mapStateToProps, {
   emailChanged, passwordChanged, registerUser,
-})(RegistrationForm)
-/*
-
-      <View style={styles.mainView}>
-      <View style= {{flexDirection : 'row',marginLeft: 20,marginTop:10}}>
-      <TouchableOpacity onPress= {()=>{Actions.replace('login')}} style={{height:20,width:20}} >
-<Icon name = 'reply' style={{height : 100,width: 100}} />
-       </TouchableOpacity>
-       </View>
-       <View style={{marginTop : 50}}>
-        <Input
-          label='ФИО'
-          placeholder='ФИО'
-          onChangeText={this.onFullnameChange.bind(this)}
-          value={this.state.fullname}
-        />
-        <Input
-          label='Телефон'
-          placeholder='555-555-555'
-          onChangeText={this.onPhoneChange.bind(this)}
-          value={this.state.phone}
-        />
-        <Input
-          label='Username'
-          placeholder='username'
-          onChangeText={this.onUsernameChange.bind(this)}
-          value={this.state.username}
-        />
-        <Input
-          label='Email'
-          placeholder='Email'
-          onChangeText={this.onEmailChange.bind(this)}
-          value={this.props.email}
-        />
-        <Input
-          secureTextEntry
-          label='Password'
-          placeholder='password'row3
-          onChangeText={this.onPasswordChange.bind(this)}
-          value={this.props.password}
-        />
-        <Text style={styles.errorTextStyle}>
-          {this.props.error}
-        </Text>
-        <View style={{marginTop:10}}>
-        {this.renderButton()}
-        </View></View>
-      </View>
-
-
-      */
+})(Register)

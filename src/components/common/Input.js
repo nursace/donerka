@@ -22,7 +22,7 @@ const Input = props =>  {
 
 const styles = StyleSheet.create({
     inputStyle: {
-      color: 'black',
+      color: '#fff',
       paddingRight: 5,
       paddingLeft: 5,
       fontSize: 18,
@@ -31,13 +31,12 @@ const styles = StyleSheet.create({
       width: 500,
       borderBottomWidth: 0.4,
       borderRadius: 5,
-      borderColor: 'black',
+      borderColor: '#fff',
       flex: 2,
     },
     labelStyle: {
-      color: 'black',
+      color: '#fff',
       fontSize: 18,
-      paddingLeft: 20,
       flex: 1,
     },
     containerStyle: {
