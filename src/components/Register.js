@@ -148,7 +148,6 @@ this.setState({loading:false})
                   toValue: 0,
                   duration:300, 
                   easing: Easing.bezier(0.0, 0.0, 0.2, 1),
-                  
               }).start(() => {
                   Actions.register()
                 });

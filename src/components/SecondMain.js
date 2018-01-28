@@ -255,9 +255,9 @@ Actions.replace('firstMain')
       <View style={styles.mainView}>
 
       <View style={{flex:5,alignItems:'center',justifyContent:'center',borderBottomWidth:0.4,flexDirection:'row'}}>
-      <View style={{flex:7,alignItems:'center',marginTop:20}}>
+      <View style={{flex:7,alignItems:'center',justifyContent:'center',marginTop:20}}>
 
-        {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#ca1414',fontSize:11}}>Compatible blood types you can donate to recipients</Text>:null : this.state.current_step ? <Text style={{color:'#ca1414',fontSize:20}}>{this.state.current_step} of 3</Text>:<Text>Organo</Text>}
+        {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#ca1414',fontSize:11}}>Compatible blood types you can donate to recipients</Text>:null : this.state.current_step ? <Text style={{color:'#ca1414',fontSize:20}}>{this.state.current_step} of 3</Text>:<Text style={{marginLeft:50,fontSize:20}}>Organo</Text>}
         </View>
 
 <View style={{flex:1,marginRight:6,marginTop:30}}>
