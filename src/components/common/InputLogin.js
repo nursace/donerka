@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     inputStyle: {
       color: '#fff',
       fontSize: 14,
+      fontFamily: 'AvenirNext-DemiBold',
       paddingBottom : 5,  
       borderBottomWidth: 0.4,
       borderRadius: 5,

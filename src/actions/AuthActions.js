@@ -9,6 +9,7 @@ import { EMAIL_CHANGED,
   ROLE_CHANGED,
   LOGOUT_USER  
 } from './types'
+import {AsyncStorage} from 'react-native'
 
 export const emailChanged = text => {
     return {
@@ -28,8 +29,20 @@ export const loginUser = ({ email, password }) => {
     return dispatch => {
         dispatch({ type: LOGIN_USER})
         firebase.auth().signInWithEmailAndPassword(email, password)
-            .then(user => loginUserSuccess(dispatch, user))
-            .catch(() => {
+            .then(user => {
+                AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {
+                    if(LoggedInWithEmail === email){        
+                    }
+                    else{
+                        AsyncStorage.setItem('LoggedInWithEmail', email);
+                    }
+                }
+            ).then(()=>{    
+                 loginUserSuccess(dispatch, user)
+            })
+        
+            })
+                .catch(() => {
                      loginUserFail(dispatch)
             })
     }
@@ -54,7 +67,16 @@ export const registerUser = ({email,password,fullname,phone,username}) => {
                 rescue_count : 0,
             
               }).then(()=>{
-                  Actions.secondMain()
+                AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {
+                    if(LoggedInWithEmail === email){        
+                    }
+                    else{
+                        AsyncStorage.setItem('LoggedInWithEmail', email);
+                    }
+                }
+            ).then(()=>{    
+                Actions.secondMain()
+            })
               })
         })
         .catch((error)=>{
