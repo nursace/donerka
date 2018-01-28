@@ -52,7 +52,7 @@ this.setState({loading : true})
       if (email1.charAt(i) === '@') break;
       s += email1.charAt(i)
     }
-    this.props.registerUser({ email, password,fullname,phone,username,email})
+    this.props.registerUser({ email, password,fullname,phone,username})
 
 this.setState({loading:false})
     

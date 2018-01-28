@@ -54,7 +54,7 @@ export const registerUser = ({email,password,fullname,phone,username}) => {
                 rescue_count : 0,
             
               }).then(()=>{
-                  Actions.choosingRoleForm()
+                  Actions.secondMain()
               })
         })
         .catch((error)=>{

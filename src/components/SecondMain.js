@@ -102,6 +102,7 @@ class SecondMain extends Component {
       }
       let user ;
       var that = this 
+      
       firebase.database().ref(`/users/`)
       .on('value',function(snapshot){
           var appropriates = []            
