@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text,Image,ImageBackground,Animated,Easing, View,Dimensions, TouchableOpacity } from 'react-native'
+import { Text,Image,ImageBackground,Animated,Easing,Alert, View,Dimensions,AsyncStorage, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, loginUser } from '../actions'
 import { InputLogin, Spinner } from './common'
@@ -47,6 +47,10 @@ class LoginForm extends Component {
   }
 componentWillMount(){
   //async storage fetch email
+  AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {    
+  this.setState({email:LoggedInWithEmail})
+  this.props.emailChanged(LoggedInWithEmail);
+  })
 }
 componentDidMount(){
 let that = this
@@ -64,7 +68,7 @@ getBackColor(){
 
   renderButton() {  
     if (this.props.loading || this.state.loading) {
-      return <View style={{marginTop:20,height:40,marginRight: 150}}><Spinner size="large" /></View>;
+      return <View style={{marginTop:30,height:40}}><Spinner size="large" /></View>;
     }
     return (
       <TouchableOpacity
@@ -87,8 +91,16 @@ getBackColor(){
     );
   }
   render() {
-    let col = this.state.disabled
-    return (
+if(this.props.error){
+  Alert.alert(
+    'Try Again!',
+    'Wrong email or password',
+    [
+      {text: 'Ok'},
+    ]
+  )
+} 
+   return (
       <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
         <View style={styles.mainView} />
         <Image source={require('../../assets/logo.png')} style={{marginTop: Dimensions.get('window').height*0.2,alignSelf:'center',width: Dimensions.get('window').width*0.8,height: Dimensions.get('window').height/9}}></Image>

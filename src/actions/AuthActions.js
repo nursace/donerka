@@ -75,7 +75,7 @@ export const registerUser = ({email,password,fullname,phone,username}) => {
                     }
                 }
             ).then(()=>{    
-                Actions.secondMain()
+                Actions.replace('secondMain')
             })
               })
         })
