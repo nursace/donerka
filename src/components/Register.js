@@ -11,9 +11,11 @@ class Register extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      fullname: 'ijoji',
+      firstName: 'ijoji',
+      lastName : 'dwdwdw',
       phone: '38274438',
-      username: 'fdfeunfe',
+      email : '',
+      password : '',
       loading: false,
       image : null,
       opacityValue: new Animated.Value(0.12),
@@ -25,14 +27,14 @@ class Register extends Component {
   onPasswordChange(text) {
     this.props.passwordChanged(text)
   }
-  onFullnameChange(fullname) {
-    this.setState({fullname})
+  onFirstNameChange(firstName) {
+    this.setState({firstName})
   }
   onPhoneChange(phone) {
     this.setState({phone})
   }
-  onUsernameChange(username) {
-    this.setState({username})
+  onLastNameChange(lastName) {
+    this.setState({lastName})
   }
   onButtonPress() {
     const { email, password } = this.props
@@ -43,7 +45,7 @@ class Register extends Component {
   submitToFirebase() {
 
 this.setState({loading : true})
-    const {fullname,phone,username } = this.state
+    const {firstName,phone,lastName } = this.state
     const {email,password } = this.props
     let s = ''
     let email1 = email
@@ -52,7 +54,7 @@ this.setState({loading : true})
       if (email1.charAt(i) === '@') break;
       s += email1.charAt(i)
     }
-    this.props.registerUser({ email, password,fullname,phone,username})
+    this.props.registerUser({ email, password,firstName,phone,lastName})
 
 this.setState({loading:false})
     
@@ -104,22 +106,23 @@ this.setState({loading:false})
           </TouchableOpacity>
           <View style={{marginTop:50}}>
           <Input
-          label='ФИО'
-          placeholder='ФИО'
-          onChangeText={this.onFullnameChange.bind(this)}
-          value={this.state.fullname}
+          label='First Name'
+          placeholder='first name'
+          onChangeText={this.onFirstNameChange.bind(this)}
+          value={this.state.firstName}
+        />
+
+        <Input
+          label='Last Name'
+          placeholder='last name'
+          onChangeText={this.onLastNameChange.bind(this)}
+          value={this.state.lastName}
         />
         <Input
-          label='Телефон'
+          label='Phone Number'
           placeholder='555-555-555'
           onChangeText={this.onPhoneChange.bind(this)}
           value={this.state.phone}
-        />
-        <Input
-          label='Nickname'
-          placeholder='Nickname'
-          onChangeText={this.onUsernameChange.bind(this)}
-          value={this.state.username}
         />
         <Input
           label='Email'
