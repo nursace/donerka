@@ -7,7 +7,8 @@ import { EMAIL_CHANGED,
   LOGIN_USER,
   REGISTER_USER_FAIL,
   ROLE_CHANGED,
-  LOGOUT_USER  
+  LOGOUT_USER,
+  ERROR_SHOWED
 } from './types'
 import {AsyncStorage} from 'react-native'
 
@@ -98,6 +99,10 @@ const loginUserSuccess = (dispatch, user) => {
     Actions.replace('secondMain')
     
 }
+export const errorShowed = () =>{
+    return {
+        type: ERROR_SHOWED
+    }}
 
 export const roleChanged = role => {
     let s = ''

@@ -49,7 +49,7 @@ class Ripple extends Component {
                     borderRadius: this.props.size*2,
                     transform: [{ scale: scaleValue }],
                     opacity: opacityValue,
-                    backgroundColor: '#ED4337',
+                    backgroundColor: '#F65352',
                 }}
             />
         );
@@ -62,7 +62,7 @@ class Ripple extends Component {
  {this.renderRippleView()}
  <View >
      <Icon name={this.props.name} color={this.props.color} type='ionicon' size={size} />
-     <Text style={{fontSize : 10,backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
+     <Text style={{fontSize : 10,fontFamily : 'AvenirNext-DemiBold',backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
      </View>
      </View>
       </TouchableWithoutFeedback>
@@ -98,7 +98,7 @@ Actions.replace('firstMain')
    <View style={{flex:4,borderTopWidth:1,flexDirection : 'row',justifyContent:'space-around',marginTop:0,height:Dimensions.get('window').height*0.1-10}}>
           <Ripple text='Albums' name='md-list-box' color='#9C9495' onPressButton={this.onPressFirst} size={30}  />
           <Ripple text='Main' name='md-beaker' color='#9C9495' onPressButton={this.onPressSecond} size={30}  />
-          <Ripple text='Setting' name='ios-cog' color='#FE3562' size={30}  />
+          <Ripple text='Setting' name='ios-cog' color='#F65352' size={30}  />
       </View>
       </View>
 

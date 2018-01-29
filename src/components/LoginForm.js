@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text,Image,ImageBackground,Animated,Easing,Alert, View,Dimensions,AsyncStorage, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { emailChanged, passwordChanged, loginUser } from '../actions'
+import { emailChanged, passwordChanged, loginUser,errorShowed } from '../actions'
 import { InputLogin, Spinner } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
@@ -25,20 +25,21 @@ class LoginForm extends Component {
     this.setState({email:text})
     this.props.emailChanged(text);
 
-  if(this.props.email===''||this.props.password===''){
+  if(this.props.email===''||this.props.password===''|| text ===''){
     this.setState({disabled:true})
   }
   else this.setState({disabled: false})
   }
   onPasswordChange(text) {
-
     this.setState({password:text})
     this.props.passwordChanged(text);
 
-    if(this.props.email===''||this.props.password===''){
+    if(this.props.email===''||this.props.password===''||text===''){
       this.setState({disabled:true})
     }
     else this.setState({disabled: false})
+
+    console.log(`${text}`,this.state.disabled)
   }
   onButtonPress() {
     const { email, password,error } = this.props;
@@ -99,6 +100,11 @@ if(this.props.error){
       {text: 'Ok'},
     ]
   )
+  this.props.errorShowed()
+  if(this.props.email===''||this.props.password===''){
+    this.setState({disabled:true})
+  }
+  else this.setState({disabled: false})
 } 
    return (
       <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
@@ -132,7 +138,7 @@ if(this.props.error){
       <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : 'AvenirNext-DemiBold'}}>or</Text>
       <View style={{height:1,marginLeft:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
         </View>
-         <View style={{flex : 1,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
+         <View style={{flex : 1,marginBottom:40,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
             <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : 'AvenirNext-DemiBold'}}>Don't have an account? </Text>
             
             <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
@@ -178,4 +184,5 @@ export default connect(mapStateToProps, {
   emailChanged,
   passwordChanged,
   loginUser,
+  errorShowed
 })(LoginForm);

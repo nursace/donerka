@@ -6,7 +6,8 @@ import {
     LOGIN_USER,
     REGISTER_USER_FAIL,
     ROLE_CHANGED,
-    LOGOUT_USER
+    LOGOUT_USER,
+    ERROR_SHOWED
 } from '../actions/types'
 
 const INITIAL_STATE = {
@@ -20,6 +21,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
+        case ERROR_SHOWED:
+        return {...state, error: '' }
         case EMAIL_CHANGED:
             return {...state, email: action.payload }
         case PASSWORD_CHANGED:
