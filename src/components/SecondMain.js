@@ -278,7 +278,7 @@ Actions.replace('firstMain')
 
         {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#fff',fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Donor</Text>:null : this.state.current_step ? 
         <View style={{flexDirection:'row',flex:1,marginTop:10}}>
-         <TouchableOpacity onPress={(()=>{})} style={{marginRight: Dimensions.get('window').width*0.3,height:35,width:35}}>
+         <TouchableOpacity onPress={(()=>{this.setState({current_step: ''})})} style={{marginRight: Dimensions.get('window').width*0.3,height:35,width:35}}>
 <Icon name='ios-arrow-back' color='#fff' type='ionicon' size={33} />
       </TouchableOpacity>   
         <Text style={{paddingRight: 120,color:'#fff',fontSize:25}}>{this.state.current_step} of 3</Text>
