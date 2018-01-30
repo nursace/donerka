@@ -39,7 +39,6 @@ class LoginForm extends Component {
     }
     else this.setState({disabled: false})
 
-    console.log(`${text}`,this.state.disabled)
   }
   onButtonPress() {
     const { email, password,error } = this.props;

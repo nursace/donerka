@@ -7,7 +7,8 @@ import firebase from 'firebase'
 import {connect} from 'react-redux'
 import {Spinner} from './common'
 import ListItem from './ListItem'
-
+import { Font } from 'expo';
+import {Ionicons} from '@expo/vector-icons'
 
 class Ripple extends Component {
     constructor(props){
@@ -38,6 +39,14 @@ class Ripple extends Component {
             this.state.opacityValue.setValue(this.state.maxOpacity);
         });
     }
+    getPaddingLeft(){
+        if(this.props.name==='md-list-box')
+        return 7
+        else if(this.props.name === 'md-beaker')
+        return -1
+        else
+        return 5
+      }
     renderRippleView() {
         const { scaleValue, opacityValue } = this.state;
 
@@ -64,7 +73,7 @@ class Ripple extends Component {
  <View style={{paddingBottom:8,justifyContent:'center',alignItems:'center',height:2*size,width:2*size}}>
  {this.renderRippleView()}
  <View >
-     <Icon name={this.props.name} color={this.props.color} type='ionicon' size={size} />
+     <Ionicons name={this.props.name} color={this.props.color} style={{backgroundColor:'transparent',paddingLeft:this.getPaddingLeft()}} size={size} />
      <Text style={{fontSize : 10,fontFamily : 'AvenirNext-DemiBold',backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
      </View>
      </View>
@@ -72,9 +81,6 @@ class Ripple extends Component {
 
        )
    }
-}
-async function fetchUser(snapshot) {
-     
 }
 
 class SecondMain extends Component {
@@ -105,66 +111,54 @@ class SecondMain extends Component {
         if (email1.charAt(i) === '@') break;
         s += email1.charAt(i)
       }
+      let user ;
       var that = this 
       
       firebase.database().ref(`/users/`)
       .on('value',function(snapshot){
-          var appropriates = []      
-          var BreakException = {};
-          
-         try { snapshot.forEach(function(childSnapshot) {
-            let obj1 = childSnapshot.val()
-            if(obj1.email === firebase.auth().currentUser.email){
-                let user = obj1
-                
-                snapshot.forEach(function(childSnapshot) { // if donor
+          var appropriates = []            
+          snapshot.forEach(function(childSnapshot) {
               let obj = childSnapshot.val()
-                if(obj.role !== user.role && user !== obj&&user.factor===obj.factor){
-                  if(user.blood === 'O'){
-                  let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username,blood : obj.blood }
-                    appropriates.push(app)
-                  }
-                  else if(user.blood === 'A'){
-                      if(obj.blood==='A'||obj.blood==='AB'){
-                          let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
-                          appropriates.push(app)
-                                
-                      }
-                  }
-                  else if(user.blood === 'B'){
-                      if(obj.blood==='AB'||obj.blood==='B'){
-                          let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
-                          appropriates.push(app)
-                                
-                      }
-                  }
-                  else{
-                        if(obj.blood==='AB'){
-                          let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
-                          appropriates.push(app)
-                                
-                      }
-                  }
-                }  
-                
-                
-                
-            }) 
-            that.setState({  
-                dataSource: that.state.dataSource.cloneWithRows(appropriates),
-                loading : false
-              });
-          
-   
-            }
-            throw BreakException    
-        
-        })
-    }
-    catch(e){
-        
-    }
-              }
+              
+              if(obj.email === firebase.auth().currentUser.email){
+                  user=obj
+              }    
+          })
+          snapshot.forEach(function(childSnapshot) { // if donor
+              let obj = childSnapshot.val()
+             
+              if(obj.role != user.role && user !== obj&&user.factor===obj.factor){
+                if(user.blood === 'O'){
+                  appropriates.push(obj)
+                }
+                else if(user.blood === 'A'){
+                    if(obj.blood==='A'||obj.blood==='AB'){
+                        appropriates.push(obj)
+                              
+                    }
+                }
+                else if(user.blood === 'B'){
+                    if(obj.blood==='AB'||obj.blood==='B'){
+                        appropriates.push(obj)
+                              
+                    }
+                }
+                else{
+                      if(obj.blood==='AB'){
+                        appropriates.push(obj)
+                              
+                    }
+                }
+              }  
+              
+              
+              
+          }) 
+          that.setState({  
+              dataSource: that.state.dataSource.cloneWithRows(appropriates),
+              loading : false
+            });
+      }
   )
     
 
@@ -201,7 +195,7 @@ Actions.replace('firstMain')
         if(!this.state.current_step){
             return(
                     <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
-                    <View style ={{marginBottom : 50,justifyContent:'center',alignItems:'center'}}><Icon name='ios-clipboard-outline' color='#D0D0D0' type='ionicon' size={200} />
+                    <View style ={{marginBottom : 50,justifyContent:'center',alignItems:'center'}}><Ionicons name='ios-clipboard-outline' color='#D0D0D0' size={200} />
                         <Text style={{fontSize : 32,color:'#4a4a4a',fontFamily : 'AvenirNext-DemiBold'}}>Welcome!</Text>
                         <Text style={{marginTop: 30,color:'#9C9495',fontFamily : 'AvenirNext-DemiBold'}}>You haven't filled out our questionnaire yet.</Text>
                         <TouchableOpacity
@@ -287,12 +281,19 @@ Actions.replace('firstMain')
       <View style={{flex:5,alignItems:'center',justifyContent:'center',borderBottomWidth:1,borderBottomColor:'#F65352',flexDirection:'row',backgroundColor:'#F65352'}}>
       <Animated.View style={{opacity: this.state.opacityValue,flex:7,alignItems:'center',justifyContent:'center',marginTop:20}}>
 
-        {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#fff',fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Donor</Text>:null : this.state.current_step ? 
+        {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#fff',fontFamily :'AvenirNext-DemiBold' ,fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Donor</Text>:null : this.state.current_step ? 
         <View style={{flexDirection:'row',flex:1,marginTop:10}}>
-         <TouchableOpacity onPress={(()=>{this.setState({current_step: ''})})} style={{marginRight: Dimensions.get('window').width*0.3,height:35,width:35}}>
-<Icon name='ios-arrow-back' color='#fff' type='ionicon' size={33} />
+         <TouchableOpacity onPress={(()=>{
+             let f=parseInt(this.state.current_step)-1
+if(f===0)
+f=''
+console.log(f)
+             this.setState({current_step: String(f)})
+             
+             })} style={{marginRight: Dimensions.get('window').width*0.3,height:35,width:35}}>
+<Ionicons name='ios-arrow-back' color='#fff' size={33} />
       </TouchableOpacity>   
-        <Text style={{paddingRight: 120,color:'#fff',fontSize:25}}>{this.state.current_step} of 3</Text>
+        <Text style={{paddingRight: 90,color:'#fff',fontSize:25}}>{this.state.current_step} of 3</Text>
         </View>
         :
                 <Image source={require('../../assets/logo.png')} style={{marginLeft:70,alignSelf:'center',width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}}></Image>                
@@ -303,8 +304,8 @@ Actions.replace('firstMain')
 <TouchableOpacity onPress={(()=>{console.log('INFO')})} style={{height:35,width:35,marginBottom:5}}>
 <View>
 {(this.props.loading||this.state.loading)||this.props.filled ? 
-    this.props.role==='donor' ? this.state.dataSource ?<Icon name='ios-search-outline' color='#fff' type='ionicon' size={30} />  :null : null   :
- <Icon name='ios-information-circle-outline' color='#fff' type='ionicon' size={33} />}
+    this.props.role==='donor' ? this.state.dataSource ?<Ionicons name='ios-search-outline' color='#fff' size={30} />  :null : null   :
+ <Ionicons name='ios-information-circle-outline' color='#fff' size={33} />}
       
     </View></TouchableOpacity>
     </View>

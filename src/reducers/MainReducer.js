@@ -10,19 +10,19 @@ const INITIAL_STATE = {
     role : '',
     blood : '',
     factor : '',
-    loading : false
+    pload : false
 }
 
 export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case USER_FETCH :
-        return {...state , loading : true}
+        return {...state , pload : true}
         case USER_FETCH_SUCCESS :
-    return {...state , role : action.role,blood:action.blood,factor:action.factor,filled:action.filled,loading:false}
+    return {...state , role : action.role,blood:action.blood,factor:action.factor,filled:action.filled,pload:false}
     case USER_FILLING :
-    return {...state , loading : true}
+    return {...state , pload : true}
     case USER_FILLING_FORM :
-return {...state , role : action.role,blood:action.blood,factor:action.factor,filled:action.filled,loading:false}
+return {...state , role : action.role,blood:action.blood,factor:action.factor,filled:action.filled,pload:false}
 
     default:
             return state

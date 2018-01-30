@@ -6,6 +6,9 @@ import {logoutUser} from '../actions'
 import firebase from 'firebase'
 import {connect} from 'react-redux'
 
+import { Font } from 'expo';
+import {Ionicons} from '@expo/vector-icons'
+
 class Ripple extends Component {
     constructor(props){
         super(props)
@@ -29,12 +32,20 @@ class Ripple extends Component {
     onPressedOut() {
         Animated.timing(this.state.opacityValue, {
             toValue: 0,
-            duration:1,
+            duration:1,            
         }).start(() => {
             this.state.scaleValue.setValue(0.01);
             this.state.opacityValue.setValue(this.state.maxOpacity);
         });
     }
+    getPaddingLeft(){
+        if(this.props.name==='md-list-box')
+        return 7
+        else if(this.props.name === 'md-beaker')
+        return -1
+        else
+        return 5
+      }
     renderRippleView() {
         const { scaleValue, opacityValue } = this.state;
 
@@ -61,7 +72,7 @@ class Ripple extends Component {
  <View style={{paddingBottom:8,justifyContent:'center',alignItems:'center',height:2*size,width:2*size}}>
  {this.renderRippleView()}
  <View >
-     <Icon name={this.props.name} color={this.props.color} type='ionicon' size={size} />
+     <Ionicons name={this.props.name} color={this.props.color} style={{backgroundColor:'transparent',paddingLeft:this.getPaddingLeft()}} size={size} />
      <Text style={{fontSize : 10,fontFamily : 'AvenirNext-DemiBold',backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
      </View>
      </View>

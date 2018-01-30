@@ -13,6 +13,7 @@ class Register extends Component {
     this.state = {
       firstName: 'ijoji',
       lastName : 'dwdwdw',
+      patronymic : 'Сергеевич',
       phone: '38274438',
       email : '',
       password : '',
@@ -33,6 +34,9 @@ class Register extends Component {
   onPhoneChange(phone) {
     this.setState({phone})
   }
+  onPatronymicChange(phone) {
+    this.setState({patronymic})
+  }
   onLastNameChange(lastName) {
     this.setState({lastName})
   }
@@ -45,7 +49,7 @@ class Register extends Component {
   submitToFirebase() {
 
 this.setState({loading : true})
-    const {firstName,phone,lastName } = this.state
+    const {firstName,phone,lastName,patronymic } = this.state
     const {email,password } = this.props
     let s = ''
     let email1 = email
@@ -54,7 +58,7 @@ this.setState({loading : true})
       if (email1.charAt(i) === '@') break;
       s += email1.charAt(i)
     }
-    this.props.registerUser({ email, password,firstName,phone,lastName})
+    this.props.registerUser({ email, password,firstName,phone,lastName,patronymic})
 
 this.setState({loading:false})
     
@@ -113,10 +117,16 @@ this.setState({loading:false})
         />
 
         <Input
-          label='Last Name'
-          placeholder='last name'
-          onChangeText={this.onLastNameChange.bind(this)}
-          value={this.state.lastName}
+        label='Last Name'
+        placeholder='last name'
+        onChangeText={this.onLastNameChange.bind(this)}
+        value={this.state.lastName}
+      />  
+       <Input
+          label='Patronymic'
+          placeholder='patronymic'
+          onChangeText={this.onPatronymicChange.bind(this)}
+          value={this.state.patronymic}
         />
         <Input
           label='Phone Number'
