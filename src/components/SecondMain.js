@@ -73,6 +73,9 @@ class Ripple extends Component {
        )
    }
 }
+async function fetchUser(snapshot) {
+     
+}
 
 class SecondMain extends Component {
     constructor(props){
@@ -102,58 +105,66 @@ class SecondMain extends Component {
         if (email1.charAt(i) === '@') break;
         s += email1.charAt(i)
       }
-      let user ;
       var that = this 
       
       firebase.database().ref(`/users/`)
       .on('value',function(snapshot){
-          var appropriates = []            
-          snapshot.forEach(function(childSnapshot) {
+          var appropriates = []      
+          var BreakException = {};
+          
+         try { snapshot.forEach(function(childSnapshot) {
+            let obj1 = childSnapshot.val()
+            if(obj1.email === firebase.auth().currentUser.email){
+                let user = obj1
+                
+                snapshot.forEach(function(childSnapshot) { // if donor
               let obj = childSnapshot.val()
-              
-              if(obj.email === firebase.auth().currentUser.email){
-                  user=obj
-              }    
-          })
-          snapshot.forEach(function(childSnapshot) { // if donor
-              let obj = childSnapshot.val()
-             
-              if(obj.role != user.role && user !== obj&&user.factor===obj.factor){
-                if(user.blood === 'O'){
-                let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username,blood : obj.blood }
-                  appropriates.push(app)
-                }
-                else if(user.blood === 'A'){
-                    if(obj.blood==='A'||obj.blood==='AB'){
-                        let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
-                        appropriates.push(app)
-                              
-                    }
-                }
-                else if(user.blood === 'B'){
-                    if(obj.blood==='AB'||obj.blood==='B'){
-                        let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
-                        appropriates.push(app)
-                              
-                    }
-                }
-                else{
-                      if(obj.blood==='AB'){
-                        let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
-                        appropriates.push(app)
-                              
-                    }
-                }
-              }  
-              
-              
-              
-          }) 
-          that.setState({  
-              dataSource: that.state.dataSource.cloneWithRows(appropriates),
-              loading : false
-            });
-      }
+                if(obj.role !== user.role && user !== obj&&user.factor===obj.factor){
+                  if(user.blood === 'O'){
+                  let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username,blood : obj.blood }
+                    appropriates.push(app)
+                  }
+                  else if(user.blood === 'A'){
+                      if(obj.blood==='A'||obj.blood==='AB'){
+                          let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
+                          appropriates.push(app)
+                                
+                      }
+                  }
+                  else if(user.blood === 'B'){
+                      if(obj.blood==='AB'||obj.blood==='B'){
+                          let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
+                          appropriates.push(app)
+                                
+                      }
+                  }
+                  else{
+                        if(obj.blood==='AB'){
+                          let app = {email : obj.email ,fullname : obj.fullname, phone : obj.phone,username:obj.username, blood: obj.blood }
+                          appropriates.push(app)
+                                
+                      }
+                  }
+                }  
+                
+                
+                
+            }) 
+            that.setState({  
+                dataSource: that.state.dataSource.cloneWithRows(appropriates),
+                loading : false
+              });
+          
+   
+            }
+            throw BreakException    
+        
+        })
+    }
+    catch(e){
+        
+    }
+              }
   )
     
 

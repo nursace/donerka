@@ -52,7 +52,8 @@ export const registerUser = ({email,password,firstName,phone,lastName}) => {
     return dispatch => {
         dispatch({ type: LOGIN_USER})
     firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then(() => {
+        .then((user) => {
+            console.log(user)
             let s = ''
             let email1 = email
             
@@ -60,12 +61,12 @@ export const registerUser = ({email,password,firstName,phone,lastName}) => {
               if (email1.charAt(i) === '@') break;
               s += email1.charAt(i)
             }
-             firebase.database().ref(`/users/`).child(s).set({
+             firebase.database().ref(`/users/`).child(s.toLowerCase()).set({
                 firstName,
                 lastName,
                 phone: phone,
                 
-                email : email,
+                email : email.toLowerCase(),
                 rescue_count : 0,
             
               }).then(()=>{
@@ -77,7 +78,7 @@ export const registerUser = ({email,password,firstName,phone,lastName}) => {
                     }
                 }
             ).then(()=>{    
-                Actions.replace('secondMain')
+                
             })
               })
         })
