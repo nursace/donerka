@@ -61,10 +61,13 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
               if (email1.charAt(i) === '@') break;
               s += email1.charAt(i)
             }
+            let str1 = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase()
+            let str2 = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase()
+            let str3 = patronymic.charAt(0).toUpperCase() + patronymic.slice(1).toLowerCase()
              firebase.database().ref(`/users/`).child(s.toLowerCase()).set({
-                firstName,
-                lastName,
-                patronymic,
+                firstName: str1,
+                lastName: str2,
+                patronymic: str3,
                 phone: phone,
                 
                 email : email.toLowerCase(),

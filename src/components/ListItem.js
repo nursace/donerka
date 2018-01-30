@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import ReactNative, {Image,Dimensions} from 'react-native';
+import ReactNative, {Image,Dimensions,TouchableOpacity} from 'react-native';
 import { Font } from 'expo';
 import {Ionicons} from '@expo/vector-icons'
+import {Actions} from 'react-native-router-flux'
 
 const {View, TouchableHighlight, Text} = ReactNative;
 class ListItem extends Component {
@@ -12,21 +13,25 @@ class ListItem extends Component {
       <View style={styles.image}> 
         <Ionicons color='#E39291' style={{backgroundColor:'transparent'}} size={50} name='ios-camera-outline' /> 
         </View>
-        <View style={styles.name}>
-<View style={{flex : 2,flexDirection:'row',}}>
+        <TouchableOpacity onPress={()=>{
+          const { item } = this.props
+        Actions.profileView({item: item})
+        }} style={{flex : 1,flexDirection:'row'}}>
+<View>
+<View style={{flex : 1,margin: 10,marginTop : 0}}>
           <Text style={styles.title}>{this.props.item.firstName} {this.props.item.lastName}</Text>
           
 </View>
-<View style={{flex : 2}}>
+<View style={{flex : 1,margin : 10}}>
           <Text style={{  fontSize: 14,
     color: '#d3d3d3',
     marginLeft: 5,
     fontFamily : 'AvenirNext-DemiBold'}}>Need help !</Text>
 </View>
-        </View>
-        <View style={{marginLeft: 210, width: 30, height: 30}}>
-          <Ionicons name='ios-arrow-forward-outline' />
-        </View>
+</View>
+      <Ionicons style={{backgroundColor:'transparent',marginTop: 10,marginLeft : Dimensions.get('window').width/2.7}} name='ios-arrow-forward-outline' color='#9C9C9C' size={33} />
+      
+        </TouchableOpacity>
       </View>
     );
   }
@@ -56,8 +61,6 @@ var styles = {
     marginLeft: 5,
     fontFamily : 'AvenirNext-DemiBold'
   },
-  name: {
-    margin: 8,
-  },
+
 }
 export default ListItem
