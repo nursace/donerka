@@ -72,7 +72,7 @@ class Ripple extends Component {
  {this.renderRippleView()}
  <View >
      <Ionicons name={this.props.name} color={this.props.color} style={{backgroundColor:'transparent',paddingLeft:this.getPaddingLeft()}} size={size} />
-     <Text style={{fontSize : 10,fontFamily : 'AvenirNext-DemiBold',backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
+     <Text style={{fontSize : 10,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
      </View>
      </View>
       </TouchableWithoutFeedback>

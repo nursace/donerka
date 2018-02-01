@@ -51,7 +51,6 @@ class StartingComponent extends Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         registerToken(user).then(()=>{     
-          console.log('dad')
           that.setState({user: '1'})
       })        
       }
@@ -66,7 +65,7 @@ class StartingComponent extends Component {
     if (this.state.user === '0') {
       if (this.state.firstLaunch)
         return (
-          <LanguageForm />
+          <LoginForm />
         )
       else
         return (<LoginForm />)

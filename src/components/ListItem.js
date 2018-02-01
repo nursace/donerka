@@ -1,15 +1,34 @@
 import React, {Component} from 'react';
-import ReactNative, {Image,Dimensions,TouchableOpacity} from 'react-native';
+import ReactNative, {Image,Dimensions,Platform,TouchableOpacity} from 'react-native';
 import { Font } from 'expo';
 import {Ionicons} from '@expo/vector-icons'
 import {Actions} from 'react-native-router-flux'
-
+import firebase from 'firebase'
 const {View, TouchableHighlight, Text} = ReactNative;
 class ListItem extends Component {
-  
+  constructor(props){
+    super(props)
+    this.state = {
+      role : '',
+    }
+    
+  }
+  componentWillMount(){
+    let s = ''
+    let email1 = firebase.auth().currentUser.email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      s += email1.charAt(i)
+    }
+    var that = this
+    firebase.database().ref(`users/${s}`).on('value',function(snapshot){
+       if(snapshot.val().role==='donor'){
+         that.setState({role : 'donor'})
+       }
+     })
+  }
   render() {
-    console.log(this.props.item)
-    return (
+      return (
       <View style={styles.li}>
       <View style={styles.image}> 
         <Ionicons color='#E39291' style={{backgroundColor:'transparent'}} size={50} name='ios-camera-outline' /> 
@@ -24,16 +43,16 @@ class ListItem extends Component {
           
 </View>
 <View style={{flex : 1,margin : 10}}>
-{this.props.item.role!==null  ?
+{this.state.role!=='donor'  ?
 <Text style={{  fontSize: 14,
 color: '#d3d3d3',
 marginLeft: 5,
-fontFamily : 'AvenirNext-DemiBold'}}>Submitted blood to you !</Text> :
+fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Submitted blood to you !</Text> :
 
 <Text style={{  fontSize: 14,
   color: '#d3d3d3',
   marginLeft: 5,
-  fontFamily : 'AvenirNext-DemiBold'}}>Need help !</Text>
+  fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Need help !</Text>
 }
 </View>
 </View>
@@ -67,8 +86,8 @@ var styles = {
     fontSize: 16,
     color: 'gray',
     marginLeft: 5,
-    fontFamily : 'AvenirNext-DemiBold'
-  },
+    fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null
+    },
 
 }
 export default ListItem

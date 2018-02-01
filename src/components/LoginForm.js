@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { Text,Image,ImageBackground,Animated,Easing,Alert, View,Dimensions,AsyncStorage, TouchableOpacity } from 'react-native'
+import { Text,Image,ImageBackground,Platform,Animated,Easing,Alert, View,Dimensions,AsyncStorage, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, loginUser,errorShowed } from '../actions'
 import { InputLogin, Spinner } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
-import {Icon} from 'react-native-elements'
 
 class LoginForm extends Component {
   constructor(props) {
@@ -86,7 +85,7 @@ getBackColor(){
         disabled={this.state.disabled}
         onPress={this.onButtonPress.bind(this)}
       >
-        <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize: 20 , color :'#F65352'}}>Log In</Text>
+        <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 20 , color :'#F65352'}}>Log In</Text>
       </TouchableOpacity>
     );
   }
@@ -130,15 +129,15 @@ if(this.props.error){
         </View>
         <View style={{marginTop:60,justifyContent:'center',alignItems:'center',backgroundColor:'transparent',flex:1}}> 
 <View style={{flex:1}}>
-        <Text style={{color:'#fff',fontSize:13,fontFamily : 'AvenirNext-DemiBold'}}>Forget password? </Text>
+        <Text style={{color:'#fff',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Forget password? </Text>
       </View>      
       <View style={{flex:2,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
       <View style={{height:1,marginRight:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
-      <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : 'AvenirNext-DemiBold'}}>or</Text>
+      <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>or</Text>
       <View style={{height:1,marginLeft:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
         </View>
          <View style={{flex : 1,marginBottom:40,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
-            <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : 'AvenirNext-DemiBold'}}>Don't have an account? </Text>
+            <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Don't have an account? </Text>
             
             <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
                 Animated.timing(this.state.opacityValue, {
@@ -150,7 +149,7 @@ if(this.props.error){
                   Actions.replace('register')
                 });
               }}>
-            <Text style={{   color:'#fff',fontSize:15, fontFamily : 'AvenirNext-DemiBold',textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>
+            <Text style={{   color:'#fff',fontSize:15, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>
       </View>
         </View>
 

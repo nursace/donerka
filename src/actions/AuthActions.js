@@ -10,7 +10,7 @@ import { EMAIL_CHANGED,
   LOGOUT_USER,
   ERROR_SHOWED
 } from './types'
-import {AsyncStorage} from 'react-native'
+import {AsyncStorage,Alert} from 'react-native'
 import { Permissions, Notifications } from 'expo';
 async function registerToken(user){
     let {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS)
@@ -108,6 +108,13 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
               })
         })
         .catch((error)=>{
+            Alert.alert(
+                'Try Again!',
+                'Wrong inputs',
+                [
+                  {text: 'Ok'},
+                ]
+              )
             registerUserFail(dispatch)
         })
     }

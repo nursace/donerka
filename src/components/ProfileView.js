@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image,TouchableOpacity,Easing,Animated,Dimensions,Modal } from 'react-native'
+import { Text, View, Image,Platform,TouchableOpacity,Easing,Animated,Dimensions,Modal } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {userDataFetching} from '../actions'
 import firebase from 'firebase'
@@ -73,8 +73,10 @@ body : 'C'
         d += email1.charAt(i)
       } 
       firebase.database().ref(`/users/${d}`).on('value',function(snapshot){
-        const {email,blood,factor,lastName,firstName,patronymic,phone} = snapshot.val()
-      firebase.database().ref(`/users/${s}/submittedBlood/${d}`).update({email,blood,factor,lastName,firstName,patronymic,phone})
+        const {rescue_count,email,blood,factor,lastName,firstName,patronymic,phone} = snapshot.val()
+        let f=parseInt(rescue_count)+1
+        firebase.database().ref(`/users/${d}`).update({rescue_count: String(f)})
+        firebase.database().ref(`/users/${s}/submittedBlood/${d}`).update({email,blood,factor,lastName,firstName,patronymic,phone})
       
       })
     }).then(()=>{
@@ -82,13 +84,42 @@ body : 'C'
     });
     })
   }
+  renderButton(){
+      if(this.props.role === 'donor' && this.props.item.role==='recipient')
+      return(
+      this.state.submitted!==true ? 
+      <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
+        <TouchableOpacity onPress ={()=>{
+          Animated.timing(this.state.opacityValue, {
+            toValue: 0.5,
+            duration:300, 
+            easing: Easing.bezier(0.0, 0.0, 0.2, 1),
+            
+        }).start(() => {
+          this.setState({modalVisible: true})  
+        });
+          }} style={{height : 60,width: 150,borderColor:'#F65352',borderRadius: 150/2,borderWidth: 1,alignItems: 'center',justifyContent: 'center'}}>
+          <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+            Help out
+            </Text>
+          </TouchableOpacity>
+      </View>:
+                <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
+                    <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+            You've already submitted your blood
+            </Text>
+</View>                    
+)
+    
+   
+    
+  }
   renderContent(){
     if(this.state.loading || this.props.loading)
     return(
         <View style={{flex:1,justifyContent:'center',alignItems:'center'}}><Spinner size='large' /></View>
     )
-    if(this.props.role === 'donor'){
-      return(
+  return(
       <Animated.View style={{flex:1,opacity: this.state.opacityValue}}>
        <Modal
        transparent
@@ -108,9 +139,9 @@ body : 'C'
            </TouchableOpacity>
          </View>
             <View style={{borderWidth:1,borderColor:'#d3d3d3',height : Dimensions.get('window').height/2,width: Dimensions.get('window').width/1.5,backgroundColor:'#fff',justifyContent:'center',alignItems:'center'}}>
-            <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#686868'}}>Make sure</Text>
-            <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#686868'}}>you've actually been through </Text>
-            <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#686868'}}>blood donation act</Text>
+            <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>Make sure</Text>
+            <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>you've actually been through </Text>
+            <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>blood donation act</Text>
             
                <TouchableOpacity style={{marginTop:140}} onPress={()=>{  Animated.timing(this.state.opacityValue, {
                 toValue: 1,
@@ -118,11 +149,10 @@ body : 'C'
                 easing: Easing.bezier(0.0, 0.0, 0.2, 1),
                 
             }).start(() => {
-              this.setState({modalVisible: false})  
-              
+              this.setState({modalVisible: false})
               this._handlePress()
            });}}>
-            <Text style={{fontFamily: 'AvenirNext-DemiBold',fontSize : 30,color: '#F65352'}}>Ok!</Text>
+            <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 30,color: '#F65352'}}>Ok!</Text>
             
       </TouchableOpacity>
             </View>
@@ -132,7 +162,7 @@ body : 'C'
 <View style={{flex : 5,marginTop: 5}}>
 <View style={{flexDirection: 'row'}}>
   <View style={{flex : 5}}>
-  <Text style={{fontFamily: 'AvenirNext-DemiBold',marginTop : Dimensions.get('window').height/15,marginLeft: Dimensions.get('window').width/7,fontSize: 40,color: '#E39291'}}>{this.props.item.blood}{this.props.item.factor}</Text>
+  <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,marginTop : Dimensions.get('window').height/15,marginLeft: Dimensions.get('window').width/7,fontSize: 40,color: '#E39291'}}>{this.props.item.blood}{this.props.item.factor}</Text>
     </View>
     <View style={{flex: 6,
     alignItems : 'center',
@@ -154,28 +184,28 @@ body : 'C'
     </View>
      </View>
      <View style={{flex : 2,alignItems: 'center',marginTop: 10,flexDirection:'column',justifyContent: 'space-between'}}>
-      <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#686868'}}>{this.props.item.firstName} {this.props.item.lastName}</Text>
-     {this.props.item.role==='donor' ? <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#d3d3d3',paddingBottom: 20}}>{this.props.item.description}</Text> :
-     <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#d3d3d3',paddingBottom: 20}}>I need your blood</Text>
+      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>{this.props.item.firstName} {this.props.item.lastName}</Text>
+     {this.props.item.role==='donor' ? <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#d3d3d3',paddingBottom: 20}}>{this.props.item.description}</Text> :
+     <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#d3d3d3',paddingBottom: 20}}>I need your blood</Text>
     } 
        </View>
       </View>
       <View style={{flex :1}}>
       <View style={{flex : 1,alignItems: 'center',justifyContent: 'center',flexDirection: 'row',justifyContent: 'space-between'}}>
       <View style={{flex : 1,alignItems: 'center'}}>
-      <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#E39291'}}>{this.props.item.rescue_count}</Text>
+      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#E39291'}}>{this.props.item.rescue_count}</Text>
        </View>
        <View style={{flex : 1,alignItems: 'center'}}>
-      <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#E39291'}}>{this.props.item.rescue_count}</Text>
+      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#E39291'}}>{this.props.item.rescue_count}</Text>
          
          </View>
         </View>
         <View style={{flex : 1,alignItems: 'center',justifyContent: 'center',flexDirection: 'row',justifyContent: 'space-between'}}>
       <View style={{flex : 1,alignItems: 'center'}}>
-      <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#d3d3d3'}}>Helped</Text>
+      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#d3d3d3'}}>Helped</Text>
        </View>
        <View style={{flex : 1,alignItems: 'center'}}>
-      <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#d3d3d3'}}>Been helped</Text>
+      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#d3d3d3'}}>Been helped</Text>
          
          </View>
         </View>
@@ -183,51 +213,20 @@ body : 'C'
       </View>
       <View style={{marginTop : 40,flex: 1,backgroundColor:'#F65352',alignItems: 'center',justifyContent: 'center'}}>
       
-      <Text style={{fontSize: 14,fontFamily: 'AvenirNext-DemiBold',color: '#fff'}}>My phone number : {this.props.item.phone}</Text>
+      <Text style={{fontSize: 14,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#fff'}}>My phone number : {this.props.item.phone}</Text>
           
       </View>
       <View style={{flex : 1,marginTop: 20}}>
        
     </View>
       <View style={{ flex: 4,marginTop : 20}}>
-       {this.props.item.role==='recipient' ?
-          this.state.submitted!==true ? 
-          <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
-            <TouchableOpacity onPress ={()=>{
-              Animated.timing(this.state.opacityValue, {
-                toValue: 0.5,
-                duration:300, 
-                easing: Easing.bezier(0.0, 0.0, 0.2, 1),
-                
-            }).start(() => {
-              this.setState({modalVisible: true})  
-            });
-              }} style={{height : 60,width: 150,borderColor:'#F65352',borderRadius: 150/2,borderWidth: 1,alignItems: 'center',justifyContent: 'center'}}>
-              <Text style={{fontSize: 17,fontFamily: 'AvenirNext-DemiBold',color: '#F65352'}}>
-                Help out
-                </Text>
-              </TouchableOpacity>
-          </View>:
-                    <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
-                        <Text style={{fontSize: 17,fontFamily: 'AvenirNext-DemiBold',color: '#F65352'}}>
-                You've already submitted your blood
-                </Text>
-</View>                    
-          //если не submitted
-        
-        :null//если роль профиля донор
-      } 
+       {this.renderButton()}
         </View>
         </Animated.View>
       )
     }
-    else if(this.props.role === 'recipient'){
 
-    }
-    else{ //not filled questionnaire
-
-    }
-  }    
+      
 
   render() {
     return (

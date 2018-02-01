@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
+import { Text, View,Animated,Easing,Platform, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {logoutUser} from '../actions'
 import firebase from 'firebase'
@@ -72,7 +72,7 @@ class Ripple extends Component {
  {this.renderRippleView()}
  <View >
      <Ionicons name={this.props.name} color={this.props.color} style={{backgroundColor:'transparent',paddingLeft:this.getPaddingLeft()}} size={size} />
-     <Text style={{fontSize : 10,fontFamily : 'AvenirNext-DemiBold',backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
+     <Text style={{fontSize : 10,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
      </View>
      </View>
       </TouchableWithoutFeedback>

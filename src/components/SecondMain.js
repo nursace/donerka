@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text,Alert,ListView, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
+import { Text,Alert,ListView,Platform, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {userDataFetching,userDataUpdate} from '../actions'
 import firebase from 'firebase'
@@ -73,7 +73,7 @@ class Ripple extends Component {
  {this.renderRippleView()}
  <View >
      <Ionicons name={this.props.name} color={this.props.color} style={{backgroundColor:'transparent',paddingLeft:this.getPaddingLeft()}} size={size} />
-     <Text style={{fontSize : 10,fontFamily : 'AvenirNext-DemiBold',backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
+     <Text style={{fontSize : 10,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,backgroundColor:'transparent',color:this.props.color,alignSelf:'center'}}>{this.props.text}</Text>
      </View>
      </View>
       </TouchableWithoutFeedback>
@@ -122,8 +122,8 @@ class SecondMain extends Component {
               if(obj.email === firebase.auth().currentUser.email){
                   user=obj
               }    
-          })
-          if(user.role === 'doner')
+          })    
+          if(user.role === 'donor')
           snapshot.forEach(function(childSnapshot) { // if donor
               let obj = childSnapshot.val()
              
@@ -201,9 +201,9 @@ Actions.replace('firstMain')
                 <View style={{flex : 1, alignItems: 'center'}}>
                 <View style={{marginTop : Dimensions.get('window').height/3.4,alignItems: 'center'}}>
                 <Ionicons name = 'ios-sad-outline' size= {70} color = '#9C9495' />
-                     <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize : 16,color: '#d0d0d0'}}>Unfortunately,</Text>
+                     <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 16,color: '#d0d0d0'}}>Unfortunately,</Text>
                  
-                     <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize : 16,color: '#d0d0d0'}}>we don't have anyone that you can donate yet</Text>
+                     <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 16,color: '#d0d0d0'}}>we don't have anyone that you can donate yet</Text>
                    </View>
                     </View>
             )
@@ -221,9 +221,9 @@ Actions.replace('firstMain')
                     <View style={{flex : 1, alignItems: 'center'}}>
                     <View style={{marginTop : Dimensions.get('window').height/3.4,alignItems: 'center'}}>
                     <Ionicons name = 'ios-sad-outline' size= {70} color = '#9C9495' />
-                         <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize : 16,color: '#d0d0d0'}}>Unfortunately,</Text>
+                         <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 16,color: '#d0d0d0'}}>Unfortunately,</Text>
                      
-                         <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize : 16,color: '#d0d0d0'}}>you don't have any donated pals</Text>
+                         <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 16,color: '#d0d0d0'}}>you don't have any donated pals</Text>
                        </View>
                         </View>
                 )
@@ -233,8 +233,8 @@ Actions.replace('firstMain')
             return(
                     <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
                     <View style ={{marginBottom : 50,justifyContent:'center',alignItems:'center'}}><Ionicons name='ios-clipboard-outline' color='#D0D0D0' size={200} />
-                        <Text style={{fontSize : 32,color:'#4a4a4a',fontFamily : 'AvenirNext-DemiBold'}}>Welcome!</Text>
-                        <Text style={{marginTop: 30,color:'#9C9495',fontFamily : 'AvenirNext-DemiBold'}}>You haven't filled out our questionnaire yet.</Text>
+                        <Text style={{fontSize : 32,color:'#4a4a4a',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Welcome!</Text>
+                        <Text style={{marginTop: 30,color:'#9C9495',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>You haven't filled out our questionnaire yet.</Text>
                         <TouchableOpacity
         style={{
           width: 170,
@@ -266,7 +266,7 @@ Actions.replace('firstMain')
             });
          }}
       >
-            <Text style={{fontSize:20,color : '#fff',fontFamily : 'AvenirNext-DemiBold'}}>Join Us!</Text>
+            <Text style={{fontSize:20,color : '#fff',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Join Us!</Text>
       </TouchableOpacity>
                         </View>
                         </View>
@@ -275,20 +275,20 @@ Actions.replace('firstMain')
         else if(this.state.current_step==='1')
         return(
                 <View style={{flex:1}}>
-                <View style={{flex:2,justifyContent:'center'}}><Text style={{paddingTop:40,alignSelf:'center',fontSize: 29,color:'#F65352',fontFamily : 'AvenirNext-DemiBold'}}>What's your blood type?</Text>
+                <View style={{flex:2,justifyContent:'center'}}><Text style={{paddingTop:40,alignSelf:'center',fontSize: 29,color:'#F65352',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>What's your blood type?</Text>
                 </View>
                 <View style={{flex : 1,marginBottom:100}}>
             <View style={{flex : 1,flexDirection:'row',justifyContent:'space-around'}}>
-                <TouchableOpacity onPress={()=>{this.setState({blood:'O',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:18,fontFamily : 'AvenirNext-DemiBold'}}>O+</Text></TouchableOpacity>
-                <TouchableOpacity onPress={()=>{this.setState({blood:'A',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>A+</Text></TouchableOpacity>
-                <TouchableOpacity onPress={()=>{this.setState({blood:'B',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>B+</Text></TouchableOpacity>
-                <TouchableOpacity onPress={()=>{this.setState({blood:'AB',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>AB+</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.setState({blood:'O',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:18,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>O+</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.setState({blood:'A',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>A+</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.setState({blood:'B',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>B+</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.setState({blood:'AB',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>AB+</Text></TouchableOpacity>
 </View>
 <View style={{flex : 1 , flexDirection:'row',justifyContent:'space-around'}}>
-<TouchableOpacity onPress={()=>{this.setState({blood:'O',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:18,fontFamily : 'AvenirNext-DemiBold'}}>O-</Text></TouchableOpacity>
-<TouchableOpacity onPress={()=>{this.setState({blood:'A',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>A-</Text></TouchableOpacity>
-<TouchableOpacity onPress={()=>{this.setState({blood:'B',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>B-</Text></TouchableOpacity>
-<TouchableOpacity onPress={()=>{this.setState({blood:'AB',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>AB-</Text></TouchableOpacity>
+<TouchableOpacity onPress={()=>{this.setState({blood:'O',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:18,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>O-</Text></TouchableOpacity>
+<TouchableOpacity onPress={()=>{this.setState({blood:'A',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>A-</Text></TouchableOpacity>
+<TouchableOpacity onPress={()=>{this.setState({blood:'B',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>B-</Text></TouchableOpacity>
+<TouchableOpacity onPress={()=>{this.setState({blood:'AB',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>AB-</Text></TouchableOpacity>
 
     </View>
                 </View>
@@ -296,11 +296,11 @@ Actions.replace('firstMain')
         ) 
         else return(
             <View style={{flex:1}}>
-            <View style={{flex:2,justifyContent:'center'}}><Text style={{alignSelf:'center',fontSize: 25,fontFamily : 'AvenirNext-DemiBold',color:'#ca1414',fontWeight:'bold'}}>Who are you gonna be?</Text>
+            <View style={{flex:2,justifyContent:'center'}}><Text style={{alignSelf:'center',fontSize: 25,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color:'#ca1414',fontWeight:'bold'}}>Who are you gonna be?</Text>
             </View>
             <View style={{flex : 1,marginBottom:100,flexDirection:'row',justifyContent:'space-around'}}>
-            <TouchableOpacity onPress={()=>{this.setState({role:'donor'}, this.onFinishFillingForm.bind(this))}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#ca1414',fontSize:15,fontFamily : 'AvenirNext-DemiBold'}}>Donor</Text></TouchableOpacity>
-            <TouchableOpacity onPress={()=>{this.setState({role:'recipient'}, this.onFinishFillingForm.bind(this) )}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:15,color:'#ca1414',fontFamily : 'AvenirNext-DemiBold'}}>Recipient</Text></TouchableOpacity>
+            <TouchableOpacity onPress={()=>{this.setState({role:'donor'}, this.onFinishFillingForm.bind(this))}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#ca1414',fontSize:15,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Donor</Text></TouchableOpacity>
+            <TouchableOpacity onPress={()=>{this.setState({role:'recipient'}, this.onFinishFillingForm.bind(this) )}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:15,color:'#ca1414',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Recipient</Text></TouchableOpacity>
   
             </View>
             </View>
@@ -314,7 +314,7 @@ Actions.replace('firstMain')
       <View style={{flex:5,alignItems:'center',justifyContent:'center',borderBottomWidth:1,borderBottomColor:'#F65352',flexDirection:'row',backgroundColor:'#F65352'}}>
       <Animated.View style={{opacity: this.state.opacityValue,flex:7,alignItems:'center',justifyContent:'center',marginTop:20}}>
 
-        {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#fff',fontFamily :'AvenirNext-DemiBold' ,fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Donor</Text>:<Text style={{color:'#fff',fontFamily :'AvenirNext-DemiBold' ,fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Recipient</Text> : this.state.current_step ? 
+        {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#fff',fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Donor</Text>:<Text style={{color:'#fff',fontFamily :'AvenirNext-DemiBold' ,fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Recipient</Text> : this.state.current_step ? 
         <View style={{flexDirection:'row',flex:1,marginTop:10}}>
          <TouchableOpacity onPress={(()=>{
              let f=parseInt(this.state.current_step)-1

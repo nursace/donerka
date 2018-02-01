@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import { Text, View,Button,Image,ImageBackground,Dimensions,Animated,Easing, TouchableOpacity } from 'react-native'
+import { Text, View,Button,Image,Platform,ImageBackgrounds,Dimensions,Animated,Easing, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
-import { Input, Spinner,InputIcon } from './common'
+import { Input, Spinner,InputLogin } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
-import {Icon} from 'react-native-elements'
+import {Ionicons} from '@expo/vector-icons'
 
 class Register extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      firstName: 'ijoji',
-      lastName : 'dwdwdw',
-      patronymic : 'Сергеевич',
-      phone: '38274438',
+      firstName: '',
+      lastName : '',
+      patronymic : '',
+      phone: '',
       email : '',
       password : '',
       loading: false,
@@ -70,19 +70,14 @@ this.setState({loading:false})
     }
     return (
     <TouchableOpacity style={{width: 170,
-      borderRadius: 15,
-      borderWidth: 0.6,
-      borderColor: '#fff',
-      backgroundColor:'#BF4747',
+      backgroundColor:'transparent',
       height:50,
-      marginLeft: 150,
       alignItems:'center',
       justifyContent: 'center',
-
     }}
     onPress={this.submitToFirebase.bind(this)}>
-      <Text style={{color: '#fff', fontSize:20, fontWeight:'bold'}}>
-        Отправить
+      <Text style={{color: '#fff', fontSize:20, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>
+        Create an account
       </Text>
     </TouchableOpacity>
     )
@@ -97,50 +92,62 @@ this.setState({loading:false})
     return(
         <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
         <View style={styles.mainView} />
+        <View style={{flex : 2 , }}>
+        <View style={{flex : 1,marginTop:20}}>
+        <TouchableOpacity onPress={(()=>{
+              Actions.replace('login')
+             })} style={{height:35,width:35,marginTop: 10,backgroundColor:'transparent'}}>
+<Ionicons name='ios-arrow-back' color='#fff' size={33} />
+      </TouchableOpacity>
+      </View>
+      <View style={{flex : 5,justifyContent: 'center',alignItems:'center',backgroundColor:'transparent'}}>
+      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 25 , color :'#fff'}}>Sign up</Text>
+
+        </View>   
+        <View style={{flex : 1}}> 
+          </View>
+          </View>
        <View
           style={{
-            marginLeft:Dimensions.get('window').width*0.2,
             justifyContent:'center',
             flex: 12,
-            backgroundColor:'transparent'
+            backgroundColor:'transparent',
+            alignItems : 'center',
+            marginRight: 20
           }}
         >
-        <TouchableOpacity onPress={()=>{console.log('UPLOAD')}}>
-        <Image source={require('../../assets/LO.png')} style={{width: 80,height: 80,marginLeft : 75,borderRadius: 40}}></Image>
-          </TouchableOpacity>
-          <View style={{marginTop:50}}>
-          <Input
+        <View style={{marginTop:30}}>
+          <InputLogin
           label='First Name'
           placeholder='first name'
           onChangeText={this.onFirstNameChange.bind(this)}
           value={this.state.firstName}
         />
-
-        <Input
+        <InputLogin
         label='Last Name'
         placeholder='last name'
         onChangeText={this.onLastNameChange.bind(this)}
         value={this.state.lastName}
       />  
-       <Input
+       <InputLogin
           label='Patronymic'
           placeholder='patronymic'
           onChangeText={this.onPatronymicChange.bind(this)}
           value={this.state.patronymic}
         />
-        <Input
+        <InputLogin
           label='Phone Number'
           placeholder='555-555-555'
           onChangeText={this.onPhoneChange.bind(this)}
           value={this.state.phone}
         />
-        <Input
+        <InputLogin
           label='Email'
           placeholder='Email'
           onChangeText={this.onEmailChange.bind(this)}
           value={this.props.email}
         />
-        <Input
+        <InputLogin
           secureTextEntry
           label='Password'
           placeholder='password'
@@ -148,13 +155,12 @@ this.setState({loading:false})
           value={this.props.password}
         />
           </View>
-          <Text style={styles.errorTextStyle}>{this.props.error}</Text>
-          <View style={{ marginTop: 10 }}>{this.renderButton()}</View>
+        <View style={{ marginTop: 10 }}>{this.renderButton()}</View>
 
         </View>
-        <View style={{justifyContent:'center',backgroundColor:'transparent',flexDirection:'row',alignItems:'center',marginRight:90,flex:1}}> 
+        <View style={{justifyContent:'center',backgroundColor:'transparent',flexDirection:'row',alignItems:'center',flex:1}}> 
             
-            <Text style={{color:'#fff'}}>Don't have an account? </Text>
+            <Text style={{color:'#fff'}}>Already have an account? </Text>
             
             <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
                 Animated.timing(this.state.opacityValue, {
@@ -162,10 +168,10 @@ this.setState({loading:false})
                   duration:300, 
                   easing: Easing.bezier(0.0, 0.0, 0.2, 1),
               }).start(() => {
-                  Actions.register()
+                  Actions.replace('login')
                 });
               }}>
-            <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>
+            <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign in</Text></TouchableOpacity>
       
         </View>
       </Animated.View>
@@ -184,7 +190,7 @@ const styles = {
     height:Dimensions.get('window').height,
     width: Dimensions.get('window').width,
     opacity:0.6,
-    backgroundColor:'#FE3562',
+    backgroundColor:'#F65352',
     position:'absolute',  
   }
 }
