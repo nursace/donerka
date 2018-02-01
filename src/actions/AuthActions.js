@@ -11,7 +11,24 @@ import { EMAIL_CHANGED,
   ERROR_SHOWED
 } from './types'
 import {AsyncStorage} from 'react-native'
-
+import { Permissions, Notifications } from 'expo';
+async function registerToken(user){
+    let {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+    
+    if(status!== 'granted')
+    return
+    
+    let token=await Notifications.getExpoPushTokenAsync()
+    
+    let s = ''
+    let email1 = firebase.auth().currentUser.email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      s += email1.charAt(i)
+    }
+   await firebase.database().ref(`/users/${s}`).update({token})
+    
+  }
 export const emailChanged = text => {
     return {
         type: EMAIL_CHANGED,
@@ -31,6 +48,7 @@ export const loginUser = ({ email, password }) => {
         dispatch({ type: LOGIN_USER})
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(user => {
+                registerToken(user).then(()=>{
                 AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {
                     if(LoggedInWithEmail === email){        
                     }
@@ -38,11 +56,13 @@ export const loginUser = ({ email, password }) => {
                         AsyncStorage.setItem('LoggedInWithEmail', email);
                     }
                 }
+            
+                
             ).then(()=>{    
                  loginUserSuccess(dispatch, user)
             })
         
-            })
+            })})
                 .catch(() => {
                      loginUserFail(dispatch)
             })
@@ -64,7 +84,8 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
             let str1 = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase()
             let str2 = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase()
             let str3 = patronymic.charAt(0).toUpperCase() + patronymic.slice(1).toLowerCase()
-             firebase.database().ref(`/users/`).child(s.toLowerCase()).set({
+             registerToken(user).then(()=>{})
+            firebase.database().ref(`/users/`).child(s.toLowerCase()).set({
                 firstName: str1,
                 lastName: str2,
                 patronymic: str3,

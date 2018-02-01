@@ -2,12 +2,29 @@ import React, {Component} from 'react'
 import {View, Image, ActivityIndicator, AsyncStorage} from 'react-native'
 import LanguageForm from './LanguageForm'
 import LoginForm from './LoginForm'
-import FillingDoner from './FillingDoner'
-import CandidatesRec from './CandidatesRec'
-import firebase from 'firebase'
 import FirstMain from './FirstMain'
 import SecondMain from './SecondMain'
 import ThirdMain from './ThirdMain'
+import { Permissions, Notifications } from 'expo';
+import firebase from 'firebase'
+async function registerToken(user){
+  let {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+  
+  if(status!== 'granted')
+  return
+  
+  let token=await Notifications.getExpoPushTokenAsync()
+  
+  let s = ''
+  let email1 = firebase.auth().currentUser.email
+  for(let i = 0; i < email1.length; i++) {
+    if (email1.charAt(i) === '@') break;
+    s += email1.charAt(i)
+  }
+ await firebase.database().ref(`/users/${s}`).update({token})
+  
+}
+
 class StartingComponent extends Component {
   constructor(props) {
     super(props)
@@ -33,7 +50,10 @@ class StartingComponent extends Component {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        that.setState({user: '1'})
+        registerToken(user).then(()=>{     
+          console.log('dad')
+          that.setState({user: '1'})
+      })        
       }
       else {
         that.setState({user: '0'})

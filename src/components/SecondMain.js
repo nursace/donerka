@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Text,Alert,ListView, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import {Icon} from 'react-native-elements'
 import {userDataFetching,userDataUpdate} from '../actions'
 import firebase from 'firebase'
 import {connect} from 'react-redux'
@@ -182,6 +181,7 @@ Actions.replace('firstMain')
         if(this.props.filled) // if questionnaire is filled
         {
             if(this.props.role === 'donor')
+            if(this.state.dataSource.getRowCount()> 0)
             return (  
             <ListView
                 dataSource={this.state.dataSource}
@@ -190,6 +190,16 @@ Actions.replace('firstMain')
                 style={styles.listView}/>
                 
             ) 
+            else return(
+                <View style={{flex : 1, alignItems: 'center'}}>
+                <View style={{marginTop : Dimensions.get('window').height/3.4,alignItems: 'center'}}>
+                <Ionicons name = 'ios-sad-outline' size= {70} color = '#9C9495' />
+                     <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize : 16,color: '#d0d0d0'}}>Unfortunately,</Text>
+                 
+                     <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize : 16,color: '#d0d0d0'}}>we don't have anyone that you can donate yet</Text>
+                   </View>
+                    </View>
+            )
             return (null) // if recipient
         }
         if(!this.state.current_step){
@@ -240,34 +250,30 @@ Actions.replace('firstMain')
                 <View style={{flex:1}}>
                 <View style={{flex:2,justifyContent:'center'}}><Text style={{paddingTop:40,alignSelf:'center',fontSize: 29,color:'#F65352',fontFamily : 'AvenirNext-DemiBold'}}>What's your blood type?</Text>
                 </View>
-                <View style={{flex : 1,marginBottom:100,flexDirection:'row',justifyContent:'space-around'}}>
-                <TouchableOpacity onPress={()=>{this.setState({blood:'O',current_step: '2'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:25,fontFamily : 'AvenirNext-DemiBold'}}>O</Text></TouchableOpacity>
-                <TouchableOpacity onPress={()=>{this.setState({blood:'A',current_step: '2'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:25,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>A</Text></TouchableOpacity>
-                <TouchableOpacity onPress={()=>{this.setState({blood:'B',current_step: '2'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:25,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>B</Text></TouchableOpacity>
-                <TouchableOpacity onPress={()=>{this.setState({blood:'AB',current_step: '2'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:25,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>AB</Text></TouchableOpacity>
+                <View style={{flex : 1,marginBottom:100}}>
+            <View style={{flex : 1,flexDirection:'row',justifyContent:'space-around'}}>
+                <TouchableOpacity onPress={()=>{this.setState({blood:'O',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:18,fontFamily : 'AvenirNext-DemiBold'}}>O+</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.setState({blood:'A',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>A+</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.setState({blood:'B',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>B+</Text></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{this.setState({blood:'AB',current_step: '2',factor: '+'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>AB+</Text></TouchableOpacity>
+</View>
+<View style={{flex : 1 , flexDirection:'row',justifyContent:'space-around'}}>
+<TouchableOpacity onPress={()=>{this.setState({blood:'O',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#fff',fontSize:18,fontFamily : 'AvenirNext-DemiBold'}}>O-</Text></TouchableOpacity>
+<TouchableOpacity onPress={()=>{this.setState({blood:'A',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>A-</Text></TouchableOpacity>
+<TouchableOpacity onPress={()=>{this.setState({blood:'B',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>B-</Text></TouchableOpacity>
+<TouchableOpacity onPress={()=>{this.setState({blood:'AB',current_step: '2',factor: '-'})}} style={{borderColor:'#F65352',backgroundColor: '#F65352',borderWidth:1,borderRadius:25,width:50,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:18,color:'#fff',fontFamily : 'AvenirNext-DemiBold'}}>AB-</Text></TouchableOpacity>
 
+    </View>
                 </View>
                 </View>
-        )
-        else if(this.state.current_step==='2')
-            return(
-            <View style={{flex:1}}>
-            <View style={{flex:2,justifyContent:'center'}}><Text style={{alignSelf:'center',fontSize: 25,color:'#ca1414',fontFamily : 'AvenirNext-DemiBold'}}>What's your Rh factor?</Text>
-            </View>
-            <View style={{flex : 1,marginBottom:100,flexDirection:'row',justifyContent:'space-around'}}>
-            <TouchableOpacity onPress={()=>{this.setState({factor:'positive',current_step: '3'})}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#ca1414',fontSize:15}}>Positive</Text></TouchableOpacity>
-            <TouchableOpacity onPress={()=>{this.setState({factor:'negative',current_step: '3'})}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:15,color:'#ca1414'}}>Negative</Text></TouchableOpacity>
-  
-            </View>
-            </View>
-            )    
+        ) 
         else return(
             <View style={{flex:1}}>
-            <View style={{flex:2,justifyContent:'center'}}><Text style={{alignSelf:'center',fontSize: 25,color:'#ca1414',fontWeight:'bold'}}>Who are you gonna be?</Text>
+            <View style={{flex:2,justifyContent:'center'}}><Text style={{alignSelf:'center',fontSize: 25,fontFamily : 'AvenirNext-DemiBold',color:'#ca1414',fontWeight:'bold'}}>Who are you gonna be?</Text>
             </View>
             <View style={{flex : 1,marginBottom:100,flexDirection:'row',justifyContent:'space-around'}}>
-            <TouchableOpacity onPress={()=>{this.setState({role:'donor'}, this.onFinishFillingForm.bind(this))}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#ca1414',fontSize:15}}>Donor</Text></TouchableOpacity>
-            <TouchableOpacity onPress={()=>{this.setState({role:'recipient'}, this.onFinishFillingForm.bind(this) )}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:15,color:'#ca1414'}}>Recipient</Text></TouchableOpacity>
+            <TouchableOpacity onPress={()=>{this.setState({role:'donor'}, this.onFinishFillingForm.bind(this))}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{color:'#ca1414',fontSize:15,fontFamily : 'AvenirNext-DemiBold'}}>Donor</Text></TouchableOpacity>
+            <TouchableOpacity onPress={()=>{this.setState({role:'recipient'}, this.onFinishFillingForm.bind(this) )}} style={{borderColor:'#6b0003',borderWidth:1,borderRadius:10,width:100,height:50,justifyContent:'center',alignItems:'center'}}><Text style={{fontSize:15,color:'#ca1414',fontFamily : 'AvenirNext-DemiBold'}}>Recipient</Text></TouchableOpacity>
   
             </View>
             </View>
@@ -293,7 +299,7 @@ console.log(f)
              })} style={{marginRight: Dimensions.get('window').width*0.3,height:35,width:35}}>
 <Ionicons name='ios-arrow-back' color='#fff' size={33} />
       </TouchableOpacity>   
-        <Text style={{paddingRight: 90,color:'#fff',fontSize:25}}>{this.state.current_step} of 3</Text>
+        <Text style={{paddingRight: 90,color:'#fff',fontSize:25}}>{this.state.current_step} of 2</Text>
         </View>
         :
                 <Image source={require('../../assets/logo.png')} style={{marginLeft:70,alignSelf:'center',width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}}></Image>                
