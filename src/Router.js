@@ -4,10 +4,6 @@ import LanguageForm from './components/LanguageForm'
 import LoginForm from './components/LoginForm'
 import Register from './components/Register'
 import ProfileView from './components/ProfileView'
-import UrgentSearch from './components/UrgentSearch'
-import FillingDoner from './components/FillingDoner'
-import CandidatesRec from './components/CandidatesRec'
-import WaitingRoom from './components/WaitingRoom'
 import firebase from 'firebase'
 import StartingComponent from './components/StartingComponent'
 import FirstMain from './components/FirstMain'
@@ -20,11 +16,7 @@ class RouterComponent extends Component {
         <Scene key='root' hideNavBar={true}>
         <Scene key='register' component={Register} />
         <Scene key='profileView' component={ProfileView} />
-        <Scene key='urgentSearch'  component= {UrgentSearch} />
         <Scene key='lang' component={LanguageForm} />
-        <Scene key='fillingDoner' component= {FillingDoner} />
-        <Scene key='candidatesRec'   component= {CandidatesRec} />
-        <Scene key='waiting' component = {WaitingRoom} />
         
         <Scene key='start' initial component = {StartingComponent} /> 
         <Scene key='login'  component={LoginForm} />

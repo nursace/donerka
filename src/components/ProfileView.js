@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image,TouchableOpacity,Dimensions } from 'react-native'
+import { Text, View, Image,TouchableOpacity,Easing,Animated,Dimensions,Modal } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {userDataFetching} from '../actions'
 import firebase from 'firebase'
@@ -15,18 +15,43 @@ class ProfileView extends Component {
   constructor(props){
     super(props)
     this.state={ 
-      loading : true
+      loading : true,
+      modalVisible:false,
+      opacityValue: new Animated.Value(1),
+      submitted : false
     }
   
-   fetchData(this.props.userDataFetching).then(()=>{this.setState({loading:false})})
-  }
-  _handlePress(){
+   fetchData(this.props.userDataFetching).then(()=>{
+
     let s = ''
     let email1 = this.props.item.email
     for(let i = 0; i < email1.length; i++) {
       if (email1.charAt(i) === '@') break;
       s += email1.charAt(i)
     }
+    var that = this
+    let d = ''
+    let email2 = firebase.auth().currentUser.email
+    for(let i = 0; i < email2.length; i++) {
+      if (email2.charAt(i) === '@') break;
+      d += email2.charAt(i)
+    } 
+    firebase.database().ref(`/users/${s}/submittedBlood`).on('value',function(snapshot){
+     
+     that.setState({submitted: snapshot.hasChild(`${d}`)})
+    }) 
+    this.setState({loading:false})})
+  }
+  
+  _handlePress(){
+    this.setState({loading: true})
+    let s = ''
+    let email1 = this.props.item.email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      s += email1.charAt(i)
+    }
+    var that =this
    firebase.database().ref(`/users/${s}`).on('value',function(snapshot){
     fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
@@ -40,7 +65,21 @@ title: `You've recieved blood`,
 sound : 'default',
 body : 'C'
       }),
-    }).then((response)=>{console.log(response)});
+    }).then((response)=>{
+      let d = ''
+      let email1 = firebase.auth().currentUser.email
+      for(let i = 0; i < email1.length; i++) {
+        if (email1.charAt(i) === '@') break;
+        d += email1.charAt(i)
+      } 
+      firebase.database().ref(`/users/${d}`).on('value',function(snapshot){
+        const {email,blood,factor,lastName,firstName,patronymic,phone} = snapshot.val()
+      firebase.database().ref(`/users/${s}/submittedBlood/${d}`).update({email,blood,factor,lastName,firstName,patronymic,phone})
+      
+      })
+    }).then(()=>{
+      that.setState({loading : false})
+    });
     })
   }
   renderContent(){
@@ -50,7 +89,45 @@ body : 'C'
     )
     if(this.props.role === 'donor'){
       return(
-      <View style={{flex:1}}>
+      <Animated.View style={{flex:1,opacity: this.state.opacityValue}}>
+       <Modal
+       transparent
+              visible={this.state.modalVisible}
+              animationType={'slide'}
+              onRequestClose={() => this.setState({modalVisible : false})}
+          ><View style={{flex : 1,justifyContent: 'center',alignItems:'center',}}>
+       <View style={{height : Dimensions.get('window').height,width : Dimensions.get('window').width ,position: 'absolute'}}>
+         <TouchableOpacity style={{height : Dimensions.get('window').height,width : Dimensions.get('window').width}} onPress = {()=>{  Animated.timing(this.state.opacityValue, {
+                toValue: 1,
+                duration:100, 
+                easing: Easing.bezier(0.0, 0.0, 0.2, 1),
+                
+            }).start(() => {
+              this.setState({modalVisible: false})  
+            });}}>
+           </TouchableOpacity>
+         </View>
+            <View style={{borderWidth:1,borderColor:'#d3d3d3',height : Dimensions.get('window').height/2,width: Dimensions.get('window').width/1.5,backgroundColor:'#fff',justifyContent:'center',alignItems:'center'}}>
+            <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#686868'}}>Make sure</Text>
+            <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#686868'}}>you've actually been through </Text>
+            <Text style={{fontFamily: 'AvenirNext-DemiBold',color: '#686868'}}>blood donation act</Text>
+            
+               <TouchableOpacity style={{marginTop:140}} onPress={()=>{  Animated.timing(this.state.opacityValue, {
+                toValue: 1,
+                duration:100, 
+                easing: Easing.bezier(0.0, 0.0, 0.2, 1),
+                
+            }).start(() => {
+              this.setState({modalVisible: false})  
+              
+              this._handlePress()
+           });}}>
+            <Text style={{fontFamily: 'AvenirNext-DemiBold',fontSize : 30,color: '#F65352'}}>Ok!</Text>
+            
+      </TouchableOpacity>
+            </View>
+            </View>
+         </Modal>
 <View style={{flex : 5,}}>
 <View style={{flex : 5,marginTop: 5}}>
 <View style={{flexDirection: 'row'}}>
@@ -114,17 +191,34 @@ body : 'C'
     </View>
       <View style={{ flex: 4,marginTop : 20}}>
        {this.props.item.role==='recipient' ?
+          this.state.submitted!==true ? 
           <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
-            <TouchableOpacity onPress ={()=>{this._handlePress()}} style={{height : 60,width: 150,borderColor:'#F65352',borderRadius: 150/2,borderWidth: 1,alignItems: 'center',justifyContent: 'center'}}>
+            <TouchableOpacity onPress ={()=>{
+              Animated.timing(this.state.opacityValue, {
+                toValue: 0.5,
+                duration:300, 
+                easing: Easing.bezier(0.0, 0.0, 0.2, 1),
+                
+            }).start(() => {
+              this.setState({modalVisible: true})  
+            });
+              }} style={{height : 60,width: 150,borderColor:'#F65352',borderRadius: 150/2,borderWidth: 1,alignItems: 'center',justifyContent: 'center'}}>
               <Text style={{fontSize: 17,fontFamily: 'AvenirNext-DemiBold',color: '#F65352'}}>
                 Help out
                 </Text>
               </TouchableOpacity>
-          </View>
+          </View>:
+                    <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
+                        <Text style={{fontSize: 17,fontFamily: 'AvenirNext-DemiBold',color: '#F65352'}}>
+                You've already submitted your blood
+                </Text>
+</View>                    
+          //если не submitted
         
-        :null}
+        :null//если роль профиля донор
+      } 
         </View>
-        </View>
+        </Animated.View>
       )
     }
     else if(this.props.role === 'recipient'){

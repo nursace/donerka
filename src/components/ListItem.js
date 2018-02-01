@@ -8,6 +8,7 @@ const {View, TouchableHighlight, Text} = ReactNative;
 class ListItem extends Component {
   
   render() {
+    console.log(this.props.item)
     return (
       <View style={styles.li}>
       <View style={styles.image}> 
@@ -23,10 +24,17 @@ class ListItem extends Component {
           
 </View>
 <View style={{flex : 1,margin : 10}}>
-          <Text style={{  fontSize: 14,
-    color: '#d3d3d3',
-    marginLeft: 5,
-    fontFamily : 'AvenirNext-DemiBold'}}>Need help !</Text>
+{this.props.item.role!==null  ?
+<Text style={{  fontSize: 14,
+color: '#d3d3d3',
+marginLeft: 5,
+fontFamily : 'AvenirNext-DemiBold'}}>Submitted blood to you !</Text> :
+
+<Text style={{  fontSize: 14,
+  color: '#d3d3d3',
+  marginLeft: 5,
+  fontFamily : 'AvenirNext-DemiBold'}}>Need help !</Text>
+}
 </View>
 </View>
       <Ionicons style={{backgroundColor:'transparent',marginTop: 10,marginLeft : Dimensions.get('window').width/2.7}} name='ios-arrow-forward-outline' color='#9C9C9C' size={33} />

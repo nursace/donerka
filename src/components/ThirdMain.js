@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
-import {Icon} from 'react-native-elements'
 import {logoutUser} from '../actions'
 import firebase from 'firebase'
 import {connect} from 'react-redux'

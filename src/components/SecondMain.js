@@ -123,6 +123,7 @@ class SecondMain extends Component {
                   user=obj
               }    
           })
+          if(user.role === 'doner')
           snapshot.forEach(function(childSnapshot) { // if donor
               let obj = childSnapshot.val()
              
@@ -153,6 +154,13 @@ class SecondMain extends Component {
               
               
           }) 
+          else {
+              firebase.database().ref(`/users/${s}/submittedBlood`).on('value',function(sumbittedBlood){
+                  sumbittedBlood.forEach(function(item){
+                      appropriates.push(item.val())
+                  })
+              })
+          }
           that.setState({  
               dataSource: that.state.dataSource.cloneWithRows(appropriates),
               loading : false
@@ -188,7 +196,6 @@ Actions.replace('firstMain')
                 enableEmptySections={true}
                 renderRow={this._renderItem.bind(this)}
                 style={styles.listView}/>
-                
             ) 
             else return(
                 <View style={{flex : 1, alignItems: 'center'}}>
@@ -200,8 +207,28 @@ Actions.replace('firstMain')
                    </View>
                     </View>
             )
-            return (null) // if recipient
+            else{
+                if(this.state.dataSource.getRowCount()> 0)
+                return (  
+                <ListView
+                    dataSource={this.state.dataSource}
+                    enableEmptySections={true}
+                    renderRow={this._renderItem.bind(this)}
+                    style={styles.listView}/>
+                    
+                ) 
+                else return(
+                    <View style={{flex : 1, alignItems: 'center'}}>
+                    <View style={{marginTop : Dimensions.get('window').height/3.4,alignItems: 'center'}}>
+                    <Ionicons name = 'ios-sad-outline' size= {70} color = '#9C9495' />
+                         <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize : 16,color: '#d0d0d0'}}>Unfortunately,</Text>
+                     
+                         <Text style={{fontFamily : 'AvenirNext-DemiBold',fontSize : 16,color: '#d0d0d0'}}>you don't have any donated pals</Text>
+                       </View>
+                        </View>
+                )
         }
+    }
         if(!this.state.current_step){
             return(
                     <View style={{justifyContent:'center',alignItems:'center',flex:1}}>
@@ -287,13 +314,12 @@ Actions.replace('firstMain')
       <View style={{flex:5,alignItems:'center',justifyContent:'center',borderBottomWidth:1,borderBottomColor:'#F65352',flexDirection:'row',backgroundColor:'#F65352'}}>
       <Animated.View style={{opacity: this.state.opacityValue,flex:7,alignItems:'center',justifyContent:'center',marginTop:20}}>
 
-        {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#fff',fontFamily :'AvenirNext-DemiBold' ,fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Donor</Text>:null : this.state.current_step ? 
+        {(this.props.loading||this.state.loading)||this.props.filled ? this.props.role==='donor'? <Text style={{color:'#fff',fontFamily :'AvenirNext-DemiBold' ,fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Donor</Text>:<Text style={{color:'#fff',fontFamily :'AvenirNext-DemiBold' ,fontSize:25,marginLeft: 60,alignSelf: 'center'}}>I'm Recipient</Text> : this.state.current_step ? 
         <View style={{flexDirection:'row',flex:1,marginTop:10}}>
          <TouchableOpacity onPress={(()=>{
              let f=parseInt(this.state.current_step)-1
 if(f===0)
 f=''
-console.log(f)
              this.setState({current_step: String(f)})
              
              })} style={{marginRight: Dimensions.get('window').width*0.3,height:35,width:35}}>
