@@ -146,7 +146,7 @@ if(this.props.error){
                   easing: Easing.bezier(0.0, 0.0, 0.2, 1),
                   
               }).start(() => {
-                  Actions.replace('register')
+                  Actions.register()
                 });
               }}>
             <Text style={{   color:'#fff',fontSize:15, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,textDecorationLine: "underline",}}>Sign Up</Text></TouchableOpacity>

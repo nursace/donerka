@@ -5,8 +5,7 @@ import { emailChanged, passwordChanged, registerUser } from '../actions'
 import { Input, Spinner,InputLogin } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
-import {Ionicons} from '@expo/vector-icons'
-
+import {Icon} from 'react-native-elements'
 class Register extends Component {
   constructor(props) {
     super(props)
@@ -34,7 +33,7 @@ class Register extends Component {
   onPhoneChange(phone) {
     this.setState({phone})
   }
-  onPatronymicChange(phone) {
+  onPatronymicChange(patronymic) {
     this.setState({patronymic})
   }
   onLastNameChange(lastName) {
@@ -66,7 +65,7 @@ this.setState({loading:false})
   }
   renderButton() {
     if (this.props.loading||this.state.loading) {
-      return <Spinner size='large' />
+      return null
     }
     return (
     <TouchableOpacity style={{width: 170,
@@ -94,11 +93,6 @@ this.setState({loading:false})
         <View style={styles.mainView} />
         <View style={{flex : 2 , }}>
         <View style={{flex : 1,marginTop:20}}>
-        <TouchableOpacity onPress={(()=>{
-              Actions.replace('login')
-             })} style={{height:35,width:35,marginTop: 10,backgroundColor:'transparent'}}>
-<Ionicons name='ios-arrow-back' color='#fff' size={33} />
-      </TouchableOpacity>
       </View>
       <View style={{flex : 5,justifyContent: 'center',alignItems:'center',backgroundColor:'transparent'}}>
       <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 25 , color :'#fff'}}>Sign up</Text>
@@ -116,7 +110,7 @@ this.setState({loading:false})
             marginRight: 20
           }}
         >
-        <View style={{marginTop:30}}>
+        <View style={{marginTop:15,marginRight : 10}}>
           <InputLogin
           label='First Name'
           placeholder='first name'
@@ -155,7 +149,7 @@ this.setState({loading:false})
           value={this.props.password}
         />
           </View>
-        <View style={{ marginTop: 10 }}>{this.renderButton()}</View>
+        <View style={{ marginTop: 10,marginLeft : 40,justifyContent: 'center',alignItems: 'center' }}>{this.renderButton()}</View>
 
         </View>
         <View style={{justifyContent:'center',backgroundColor:'transparent',flexDirection:'row',alignItems:'center',flex:1}}> 
@@ -168,7 +162,7 @@ this.setState({loading:false})
                   duration:300, 
                   easing: Easing.bezier(0.0, 0.0, 0.2, 1),
               }).start(() => {
-                  Actions.replace('login')
+                  Actions.login()
                 });
               }}>
             <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign in</Text></TouchableOpacity>
@@ -189,7 +183,6 @@ const styles = {
   mainView: {
     height:Dimensions.get('window').height,
     width: Dimensions.get('window').width,
-    opacity:0.6,
     backgroundColor:'#F65352',
     position:'absolute',  
   }

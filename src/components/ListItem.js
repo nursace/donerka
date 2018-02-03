@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import ReactNative, {Image,Dimensions,Platform,TouchableOpacity} from 'react-native';
-import { Font } from 'expo';
-import {Ionicons} from '@expo/vector-icons'
+import {Icon} from 'react-native-elements'
 import {Actions} from 'react-native-router-flux'
 import firebase from 'firebase'
 const {View, TouchableHighlight, Text} = ReactNative;
@@ -31,7 +30,7 @@ class ListItem extends Component {
       return (
       <View style={styles.li}>
       <View style={styles.image}> 
-        <Ionicons color='#E39291' style={{backgroundColor:'transparent'}} size={50} name='ios-camera-outline' /> 
+        <Icon type='ionicon' color='#E39291' style={{backgroundColor:'transparent'}} size={50} name='ios-camera-outline' /> 
         </View>
         <TouchableOpacity onPress={()=>{
           const { item } = this.props
@@ -56,8 +55,6 @@ fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Submitted blood 
 }
 </View>
 </View>
-      <Ionicons style={{backgroundColor:'transparent',marginTop: 10,marginLeft : Dimensions.get('window').width/2.7}} name='ios-arrow-forward-outline' color='#9C9C9C' size={33} />
-      
         </TouchableOpacity>
       </View>
     );

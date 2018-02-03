@@ -5,7 +5,7 @@ import {userDataFetching} from '../actions'
 import firebase from 'firebase'
 import {connect} from 'react-redux'
 import {Spinner} from './common'
-import {Ionicons} from '@expo/vector-icons'
+import {Icon} from 'react-native-elements'
 //DESCRIPTION'S NEEDED HERE
 async function fetchData(userDataFetching){
   await userDataFetching()
@@ -177,7 +177,7 @@ body : 'C'
     alignItems : 'center',
     justifyContent : 'center',
   }}>
-  <Ionicons color='#E39291' style={{backgroundColor:'transparent',}} size={100} name='ios-camera-outline' /> 
+  <Icon type='ionicon' color='#E39291' style={{backgroundColor:'transparent',}} size={100} name='ios-camera-outline' /> 
       </View>
 </View>
   <View style={{flex : 5,}}>
@@ -233,14 +233,14 @@ body : 'C'
       <View style={[styles.mainView]}>
       <View style={{flex:5,flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#F65352',backgroundColor:'#F65352'}}>
       <View style={{flex:2,justifyContent: 'center',}}><TouchableOpacity onPress={()=>{Actions.pop()}} style={{width: 40,height:40,justifyContent:'center',alignItems: 'center',marginLeft : 10,marginTop: 10}}>
-      <Ionicons name='ios-arrow-back' color='#fff' size={33} />
+      <Icon type='ionicon' name='ios-arrow-back' color='#fff' size={33} />
 </TouchableOpacity>
 </View>
 <View style={{flex :18 ,justifyContent: 'center',alignItems: 'center',}}>
       </View>
       <View style={{flex : 3,justifyContent:'center'}}>
       <TouchableOpacity onPress={()=>{this._handlePress()}} style={{width: 40,height:40,justifyContent:'center',alignItems: 'center',marginRight : 10,marginTop: 10}}>
-      <Ionicons name='ios-star-outline' color='#fff' size={33} />
+      <Icon type='ionicon' name='ios-star-outline' color='#fff' size={33} />
 </TouchableOpacity>
       </View>
          </View>

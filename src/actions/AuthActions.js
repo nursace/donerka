@@ -11,7 +11,7 @@ import { EMAIL_CHANGED,
   ERROR_SHOWED
 } from './types'
 import {AsyncStorage,Alert} from 'react-native'
-import { Permissions, Notifications } from 'expo';
+/*import { Permissions, Notifications } from 'expo';
 async function registerToken(user){
     let {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS)
     
@@ -29,6 +29,7 @@ async function registerToken(user){
    await firebase.database().ref(`/users/${s}`).update({token})
     
   }
+  */
 export const emailChanged = text => {
     return {
         type: EMAIL_CHANGED,
@@ -48,7 +49,6 @@ export const loginUser = ({ email, password }) => {
         dispatch({ type: LOGIN_USER})
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(user => {
-                registerToken(user).then(()=>{
                 AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {
                     if(LoggedInWithEmail === email){        
                     }
@@ -62,7 +62,7 @@ export const loginUser = ({ email, password }) => {
                  loginUserSuccess(dispatch, user)
             })
         
-            })})
+            })
                 .catch(() => {
                      loginUserFail(dispatch)
             })
@@ -84,7 +84,6 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
             let str1 = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase()
             let str2 = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase()
             let str3 = patronymic.charAt(0).toUpperCase() + patronymic.slice(1).toLowerCase()
-             registerToken(user).then(()=>{})
             firebase.database().ref(`/users/`).child(s.toLowerCase()).set({
                 firstName: str1,
                 lastName: str2,
@@ -103,7 +102,7 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                     }
                 }
             ).then(()=>{    
-                Actions.replace('secondMain')
+                Actions.secondMain()
             })
               })
         })
@@ -130,7 +129,7 @@ const loginUserSuccess = (dispatch, user) => {
         type: LOGIN_USER_SUCCESS,
         payload: user
     })
-    Actions.replace('secondMain')
+    Actions.secondMain()
     
 }
 export const errorShowed = () =>{
@@ -161,7 +160,7 @@ export const logoutUser = () => {
         .auth()
         .signOut()
         .then(()=>{
+            Actions.login()            
             dispatch({ type: LOGOUT_USER})
-            Actions.replace('login')
         })
     }}

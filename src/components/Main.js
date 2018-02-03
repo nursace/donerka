@@ -1,13 +1,9 @@
 import React, {Component} from 'react'
 import {View, Image, ActivityIndicator, AsyncStorage} from 'react-native'
-import LanguageForm from './LanguageForm'
-import LoginForm from './LoginForm'
 import FirstMain from './FirstMain'
 import SecondMain from './SecondMain'
 import ThirdMain from './ThirdMain'
 import firebase from 'firebase'
-import BlueScreen from '../BlueScreen';
-
 async function registerToken(user){
   let {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS)
   
@@ -26,7 +22,7 @@ async function registerToken(user){
   
 }
 
-class StartingComponent extends Component {
+class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -64,14 +60,14 @@ class StartingComponent extends Component {
     if (this.state.user === '0') {
       if (this.state.firstLaunch)
         return (
-          <LoginForm /> //Самый первый раз
+          <LoginForm />
         )
       else
         return (<LoginForm />)
     }
     else if (this.state.user === '1') {
       return (
-        <BlueScreen />
+        <SecondMain />
       )
     }
     else
@@ -110,4 +106,4 @@ const styles = {
   }
 }
 
-export default StartingComponent;
+export default Main;
