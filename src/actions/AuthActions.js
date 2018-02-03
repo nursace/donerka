@@ -8,7 +8,9 @@ import { EMAIL_CHANGED,
   REGISTER_USER_FAIL,
   ROLE_CHANGED,
   LOGOUT_USER,
-  ERROR_SHOWED
+  ERROR_SHOWED,
+  MESSAGE,
+  NOTVERIFIED
 } from './types'
 import {AsyncStorage,Alert} from 'react-native'
 /*import { Permissions, Notifications } from 'expo';
@@ -56,10 +58,21 @@ export const loginUser = ({ email, password }) => {
                         AsyncStorage.setItem('LoggedInWithEmail', email);
                     }
                 }
-            
-                
             ).then(()=>{    
+                if(firebase.auth().currentUser.emailVerified)
                  loginUserSuccess(dispatch, user)
+                 else{
+                        firebase.auth().signOut().then(()=>{
+                            Alert.alert(
+                                'Verify your account',
+                                'Please confirm your email address',
+                                [
+                                  {text: 'Ok'},
+                                ]
+                              )
+                              dispatch({type: NOTVERIFIED})
+                            })
+                 }
             })
         
             })
@@ -73,7 +86,6 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
         dispatch({ type: LOGIN_USER})
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((user) => {
-        
             let s = ''
             let email1 = email
             
@@ -88,8 +100,7 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                 firstName: str1,
                 lastName: str2,
                 patronymic: str3,
-                phone: phone,
-                
+                phone: phone,   
                 email : email.toLowerCase(),
                 rescue_count : 0,
             
@@ -100,16 +111,15 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                     else{
                         AsyncStorage.setItem('LoggedInWithEmail', email);
                     }
+                    firebase.auth().currentUser.sendEmailVerification().then(()=>{
+                        dispatch({ type: MESSAGE })                        
+                    }).catch(()=>{
+                        console.log('do something if email sending has been failed')
+                    })
                 }
-            ).then(()=>{  
-                firebase.auth().currentUser.sendEmailVerification().then(()=>{
-
-                }).catch(()=>{
-
-                })
-            })
-              })
+            )
         })
+    })
         .catch((error)=>{
             Alert.alert(
                 'Try Again!',
@@ -160,11 +170,12 @@ export const roleChanged = role => {
 
 export const logoutUser = () => {
     return dispatch => {
+        
         firebase
         .auth()
         .signOut()
-        .then(()=>{
-            Actions.login()            
-            dispatch({ type: LOGOUT_USER})
+        .then(()=>{            
+            dispatch({type: LOGOUT_USER})
+            Actions.login({loading  :false})            
         })
     }}

@@ -7,6 +7,8 @@ export const REGISTER_USER_FAIL = 'register_user_fail'
 export const ROLE_CHANGED = 'role_changed'
 export const LOGOUT_USER = 'logout_user'
 export const ERROR_SHOWED = 'error_showed'
+export const MESSAGE= 'message'
+export const NOTVERIFIED = 'notverified'
 
 export const USER_FETCH_SUCCESS = 'user_fetch_success'
 export const USER_FETCH = 'user_fetch'

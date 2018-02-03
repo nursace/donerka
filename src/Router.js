@@ -101,7 +101,7 @@ class RouterComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      user: '',
+      user: '0',
       firstLaunch: null,
       loading : true
     }

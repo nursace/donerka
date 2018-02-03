@@ -19,6 +19,7 @@ class Register extends Component {
       loading: false,
       image : null,
       opacityValue: new Animated.Value(0.12),
+      timeLineTop: null
     }
   }
   onEmailChange(text) {
@@ -44,7 +45,6 @@ class Register extends Component {
     this.props.registerUser({ email, password })
   }
 
-  
   submitToFirebase() {
 
 this.setState({loading : true})
@@ -65,7 +65,7 @@ this.setState({loading:false})
   }
   renderButton() {
     if (this.props.loading||this.state.loading) {
-      return null
+      return <Spinner style={{marginRight : 35  , }} size='large' />
     }
     return (
     <TouchableOpacity style={{width: 170,
@@ -81,6 +81,13 @@ this.setState({loading:false})
     </TouchableOpacity>
     )
   }
+  renderPost(){
+    firebase.auth().signOut().then(()=>{
+    Actions.pop()
+  }).catch(()=>{
+    console.log('sign out failed')
+  })
+  }
   componentWillMount(){
     Animated.timing(this.state.opacityValue, {
       toValue: 1,
@@ -88,86 +95,110 @@ this.setState({loading:false})
   }).start();
   }
   render() {
+    if(firebase.auth().currentUser)
+    console.log(firebase.auth().currentUser.emailVerified)
     return(
-        <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
-        <View style={styles.mainView} />
-        <View style={{flex : 2 , }}>
-        <View style={{flex : 1,marginTop:20}}>
+        <Animated.View style={{flex:1,opacity: this.state.opacityValue,backgroundColor: '#F65352'}}>
+    {!this.props.sent ?
+      <View style={{flex : 1}}>
+      <View style={{flex : 2 , }}>
+      <View style={{flex : 1,marginTop:20}}>
+    </View>
+    <View style={{flex : 5,justifyContent: 'center',alignItems:'center',backgroundColor:'transparent'}}>
+    <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 25 , color :'#fff'}}>Sign up</Text>
+
+      </View>   
+      <View style={{flex : 1}}> 
+        </View>
+        </View>
+        <View style={{flex : 2,}}>
+<TouchableOpacity style={{width: 170,
+    backgroundColor:'transparent',
+    height:50,
+    alignItems:'center',
+    justifyContent: 'center',
+  }}
+  onPress={()=>console.log('asdwd')}>
+    <Text style={{color: '#fff', fontSize:20, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>
+      Create an account
+    </Text>
+  </TouchableOpacity>
+</View>
+     <View
+        style={{
+          justifyContent:'center',
+          flex: 10,
+          backgroundColor:'transparent',
+          alignItems : 'center',
+          marginRight : 40,
+          marginTop : 10
+        }}
+      >
+        <InputLogin
+        label='First Name'
+        placeholder='first name'
+        onChangeText={this.onFirstNameChange.bind(this)}
+        value={this.state.firstName}
+      />
+      <InputLogin
+      label='Last Name'
+      placeholder='last name'
+      onChangeText={this.onLastNameChange.bind(this)}
+      value={this.state.lastName}
+    />  
+     <InputLogin
+        label='Patronymic'
+        placeholder='patronymic'
+        onChangeText={this.onPatronymicChange.bind(this)}
+        value={this.state.patronymic}
+      />
+      <InputLogin
+        label='Phone Number'
+        placeholder='555-555-555'
+        onChangeText={this.onPhoneChange.bind(this)}
+        value={this.state.phone}
+      />
+      <InputLogin
+        label='Email'
+        placeholder='Email'
+        onChangeText={this.onEmailChange.bind(this)}
+        value={this.props.email}
+      />
+      <InputLogin
+        secureTextEntry
+        label='Password'
+        placeholder='password'
+        onChangeText={this.onPasswordChange.bind(this)}
+        value={this.props.password}
+      />
+
       </View>
-      <View style={{flex : 5,justifyContent: 'center',alignItems:'center',backgroundColor:'transparent'}}>
-      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 25 , color :'#fff'}}>Sign up</Text>
 
-        </View>   
-        <View style={{flex : 1}}> 
-          </View>
-          </View>
-       <View
-          style={{
-            justifyContent:'center',
-            flex: 12,
-            backgroundColor:'transparent',
-            alignItems : 'center',
-            marginRight: 20
-          }}
-        >
-        <View style={{marginTop:15,marginRight : 10}}>
-          <InputLogin
-          label='First Name'
-          placeholder='first name'
-          onChangeText={this.onFirstNameChange.bind(this)}
-          value={this.state.firstName}
-        />
-        <InputLogin
-        label='Last Name'
-        placeholder='last name'
-        onChangeText={this.onLastNameChange.bind(this)}
-        value={this.state.lastName}
-      />  
-       <InputLogin
-          label='Patronymic'
-          placeholder='patronymic'
-          onChangeText={this.onPatronymicChange.bind(this)}
-          value={this.state.patronymic}
-        />
-        <InputLogin
-          label='Phone Number'
-          placeholder='555-555-555'
-          onChangeText={this.onPhoneChange.bind(this)}
-          value={this.state.phone}
-        />
-        <InputLogin
-          label='Email'
-          placeholder='Email'
-          onChangeText={this.onEmailChange.bind(this)}
-          value={this.props.email}
-        />
-        <InputLogin
-          secureTextEntry
-          label='Password'
-          placeholder='password'
-          onChangeText={this.onPasswordChange.bind(this)}
-          value={this.props.password}
-        />
-          </View>
-        <View style={{ marginTop: 10,marginLeft : 40,justifyContent: 'center',alignItems: 'center' }}>{this.renderButton()}</View>
 
-        </View>
-        <View style={{justifyContent:'center',backgroundColor:'transparent',flexDirection:'row',alignItems:'center',flex:1}}> 
-            
-            <Text style={{color:'#fff'}}>Already have an account? </Text>
-            
-            <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
-                Animated.timing(this.state.opacityValue, {
-                  toValue: 0,
-                  duration:300, 
-                  easing: Easing.bezier(0.0, 0.0, 0.2, 1),
-              }).start(() => {
-                  Actions.login()
-                });
-              }}>
-            <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign in</Text></TouchableOpacity>
-      
-        </View>
+      <View style={{ flex: 1,marginBottom : 40,alignItems: 'center' }}>
+      {this.renderButton()}
+      </View>
+
+      <View style={{justifyContent:'center',backgroundColor:'transparent',flexDirection:'row',alignItems:'center',flex:1}}> 
+          
+          <Text style={{color:'#fff'}}>Already have an account? </Text>
+          
+          <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
+              Animated.timing(this.state.opacityValue, {
+                toValue: 0,
+                duration:300, 
+                easing: Easing.bezier(0.0, 0.0, 0.2, 1),
+            }).start(() => {
+                Actions.login()
+              });
+            }}>
+          <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign in</Text></TouchableOpacity>
+    
+      </View>
+      </View>
+      : 
+      this.renderPost()
+      }
       </Animated.View>
     )
   }
@@ -189,8 +220,8 @@ const styles = {
 }
 
 const mapStateToProps = ({ auth }) => {
-    const { email, password, error, loading } = auth
-    return {email, password, error, loading }
+    const { email, password, error, loading,sent } = auth
+    return {email, password, error, loading,sent }
 }
 
 export default connect(mapStateToProps, {

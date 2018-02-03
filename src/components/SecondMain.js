@@ -31,6 +31,7 @@ class SecondMain extends Component {
   }
 
  componentDidMount() {
+     if(firebase.auth().currentUser){
     this.setState({loading:true})
   let s = ''
   let email1 = firebase.auth().currentUser.email
@@ -94,10 +95,10 @@ class SecondMain extends Component {
           loading : false,
           logo :require('../../assets/logo.png')
         });
-        firebase.auth().signOut()
-  }
-)
+    }
 
+)
+     }
 
 }
 onPressFirst(){

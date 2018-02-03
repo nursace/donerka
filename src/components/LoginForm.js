@@ -44,21 +44,21 @@ class LoginForm extends Component {
     this.props.loginUser({ email, password });
     this.setState({loading:false})
   }
-componentWillMount(){
+  componentWillMount(){
   //async storage fetch email
   AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {    
   this.setState({email:LoggedInWithEmail})
   this.props.emailChanged(LoggedInWithEmail);
   })
 }
-componentDidMount(){
+  componentDidMount(){
 let that = this
   if(that.props.email===''||that.props.password===''){
     that.setState({disabled:true})
   }
   else that.setState({disabled: false})
 }
-getBackColor(){
+  getBackColor(){
   if(this.state.disabled)
   return '#E39291'
   else
@@ -90,7 +90,7 @@ getBackColor(){
     );
   }
   render() {
-if(this.props.error){
+if(this.props.error==='Authentication Failed'){
   Alert.alert(
     'Try Again!',
     'Wrong email or password',
