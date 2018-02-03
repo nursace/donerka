@@ -19,7 +19,7 @@ import FirstMain from './components/FirstMain'
 import SecondMain from './components/SecondMain'
 import ThirdMain from './components/ThirdMain'
 
-class TabIcon extends Component {
+class TabIconDonor extends Component {
   constructor(props){
     super(props)
     const maxOpacity=0.12
@@ -92,6 +92,11 @@ renderRippleView() {
 }
 }
 
+const TabIcon = ({ selected, title }) => {
+  return (
+    <Text style={{color: selected ? 'red' :'black'}}>{title}</Text>
+  );
+}
 class RouterComponent extends Component {
   constructor(props) {
     super(props)
@@ -137,47 +142,38 @@ class RouterComponent extends Component {
         
         <Scene key='login' initial={this.state.user==='0'}  component={LoginForm} />
 
-      <Scene key='firstMain' component = {FirstMain} />
-    <Scene key='thirdMain' component = {ThirdMain} />
-        
-
         <Scene
           key="tabbar"
           tabs={true}
           initial = {this.state.user==='1'}
           showLabel={false}
-          
-          tabBarStyle={{ backgroundColor: '#FFFFFF' }}
+          tabBarStyle={{ backgroundColor: '#fff' }}
+          tabBarPosition='bottom'   
         >
 
-          <Scene key="osu" text="Albums" name='md-list-box' size={30} icon={TabIcon}>
+          <Scene key="osu" hideNavBar text="Albums" name='md-list-box' size={30} icon={TabIconDonor}>
            
-            <Scene
-              key="gray"
-              component={GrayScreen}
-              title="Gray"
-            />
+          <Scene
+          key="firstMain"
+          component={FirstMain}
+        
+        />
           </Scene>
 
-          <Scene key="um" text="Main" name='md-beaker' size={30} icon={TabIcon} initial>
+          <Scene key="um" hideNavBar text="Main" name='md-beaker' size={30} icon={TabIconDonor} initial>
             <Scene
               key="secondMain"
               component={SecondMain}
-            hideNavBar
+            
             />
           </Scene>
 
-          <Scene key="vu" text="Settings" name='ios-cog' size={30} icon={TabIcon}>
-            <Scene
-              key="gold"
-              component={GoldScreen}
-              title="Gold"
-            />
-            <Scene
-              key="black"
-              component={BlackScreen}
-              title="Black"
-            />
+          <Scene key="vu" hideNavBar text="Settings" name='ios-cog' size={30} icon={TabIconDonor}>
+          <Scene
+          key="thirdMain"
+          component={ThirdMain}
+        
+        />
           </Scene>
         </Scene>
 

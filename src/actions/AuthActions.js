@@ -101,8 +101,12 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                         AsyncStorage.setItem('LoggedInWithEmail', email);
                     }
                 }
-            ).then(()=>{    
-                Actions.secondMain()
+            ).then(()=>{  
+                firebase.auth().currentUser.sendEmailVerification().then(()=>{
+
+                }).catch(()=>{
+
+                })
             })
               })
         })

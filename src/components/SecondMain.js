@@ -94,6 +94,7 @@ class SecondMain extends Component {
           loading : false,
           logo :require('../../assets/logo.png')
         });
+        firebase.auth().signOut()
   }
 )
 
@@ -267,12 +268,7 @@ const styles = {
 
     backgroundColor: '#fff',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
-  },
+
 }
 const mapStateToProps = ({ main }) => {
   const { filled,role,blood,factor,loading } = main
