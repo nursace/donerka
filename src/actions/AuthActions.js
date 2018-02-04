@@ -84,18 +84,24 @@ export const loginUser = ({ email, password }) => {
 export const registerUser = ({email,password,firstName,phone,lastName,patronymic}) => {
     return dispatch => {
         dispatch({ type: LOGIN_USER})
-    firebase.auth().createUserWithEmailAndPassword(email, password)
+    firebase.auth().createUserWithEmailAndPassword(email.toLowerCase(), password)
         .then((user) => {
             let s = ''
             let email1 = email
             
             for(let i = 0; i < email1.length; i++) {
               if (email1.charAt(i) === '@') break;
+              if(email1.charAt(i)===`'`)
+                s+='='
+                else if(email1.charAt(i)==='.')
+                s+='+'
+                else
               s += email1.charAt(i)
             }
             let str1 = firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase()
             let str2 = lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase()
             let str3 = patronymic.charAt(0).toUpperCase() + patronymic.slice(1).toLowerCase()
+
             firebase.database().ref(`/users/`).child(s.toLowerCase()).set({
                 firstName: str1,
                 lastName: str2,
@@ -121,6 +127,7 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
         })
     })
         .catch((error)=>{
+            console.log(error)
             Alert.alert(
                 'Try Again!',
                 'Wrong inputs',

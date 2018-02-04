@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Text,Alert,ListView,Platform, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
+import { Text,Alert,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {userDataFetching,userDataUpdate} from '../actions'
 import firebase from 'firebase'
 import {connect} from 'react-redux'
 import {Spinner} from './common'
 import ListItem from './ListItem'
-import {Icon} from 'react-native-elements'
+import { List, SearchBar, Icon} from 'react-native-elements'
 
 //header marginTop : 20
 class SecondMain extends Component {
@@ -31,17 +31,19 @@ class SecondMain extends Component {
   }
 
  componentDidMount() {
-     if(firebase.auth().currentUser){
+    if(firebase.auth().currentUser){
     this.setState({loading:true})
   let s = ''
   let email1 = firebase.auth().currentUser.email
   for(let i = 0; i < email1.length; i++) {
     if (email1.charAt(i) === '@') break;
+    if(email1.charAt(i)==='.')s+='donerka'
+    else
     s += email1.charAt(i)
   }
   let user ;
   var that = this 
-  
+  console.log(s)
   firebase.database().ref(`/users/`)
   .on('value',function(snapshot){
       var appropriates = []            
