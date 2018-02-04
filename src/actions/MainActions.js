@@ -16,7 +16,12 @@ export const userDataFetching = ()=>{
         let email = firebase.auth().currentUser.email;
         for (let i = 0; i < email.length; i++) {
           if (email.charAt(i) === '@') break;
-          s += email.charAt(i);
+          if(email.charAt(i)===`'`)
+          s+='='
+          else if(email.charAt(i)==='.')
+          s+='+'
+          else
+        s += email.charAt(i)
         }
         firebase.database().ref(`/users/${s}`).once('value',function(snapshot){
             if(snapshot.hasChild('blood')&&snapshot.hasChild('role')){
@@ -36,8 +41,13 @@ export const userDataUpdate = ({blood,role,factor})=>{
         let email = firebase.auth().currentUser.email;
         for (let i = 0; i < email.length; i++) {
           if (email.charAt(i) === '@') break;
-          s += email.charAt(i);
-        }
+          if(email1.charAt(i)===`'`)
+          s+='='
+          else if(email.charAt(i)==='.')
+          s+='+'
+          else
+        s += email.charAt(i)  
+      }
         firebase.database().ref(`/users/${s}`).update({blood,role,factor})
         .then(()=>{
             dispatch({type : USER_FILLING_FORM , blood,role,factor,filled:true})

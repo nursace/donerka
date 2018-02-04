@@ -57,6 +57,7 @@ this.setState({loading : true})
       if (email1.charAt(i) === '@') break;
       s += email1.charAt(i)
     }
+    console.log(email,s)
     this.props.registerUser({ email, password,firstName,phone,lastName,patronymic})
 
 this.setState({loading:false})
