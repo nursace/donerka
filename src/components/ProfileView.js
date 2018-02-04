@@ -36,6 +36,12 @@ class ProfileView extends Component {
       if (email2.charAt(i) === '@') break;
       d += email2.charAt(i)
     } 
+    if(this.props.role==='recipient'&&this.props.item ==='donor'){
+      let y=s
+      s=d
+      d=y
+    }
+    console.log(this.props.item ,this.props.role)
     firebase.database().ref(`/users/${s}/submittedBlood`).on('value',function(snapshot){
      
      that.setState({submitted: snapshot.hasChild(`${d}`)})
@@ -49,43 +55,60 @@ class ProfileView extends Component {
     let email1 = this.props.item.email
     for(let i = 0; i < email1.length; i++) {
       if (email1.charAt(i) === '@') break;
-      s += email1.charAt(i)
+      if(email1.charAt(i)===`'`)
+      s+='='
+      else if(email1.charAt(i)==='.')
+      s+='+'
+      else
+    s += email1.charAt(i)
     }
     var that =this
-   firebase.database().ref(`/users/${s}`).on('value',function(snapshot){
-    fetch('https://exp.host/--/api/v2/push/send', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        to: snapshot.val().token,
-title: `You've recieved blood`,
-sound : 'default',
-body : 'C'
-      }),
-    }).then((response)=>{
+
       let d = ''
-      let email1 = firebase.auth().currentUser.email
+      email1 = firebase.auth().currentUser.email
       for(let i = 0; i < email1.length; i++) {
         if (email1.charAt(i) === '@') break;
-        d += email1.charAt(i)
+        if(email1.charAt(i)===`'`)
+        d+='='
+        else if(email1.charAt(i)==='.')
+        d+='+'
+        else
+      d += email1.charAt(i)
       } 
-      firebase.database().ref(`/users/${d}`).on('value',function(snapshot){
+      console.log('sdfef')
+      let f
+      firebase.database().ref(`/users/${d}`).once('value',function(snapshot){
         const {rescue_count,email,blood,factor,lastName,firstName,patronymic,phone} = snapshot.val()
+    
         let f=parseInt(rescue_count)+1
-        firebase.database().ref(`/users/${d}`).update({rescue_count: String(f)})
-        firebase.database().ref(`/users/${s}/submittedBlood/${d}`).update({email,blood,factor,lastName,firstName,patronymic,phone})
+       console.log(String(f))
       
+       firebase.database().ref(`/users/${d}`).update({rescue_count: f}).then(()=>{
+        firebase.database().ref(`/users/${s}/submittedBlood/${d}`).update({email,role:'donor',blood,factor,lastName,firstName,patronymic,phone})
+        .then(()=>{
+
+          that.setState({modalVisible: false,loading : false})
+          
+        })
+       })
+       
+    }) 
+      /*
+  this.fetchSnap.then((f)=>{
+      .then(()=>{
+        firebase.database().ref(`/users/${s}/submittedBlood/${d}`).update({email,blood,factor,lastName,firstName,patronymic,phone})
+        .then(()=>{
+
+          that.setState({modalVisible: false})
+          
+        })
       })
-    }).then(()=>{
-      that.setState({loading : false})
-    });
-    })
+    })*/
+    
   }
   renderButton(){
-      if(this.props.role === 'donor' && this.props.item.role==='recipient')
+      if(this.props.role === 'donor' && this.props.item.role==='recipient'){
+      console.log('123')
       return(
       this.state.submitted!==true ? 
       <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
@@ -108,9 +131,25 @@ body : 'C'
                     <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
             You've already submitted your blood
             </Text>
-</View>                    
-)
-    
+</View> 
+  )
+}
+else if(this.props.role==='recipient'&&this.props.item.role==='donor') {
+console.log('adwdw')
+  return(
+    this.state.submitted ? 
+    <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
+    <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+You've been already submitted your blood
+</Text>
+</View>  :
+  <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
+  <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+Yoffu've been already submitted
+</Text>
+</View> 
+  )
+}                   
    
     
   }

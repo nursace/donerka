@@ -148,7 +148,8 @@ class RouterComponent extends Component {
           initial = {this.state.user==='1'}
           showLabel={false}
           tabBarStyle={{ backgroundColor: '#fff' }}
-          tabBarPosition='bottom'   
+          tabBarPosition='bottom' 
+          swipeEnabled  
         >
 
           <Scene key="osu" hideNavBar text="Albums" name='md-list-box' size={30} icon={TabIconDonor}>

@@ -90,7 +90,6 @@ this.setState({loading:false})
   }
   render() {
     if(firebase.auth().currentUser)
-    console.log(firebase.auth().currentUser.emailVerified)
     return(
         <Animated.View style={{flex:1,opacity: this.state.opacityValue,backgroundColor: '#F65352'}}>
     {!this.props.sent ?
