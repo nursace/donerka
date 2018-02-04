@@ -50,14 +50,7 @@ class Register extends Component {
 this.setState({loading : true})
     const {firstName,phone,lastName,patronymic } = this.state
     const {email,password } = this.props
-    let s = ''
-    let email1 = email
-    
-    for(let i = 0; i < email1.length; i++) {
-      if (email1.charAt(i) === '@') break;
-      s += email1.charAt(i)
-    }
-    console.log(email,s)
+
     this.props.registerUser({ email, password,firstName,phone,lastName,patronymic})
 
 this.setState({loading:false})

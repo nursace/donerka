@@ -41,7 +41,7 @@ export const userDataUpdate = ({blood,role,factor})=>{
         let email = firebase.auth().currentUser.email;
         for (let i = 0; i < email.length; i++) {
           if (email.charAt(i) === '@') break;
-          if(email1.charAt(i)===`'`)
+          if(email.charAt(i)===`'`)
           s+='='
           else if(email.charAt(i)==='.')
           s+='+'

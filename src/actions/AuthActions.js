@@ -118,6 +118,13 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                         AsyncStorage.setItem('LoggedInWithEmail', email);
                     }
                     firebase.auth().currentUser.sendEmailVerification().then(()=>{
+                        Alert.alert(
+                            'Verify your account',
+                            'Please confirm your email address',
+                            [
+                              {text: 'Ok'},
+                            ]
+                          )
                         dispatch({ type: MESSAGE })                        
                     }).catch(()=>{
                         console.log('do something if email sending has been failed')
@@ -127,7 +134,6 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
         })
     })
         .catch((error)=>{
-            console.log(error)
             Alert.alert(
                 'Try Again!',
                 'Wrong inputs',
