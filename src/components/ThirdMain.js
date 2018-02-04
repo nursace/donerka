@@ -57,23 +57,23 @@ class ThirdMain extends Component {
       )
     return (
       <View style={styles.mainHuiView}>
-        <View>
-          <View>
+        <View style={{flex: 1, backgroundColor: 'yellow'}}>
+          <View style={styles.imageView}>
             {/*3 IMAGES*/}
-            <View style={styles.huiFlex1}></View>
-            <View style={styles.huiFlex1}></View>
-            <View style={styles.huiFlex1}></View>
+            <View style={{flex: 1, backgroundColor: 'green'}}></View>
+            <View style={{flex: 1, backgroundColor: 'white'}}></View>
+            <View style={{flex: 1, backgroundColor: 'dark'}}></View>
           </View>
-          <View>
+          <View style={styles.textView}>
             <Text>Full Name</Text>
             <Text>@mail</Text>
             <Text>Phone</Text>
-            <Button>Edit Profile</Button>
+            <Button onPress={() => console.log('button hui')}>Edit Profile</Button>
           </View>
         </View>
-        <List>
+        <View style={{backgroundColor: 'blue', flex: 1}}>
 
-        </List>
+        </View>
       </View>
     )
   }
@@ -105,14 +105,16 @@ class ThirdMain extends Component {
       <ListItem item={item}/>
     )
   }
-
 }
-
 
 const styles = {
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  imageView: {
+    flex: 1,
+    flexDirection: 'row',
   },
   welcome: {
     fontSize: 20,
@@ -122,13 +124,16 @@ const styles = {
   },
   mainHuiView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
   },
   huiFlex1: {
+    borderColor: 'black',
     backgroundColor: 'yellow',
-
-
+    borderWidth: 1,
+  },
+  textView: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 
 }
