@@ -10,7 +10,7 @@ const INITIAL_STATE = {
     role : '',
     blood : '',
     factor : '',
-    pload : false
+    pload : false,
 }
 
 export default (state = INITIAL_STATE, action) => {

@@ -100,16 +100,6 @@ class FirstMain extends Component {
     return (
       <View style={styles.mostView}>
         <View style={styles.header}>
-          <View style={{flex: 2, flexDirection: 'row'}}>
-            <View style={styles.infoViewStyle}>
-              <Icon type='feather' name='info' color='#fff' />
-            </View>
-            <View style={styles.midOne}>
-              <Image source={require('../../assets/logo.png')} style={styles.hui}/>
-            </View>
-            <View style={{}}>
-            </View>
-          </View>
           <View style={styles.secondView}>
             <View style={{flex: 1, alignItems: 'center'}}>
               <Text onPress={() => {

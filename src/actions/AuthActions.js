@@ -109,7 +109,7 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                 phone: phone,   
                 email : email.toLowerCase(),
                 rescue_count : 0,
-            
+                visible : false
               }).then(()=>{
                 AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {
                     if(LoggedInWithEmail === email){        
@@ -170,7 +170,12 @@ export const roleChanged = role => {
     
     for(let i = 0; i < email1.length; i++) {
       if (email1.charAt(i) === '@') break;
-      s += email1.charAt(i)
+      if(email1.charAt(i)===`'`)
+      s+='='
+      else if(email1.charAt(i)==='.')
+      s+='+'
+      else
+    s += email1.charAt(i)
     }
     firebase.database().ref(`/users/${s}`).update({currentRole : role})
   

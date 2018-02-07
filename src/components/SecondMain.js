@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text,Alert,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
+import { Text,Alert,Switch,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {userDataFetching,userDataUpdate} from '../actions'
 import firebase from 'firebase'
@@ -25,7 +25,8 @@ class SecondMain extends Component {
           role : '',
           dataSource: dataSource,
           opacityValue: new Animated.Value(1),
-          logo : null
+          logo : null,
+          switchValue: false
           
       }
   }
@@ -37,12 +38,16 @@ class SecondMain extends Component {
   let email1 = firebase.auth().currentUser.email
   for(let i = 0; i < email1.length; i++) {
     if (email1.charAt(i) === '@') break;
-    if(email1.charAt(i)==='.')s+='donerka'
+    if(email1.charAt(i)===`'`)
+    s+='='
+    else if(email1.charAt(i)==='.')
+    s+='+'
     else
-    s += email1.charAt(i)
+  s += email1.charAt(i)
   }
   let user ;
-  var that = this 
+  var that = this
+  var boolS
   firebase.database().ref(`/users/`)
   .on('value',function(snapshot){
       var appropriates = []            
@@ -57,7 +62,7 @@ class SecondMain extends Component {
       snapshot.forEach(function(childSnapshot) { // if donor
           let obj = childSnapshot.val()
          
-          if(obj.role != user.role && user !== obj&&user.factor===obj.factor){
+          if(obj.role != user.role && user !== obj&&user.factor===obj.factor&&obj.visible){
             if(user.blood === 'O'){
               appropriates.push(obj)
             }
@@ -80,7 +85,9 @@ class SecondMain extends Component {
                 }
             }
           }  
-
+          
+          
+          
       }) 
       else {
           firebase.database().ref(`/users/${s}/submittedBlood`).on('value',function(sumbittedBlood){
@@ -88,12 +95,18 @@ class SecondMain extends Component {
                   appropriates.push(item.val())
               })
           })
+          firebase.database().ref(`/users/${s}`).on('value',function(snapshot){
+              boolS=snapshot.val().visible
+          })
+
       }
       that.setState({  
           dataSource: that.state.dataSource.cloneWithRows(appropriates),
           loading : false,
-          logo :require('../../assets/logo.png')
+          logo :require('../../assets/logo.png'),
+          switchValue : boolS
         });
+
     }
 
 )
@@ -107,6 +120,39 @@ onPressThird(){
     Actions.replace('thirdMain')
 }
 
+_handleToggleSwitch(){
+    if(this.state.switchValue){
+        let s = ''
+        let email1 = firebase.auth().currentUser.email
+        for(let i = 0; i < email1.length; i++) {
+          if (email1.charAt(i) === '@') break;
+          if(email1.charAt(i)===`'`)
+          s+='='
+          else if(email1.charAt(i)==='.')
+          s+='+'
+          else
+        s += email1.charAt(i)
+        }
+        var that=this
+        firebase.database().ref(`/users/${s}`).update({visible : false}).then(()=>{that.setState({switchValue:false})})
+    }
+    else{
+        let s = ''
+        let email1 = firebase.auth().currentUser.email
+        for(let i = 0; i < email1.length; i++) {
+          if (email1.charAt(i) === '@') break;
+          if(email1.charAt(i)===`'`)
+          s+='='
+          else if(email1.charAt(i)==='.')
+          s+='+'
+          else
+        s += email1.charAt(i)
+        }
+        var that = this
+        firebase.database().ref(`/users/${s}`).update({visible : true}).then(()=>{that.setState({switchValue:true})})
+
+    }
+}
 onFinishFillingForm(){ //finishing 3 step
     const {blood,role,factor} = this.state
     this.props.userDataUpdate({blood,role,factor})        
@@ -140,20 +186,33 @@ onFinishFillingForm(){ //finishing 3 step
         else{
             if(this.state.dataSource.getRowCount()> 0)
             return (  
+                <View style={{flex : 1}}>
+                <View style={{flex : 1,justifyContent:'space-between',flexDirection:'row',}}>
+                    <Text style={{fontSize : 17,color : 'gray',margin :10,marginTop : 45}}>Show me in donor's search</Text>
+                    <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :45}} value={this.state.switchValue} />
+                </View>
+                <View style={{flex : 4}}>
             <ListView
                 dataSource={this.state.dataSource}
                 enableEmptySections={true}
                 renderRow={this._renderItem.bind(this)}
                 style={styles.listView}/>
-                
+                </View>
+                </View>
             ) 
             else return(
-                <View style={{flex : 1, alignItems: 'center'}}>
-                <View style={{marginTop : Dimensions.get('window').height/3.4,alignItems: 'center'}}>
+                <View style={{flex : 1}}>
+                <View style={{flex : 1,justifyContent:'space-between',flexDirection:'row',}}>
+                    <Text style={{fontSize : 17,color : 'gray',margin :10,marginTop : 45}}>Show me in donor's search</Text>
+                    <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :45}} value={this.state.switchValue} />
+                </View>
+                <View style={{flex : 4}}>
+                <View style={{marginTop : Dimensions.get('window').height/7,alignItems: 'center'}}>
                 <Icon type='ionicon' name = 'ios-sad-outline' size= {70} color = '#9C9495' />
                      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 16,color: '#d0d0d0'}}>Unfortunately,</Text>
                  
                      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 16,color: '#d0d0d0'}}>you don't have any donated pals</Text>
+                   </View>
                    </View>
                     </View>
             )
@@ -271,8 +330,8 @@ const styles = {
 
 }
 const mapStateToProps = ({ main }) => {
-  const { filled,role,blood,factor,loading } = main
-  return {filled,role,blood,factor,loading}
+  const { filled,role,blood,factor,loading ,visible} = main
+  return {filled,role,blood,factor,loading,visible}
 }
 
 export default connect(mapStateToProps, {

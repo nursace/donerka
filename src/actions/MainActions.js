@@ -25,6 +25,7 @@ export const userDataFetching = ()=>{
         }
         firebase.database().ref(`/users/${s}`).once('value',function(snapshot){
             if(snapshot.hasChild('blood')&&snapshot.hasChild('role')){
+           
                 dispatch({type:USER_FETCH_SUCCESS,role : snapshot.val().role,blood: snapshot.val().blood,factor : snapshot.val().factor,filled: true})
             }
             else 

@@ -17,13 +17,19 @@ class ListItem extends Component {
     let email1 = firebase.auth().currentUser.email
     for(let i = 0; i < email1.length; i++) {
       if (email1.charAt(i) === '@') break;
-      s += email1.charAt(i)
+      if(email1.charAt(i)===`'`)
+      s+='='
+      else if(email1.charAt(i)==='.')
+      s+='+'
+      else
+    s += email1.charAt(i)
     }
     var that = this
-    firebase.database().ref(`users/${s}`).on('value',function(snapshot){
+    firebase.database().ref(`users/${s}`).once('value',function(snapshot){
        if(snapshot.val().role==='donor'){
          that.setState({role : 'donor'})
        }
+       
      })
   }
   render() {
