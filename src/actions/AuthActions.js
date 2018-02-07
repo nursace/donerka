@@ -84,6 +84,7 @@ export const loginUser = ({ email, password }) => {
 export const registerUser = ({email,password,firstName,phone,lastName,patronymic}) => {
     return dispatch => {
         dispatch({ type: LOGIN_USER})
+        console.log(email,password,firstName,phone,lastName,patronymic)
     firebase.auth().createUserWithEmailAndPassword(email.toLowerCase(), password)
         .then((user) => {
             let s = ''
@@ -134,9 +135,11 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
         })
     })
         .catch((error)=>{
+            console.log(error.message)
+            
             Alert.alert(
                 'Try Again!',
-                'Wrong inputs',
+                error.message,
                 [
                   {text: 'Ok'},
                 ]

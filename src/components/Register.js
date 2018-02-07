@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View,Button,Image,Platform,ImageBackgrounds,Dimensions,Animated,Easing, TouchableOpacity } from 'react-native'
+import { Text, View,Button,KeyboardAvoidingView,Image,Platform,ImageBackgrounds,Dimensions,Animated,Easing, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
 import { Input, Spinner,InputLogin } from './common'
@@ -77,51 +77,27 @@ this.setState({loading:false})
   }
   renderPost(){
     firebase.auth().signOut().then(()=>{
-    Actions.pop()
+    Actions.Login()
   }).catch(()=>{
     console.log('sign out failed')
   })
   }
-  componentWillMount(){
-    Animated.timing(this.state.opacityValue, {
-      toValue: 1,
-      duration: 500,
-  }).start();
-  }
   render() {
-    if(firebase.auth().currentUser)
     return(
-        <Animated.View style={{flex:1,opacity: this.state.opacityValue,backgroundColor: '#F65352'}}>
+        <View style={{flex:1,backgroundColor: '#F65352'}}>
     {!this.props.sent ?
       <View style={{flex : 1}}>
-      <View style={{flex : 2 , }}>
-      <View style={{flex : 1,marginTop:20}}>
-    </View>
+      <View style={{flex : 2, }}>
     <View style={{flex : 5,justifyContent: 'center',alignItems:'center',backgroundColor:'transparent'}}>
     <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 25 , color :'#fff'}}>Sign up</Text>
 
-      </View>   
-      <View style={{flex : 1}}> 
+      </View>  
         </View>
-        </View>
-        <View style={{flex : 2,}}>
-<TouchableOpacity style={{width: 170,
-    backgroundColor:'transparent',
-    height:50,
-    alignItems:'center',
-    justifyContent: 'center',
-  }}
-  onPress={()=>console.log('asdwd')}>
-    <Text style={{color: '#fff', fontSize:20, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>
-      Create an account
-    </Text>
-  </TouchableOpacity>
-</View>
+       
      <View
         style={{
           justifyContent:'center',
-          flex: 10,
-          backgroundColor:'transparent',
+          flex: 12,
           alignItems : 'center',
           marginRight : 40,
           marginTop : 10
@@ -167,8 +143,8 @@ this.setState({loading:false})
 
       </View>
 
-
-      <View style={{ flex: 1,marginBottom : 40,alignItems: 'center' }}>
+        <View style={{position : 'absolute',marginTop:Dimensions.get('window').height/1.18,marginLeft : Dimensions.get('window').width/4.9}}>
+      <View style={{ flex: 1,marginBottom : 25,alignItems: 'center' }}>
       {this.renderButton()}
       </View>
 
@@ -182,17 +158,18 @@ this.setState({loading:false})
                 duration:300, 
                 easing: Easing.bezier(0.0, 0.0, 0.2, 1),
             }).start(() => {
-                Actions.login()
+                Actions.pop()
               });
             }}>
           <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign in</Text></TouchableOpacity>
     
       </View>
       </View>
+      </View>
       : 
       this.renderPost()
       }
-      </Animated.View>
+      </View>
     )
   }
 

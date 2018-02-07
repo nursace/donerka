@@ -57,23 +57,9 @@ class ThirdMain extends Component {
       )
     return (
       <View style={styles.mainHuiView}>
-        <View style={{flex: 1, backgroundColor: 'yellow'}}>
-          <View style={styles.imageView}>
-            {/*3 IMAGES*/}
-            <View style={{flex: 1, backgroundColor: 'green'}}></View>
-            <View style={{flex: 1, backgroundColor: 'white'}}></View>
-            <View style={{flex: 1, backgroundColor: 'dark'}}></View>
-          </View>
-          <View style={styles.textView}>
-            <Text>Full Name</Text>
-            <Text>@mail</Text>
-            <Text>Phone</Text>
-            <Button onPress={() => console.log('button hui')}>Edit Profile</Button>
-          </View>
-        </View>
-        <View style={{backgroundColor: 'blue', flex: 1}}>
-
-        </View>
+          <TouchableOpacity style={{backgroundColor : 'red',justifyContent:'center',alignItems : 'center'}} onPress = {()=>{this.props.logoutUser()}}>
+            <Text style={{color : '#fff',fontSize : 23}}>Click here to logout</Text>
+          </TouchableOpacity>
       </View>
     )
   }
@@ -124,6 +110,8 @@ const styles = {
   },
   mainHuiView: {
     flex: 1,
+    justifyContent : 'center',
+    alignItems :'center'
   },
   huiFlex1: {
     borderColor: 'black',
