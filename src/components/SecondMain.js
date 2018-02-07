@@ -43,7 +43,6 @@ class SecondMain extends Component {
   }
   let user ;
   var that = this 
-  console.log(s)
   firebase.database().ref(`/users/`)
   .on('value',function(snapshot){
       var appropriates = []            
@@ -81,9 +80,7 @@ class SecondMain extends Component {
                 }
             }
           }  
-          
-          
-          
+
       }) 
       else {
           firebase.database().ref(`/users/${s}/submittedBlood`).on('value',function(sumbittedBlood){
