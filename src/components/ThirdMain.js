@@ -1,269 +1,378 @@
-import React, {Component} from 'react';
+
+import React, { Component } from 'react';
 import {
-  Text,
-  ListView,
-  View,
-  Animated,
-  Image,
+  AppRegistry,
   Dimensions,
-  FlatList,
-} from 'react-native'
-import {Actions} from 'react-native-router-flux'
-import {logoutUser} from '../actions'
+  StyleSheet,
+  Image,
+  TouchableHighlight,
+  TouchableOpacity,
+  Platform,
+  Text,
+  View,
+  ListView
+} from 'react-native';
 import firebase from 'firebase'
+import { userDataFetching,} from '../actions'
 import {connect} from 'react-redux'
-import {Spinner} from './common'
-import {Icon, Button, ListItem, List} from 'react-native-elements'
+import {logoutUser} from '../actions'
+import {Actions} from 'react-native-router-flux';
+import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import RNFetchBlob from 'react-native-fetch-blob'
+import ImagePicker from 'react-native-image-crop-picker'
+async function fetchData(userDataFetching){
+  await userDataFetching()
+   
+ }
+const window = Dimensions.get('window');
+const PARALLAX_HEADER_HEIGHT = 380;
+const STICKY_HEADER_HEIGHT = Dimensions.get('window').height/10.4;
+const AVATAR_SIZE = 120;
 
-class ThirdMain extends Component {
-  constructor(props) {
-    super(props)
-    const dataSource = new ListView.DataSource({
-      rowHasChanged: (row1, row2) => row1 !== row2,
+class thirdMain extends Component {
+constructor(props){
+  super(props)
+  this.state = {
+    loading : false,
+lastName: '',
+firstName : '',
+phoneNumber: '',
+email : '',
+user : {}
+}
+}
+componentWillMount(){
+
+if(firebase.auth().currentUser){
+  
+  let d = ''
+  email1 = firebase.auth().currentUser.email
+  for(let i = 0; i < email1.length; i++) {
+    if (email1.charAt(i) === '@') break;
+    if(email1.charAt(i)===`'`)
+    d+='='
+    else if(email1.charAt(i)==='.')
+    d+='+'
+    else
+  d += email1.charAt(i)
+  } 
+  var that = this
+  firebase.database().ref(`users/${d}`).once('value', snapshot=>{
+    const item = snapshot.val()
+    that.setState({lastName:item.lastName,firstName: item.firstName,email : item.email,phoneNumber:item.phone})
+  })
+  fetchData(this.props.userDataFetching).then(()=>{
+
+    firebase.database().ref(`users/${d}`).once('value', snapshot => {
+      let user = snapshot.val()
+      that.setState({user})
     })
+  })
+}
 
-    this.state = {
-      loading: false,
-      current_step: '',
-      blood: '',
-      factor: '',
-      role: '',
-      dataSource: dataSource,
-      opacityValue: new Animated.Value(1),
-      logo: null,
-      user: {},
-      data: [
-        'Language',
-        'Blacklist',
-        'Privacy Policy',
-        'About us',
-        'Report an issue',
-      ],
-    }
-  }
+}
 
-  onPressFirst() {
-    Actions.replace('secondMain')
-  }
-
-  onPressThird() {
-    Actions.replace('thirdMain')
-  }
-
-  componentDidMount() {
-    let s = firebase.auth().currentUser.email
-    s = s.replace('.', '+') // dot to +
-    s = s.substr(0, s.indexOf('@')) // cut till @
-    firebase.database().ref(`users/${s}`).once('value', snapshot => {
-      let hui = snapshot.val()
-      this.setState({user: hui})
-    })
-  }
-
-  renderContent() {
-    const hui = this.state.user
-    if (this.state.loading || this.props.loading)
-      return (
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}><Spinner size='large'/></View>
-      )
-    return (
-      <View style={styles.mainHuiView}>
-<<<<<<< HEAD
-          <TouchableOpacity style={{backgroundColor : 'red',justifyContent:'center',alignItems : 'center'}} onPress = {()=>{this.props.logoutUser()}}>
-            <Text style={{color : '#fff',fontSize : 23}}>Click here to logout</Text>
-          </TouchableOpacity>
-=======
-        <View style={styles.flexFive}>
-          <View style={styles.imageView}>
-            <View style={styles.bloodseekerView}>
-              <View style={styles.bloodseekerCircle}>
-                <Text style={styles.darkOn}>{hui.blood}{hui.factor}</Text>
-              </View>
-              <Text style={[styles.subs, {color: '#F65352'}]}>Blood T</Text>
-            </View>
-            <View style={styles.midOne}>
-              <Icon name='user' type='entypo' raised size={50}/>
-            </View>
-            <View style={styles.bloodseekerView}>
-              <View style={styles.goldCircle}>
-                <Text style={styles.darkOn}>{hui.rescue_count}</Text>
-              </View>
-              <Text style={[styles.subs, {color: '#ECCD6C'}]}>Helped</Text>
-            </View>
-          </View>
-          <View style={styles.textView}>
-            <Text style={styles.firstName}>{hui.firstName} {hui.lastName}</Text>
-            <Text>{hui.email}</Text>
-            <Text>{hui.phone}</Text>
-          </View>
-          <Button
-            buttonStyle={styles.buttonStyle}
-            rounded
-            backgroundColor='#fff'
-            title='Edit Profile'
-            color='#000'
-            onPress={() => Actions.editProfile({hui})}
-          />
-        </View>
-        <View style={styles.flexThree}>
-          <List>
-            <FlatList
-              data={this.state.data}
-              renderItem={({item}) => (
-                <ListItem
-                  title={item}
-                />
-              )}
-              keyExtractor={item => item}
-            />
-          </List>
-        </View>
-        <View style={styles.buttonView}>
-          <Button
-              buttonStyle={styles.buttonStyle}
-              rounded
-              backgroundColor='#fff'
-              title='Logout'
-              color='#000'
-              textStyle={{color: '#F65352'}}
-              onPress={() => { firebase.auth().signOut().then(
-                () => {
-                  // add modal window
-                  Actions.replace('login')
+_changeAvatar(){
+    this.setState({loading: true})
+    var that=this  
+    ImagePicker.openPicker({
+       width: 300,
+       height: 300,
+       cropping: true,
+       mediaType: 'photo'
+     }).then(image => {
+        let d = ''
+        email1 = firebase.auth().currentUser.email
+        for(let i = 0; i < email1.length; i++) {
+          if (email1.charAt(i) === '@') break;
+          if(email1.charAt(i)===`'`)
+          d+='='
+          else if(email1.charAt(i)==='.')
+          d+='+'
+          else
+        d += email1.charAt(i)
+        } const Blob = RNFetchBlob.polyfill.Blob
+        const fs = RNFetchBlob.fs
+        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+        window.Blob = Blob
+        let uploadBlob = null
+        const imageRef = firebase.storage().ref(`users/${d}/avatar`).child("avatar.jpg")
+        
+        let mime = 'image/jpg'
+        fs.readFile(image.path, 'base64')
+        .then((data) => {
+            return Blob.build(data, { type: `${mime};BASE64` })
+        })
+        .then((blob) => {
+            uploadBlob = blob
+            console.log(blob)
+            return imageRef.put(blob, { contentType: mime })
+          })
+        .then(() => {
+            uploadBlob.close()
+            return imageRef.getDownloadURL()
+          })
+        .then((url) => {
+            firebase.database().ref(`users/`).child(`${d}`).update({
+              avatarUrl : url,  
+          })
+            let userData = {}
+            //userData[dpNo] = url
+            //firebase.database().ref('users').child(uid).update({ ...userData})
+            
+          })
+        .then(()=>{
+            console.log('2')
+            that.setState({loading : false})
+          })
+              .catch((error) => {
+                  console.log(error)
                 })
-              }}
-            />
+        
+          
+          
+
+      })
+  
+}
+  renderForeground() {
+
+    return(
+      <View key="parallax-header" style={ {flex:1} }>
+      <View style={{width:Dimensions.get('window').width,height:65,backgroundColor:'#F65352',justifyContent:'center',alignItems:'center'}}>
+      <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 25,color: '#fff'}}>Settings</Text>
+
         </View>
->>>>>>> 494e3fe807467f71eda014bf32921291ea6af9f3
+
+      <View style={{width:Dimensions.get('window').width,height:20,backgroundColor:'#fff'}}>
+
+        </View>
+      <View style={{flex : 2,flexDirection:'row',}}>
+        
+        <View style={{flex : 1,alignItems:'center'}}>
+        <Text style={{marginTop:Dimensions.get('window').height/14,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,marginLeft: Dimensions.get('window').width/15,fontSize: 40,color: '#E39291'}}>{this.props.blood}{this.props.factor}</Text>
+
+        </View>
+        <TouchableOpacity onPress={()=>{
+                        this._changeAvatar()
+                        
+        }} style={{flex : 1,alignItems:'center',justifyContent:'center'}}>
+        <Image style={ styles.avatar } source={{
+          uri:  'https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg',
+          width: AVATAR_SIZE,
+          height: AVATAR_SIZE
+        }}/>
+        </TouchableOpacity>
+          <View style={{flex : 1,flexDirection:'row'}}>
+         
+          <View style={{flex : 1}}>
+          </View>
+          <View style={{flex : 1,backgroundColor:'#F65352'}}>
+          
+          
+          </View>
+          <View style={{flex : 1}}>
+          </View>
+          <View style={{flex : 1,backgroundColor:'#F65352'}}>
+          
+          
+          </View>
+          
+          
+          <View style={{flex : 1}}>
+          </View>
+          </View>
+          
+          </View>
+
+
+ 
+        <View style={{flex : 2,alignItems:'center',justifyContent:'center'}}>
+        <View style={{flex:1,marginBottom:30,alignItems:'center',justifyContent:'center'}}>
+       
+        <Text style={{fontSize :16,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,   color: '#686868',
+    fontWeight: 'bold',}}>
+        {this.state.firstName} {this.state.lastName}
+        </Text>
+        <Text style={{marginTop:5,fontSize :14,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>
+        {this.state.email}
+        </Text>
+
+        <Text style={{marginTop:5,fontSize :15,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>
+        {this.state.phoneNumber}
+        </Text>
+        </View>
+        <View style={{flex : 1}}>
+        <TouchableOpacity onPress={()=>{
+          Actions.editProfile({hui:this.state.user})
+        }}
+         style={{height : 40,width: 150,borderColor:'#686868',borderRadius: 150/2,borderWidth: 1,alignItems: 'center',justifyContent: 'center'}}>
+          <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868',}}>
+Изменить Профиль
+ </Text>
+          </TouchableOpacity>
+        </View>
+
+        </View>
+
+        </View>
+    );
+  }
+
+  renderBackground() {
+    return(
+      <View key="background" style={ styles.background }>
+
+        <View style={ styles.backgroundOverlay }/>
       </View>
-    )
+    );
+  }
+
+  renderSongsList() {
+       return(
+null
+    );
   }
 
   render() {
+    const { onScroll = () => {} } = this.props;
     return (
-      <View style={styles.container}>
-        <View
-          style={{backgroundColor: '#F65352', flexDirection: 'row', height: Dimensions.get('window').height / 10.5}}>
-          <View style={{flex: 1,}}/>
-          <View style={{flex: 6, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={styles.settingsText}>Settings</Text>
-          </View>
-          <View style={{flex: 1,}}/>
-        </View>
-        {this.renderContent()}
-      </View>
-    )
-  }
+      <View style={{flex : 1}}>
+        <ParallaxScrollView
+          style={ { flex: 1,backgroundColor:'blue' } }
+          parallaxHeaderHeight={ PARALLAX_HEADER_HEIGHT }
+          stickyHeaderHeight={ STICKY_HEADER_HEIGHT }
+          onScroll={onScroll}
+          renderForeground={ this.renderForeground.bind(this) }
+          renderBackground={ this.renderBackground.bind(this) }>
+          <View style={{flex : 1}}>
+<View style={{backgroundColor:'#EAEAEA',height:30,width:Dimensions.get('window').width}}>
+</View>
+<View style={{flex:1}}>
+<View style={{borderBottomWidth:1,borderColor:'#686868'}}>
+         <Text style={{margin:10,marginLeft:18,fontSize :19,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>
+           Язык
+           </Text>
+</View>
+<View style={{borderBottomWidth:1,borderColor:'#686868'}}>
+         <Text style={{margin:10,marginLeft:18,fontSize :19,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>
+           Черный список
+           </Text>
+</View>
+<View style={{borderBottomWidth:1,borderColor:'#686868'}}>
+         <Text style={{margin:10,marginLeft:18,fontSize :19,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>
+           Политика конфиденциальности
+           </Text>
+</View>
+<View style={{borderBottomWidth:1,borderColor:'#686868'}}>
+         <Text style={{margin:10,marginLeft:18,fontSize :19,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>
+           О нас
+           </Text>
+</View>
 
-  _renderItem(item) {
-    return (
-      <ListItem item={item}/>
-    )
+</View>
+<View style={{backgroundColor:'#EAEAEA',height:30,width:Dimensions.get('window').width}}>
+</View>
+<View style={{flex:1}}>
+<TouchableOpacity   onPress={() => { 
+                this.props.logoutUser()  // add modal window
+                
+              }} style={{borderBottomWidth:1,borderColor:'#686868'}}>
+         <Text style={{margin:10,marginLeft:18,fontSize :19,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: 'red'}}>
+Выйти           </Text>
+</TouchableOpacity>
+
+</View>
+
+<View style={{backgroundColor:'#EAEAEA',height:Dimensions.get('window').height,width:Dimensions.get('window').width}}>
+</View>
+          </View>
+        </ParallaxScrollView>
+        
+      </View>
+    );
   }
 }
 
 const styles = {
-  flexFive: {
-    flex: 4,
+  background: {
+    backgroundColor: "#fff",
   },
-  flexThree:{
-    flex: 3,
-  },
-  buttonView: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  settingsText: {
-    paddingTop: 5,
-    fontSize: 20,
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  midOne: {
-    flex: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  subs:{
-    fontWeight: 'bold',
-    fontSize: 14,
-    color: '#000',
-  },
-  darkOn:{
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: '#000',
-  },
-  bloodseekerCircle: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    backgroundColor: '#F65352',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  goldCircle: {
-    height: 50,
-    width: 50,
-    borderRadius: 25,
-    backgroundColor: '#ECCD6C',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bloodseekerView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  fixedHeight:{
-    height: 120,
-  },
-  flexOne: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
+  backgroundOverlay: {
+    top: 0,
+    width: window.width,
     backgroundColor: '#fff',
+    height: PARALLAX_HEADER_HEIGHT
   },
-  imageView: {
+  headerClose: {
+    top: 5,
+    left: 0,
+    paddingTop: 15,
+    paddingBottom: 5,
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
+  stickySection: {
+    height: STICKY_HEADER_HEIGHT,
+    backgroundColor: '#000',
     flex: 1,
-    flexDirection: 'row',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    color: '#ffffff',
-  },
-  mainHuiView: {
-    flex: 1,
-    justifyContent : 'center',
-    alignItems :'center'
-  },
-  huiFlex1: {
-    borderColor: 'black',
-    backgroundColor: 'yellow',
-    borderWidth: 1,
-  },
-  textView: {
-    flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
-  firstName: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  stickySectionTitle: {
+    color: "#FFF",
   },
-  buttonStyle: {
-    borderWidth: 0.5,
+  parallaxHeader: {
+flex : 1,
+  },
+
+  avatar: {
+    marginBottom: 12,
+    borderRadius: AVATAR_SIZE / 2
+  },
+  playButton: {
+    marginTop: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 70,
+    paddingRight: 70,
+    backgroundColor: "#f62976",
+    borderRadius: 200,
+  },
+  playButtonText: {
+    color: "#FFF",
+    fontFamily: "Helvetica Neue",
+    fontSize: 13,
+  },
+  songsList: {
+    flex: 1,
+    backgroundColor: "red",
+  },
+  song: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "#111",
+
+  },
+  songTitle: {
+    color: "#000",
+    fontFamily: "Helvetica Neue",
+    marginBottom: 5,
+  },
+  albumTitle: {
+    color: "#000",
+    fontFamily: "Helvetica Neue",
+    fontSize: 12
   },
 
 }
-const mapStateToProps = ({main}) => {
-  const {filled, role, blood, factor, loading} = main
-  return {filled, role, blood, factor, loading}
+const mapStateToProps = ({ main }) => {
+  const { filled,role,blood,factor,loading } = main
+  return {filled,role,blood,factor,loading}
 }
-
 export default connect(mapStateToProps, {
   logoutUser
-})(ThirdMain)
+})(thirdMain)

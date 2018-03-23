@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Text, View,Button,KeyboardAvoidingView,Image,Platform,ImageBackgrounds,Dimensions,Animated,Easing, TouchableOpacity } from 'react-native'
+import { ScrollView,Text,Alert, View,Button,KeyboardAvoidingView,Image,Platform,ImageBackgrounds,Dimensions,Animated,Easing, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
+import ImagePicker from 'react-native-image-crop-picker'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
 import { Input, Spinner,InputLogin } from './common'
 import firebase from 'firebase'
@@ -18,10 +19,10 @@ class Register extends Component {
       password : '',
       loading: false,
       image : null,
-      opacityValue: new Animated.Value(0.12),
-      timeLineTop: null
+      opacityValue: new Animated.Value(1),
+      timeLineTop: null,
     }
-  }
+  }   
   onEmailChange(text) {
     this.props.emailChanged(text)
   }
@@ -51,7 +52,16 @@ this.setState({loading : true})
     const {firstName,phone,lastName,patronymic } = this.state
     const {email,password } = this.props
 
-    this.props.registerUser({ email, password,firstName,phone,lastName,patronymic})
+if(firstName===''||lastName===''||phone===''||patronymic===''||email===''||password==='')
+Alert.alert(
+  'Ошибка ввода',
+  'Пожалуйста заполните все поля',
+  [
+    {text: 'Ok'},
+  ]
+)
+else  
+    this.props.registerUser({email, password,firstName,phone,lastName,patronymic})
 
 this.setState({loading:false})
     
@@ -59,117 +69,107 @@ this.setState({loading:false})
   }
   renderButton() {
     if (this.props.loading||this.state.loading) {
-      return <Spinner style={{marginRight : 35  , }} size='large' />
+      return <Spinner style={{alignSelf:'center',color:"#fff" }} size='large' />
     }
     return (
-    <TouchableOpacity style={{width: 170,
-      backgroundColor:'transparent',
-      height:50,
+    <TouchableOpacity style={{
+      alignSelf:'center',
       alignItems:'center',
       justifyContent: 'center',
+      marginTop: 10
     }}
     onPress={this.submitToFirebase.bind(this)}>
       <Text style={{color: '#fff', fontSize:20, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>
-        Create an account
+        Создать аккаунт
       </Text>
     </TouchableOpacity>
     )
   }
   renderPost(){
     firebase.auth().signOut().then(()=>{
-    Actions.Login()
+    Actions.pop()
   }).catch(()=>{
     console.log('sign out failed')
   })
   }
   render() {
     return(
-        <View style={{flex:1,backgroundColor: '#F65352'}}>
+        <ScrollView style={{flex:1,backgroundColor: '#F65352'}}>
     {!this.props.sent ?
-      <View style={{flex : 1}}>
-      <View style={{flex : 2, }}>
-    <View style={{flex : 5,justifyContent: 'center',alignItems:'center',backgroundColor:'transparent'}}>
-    <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 25 , color :'#fff'}}>Sign up</Text>
+ <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
+        <View style={styles.mainView}>
+        <KeyboardAvoidingView behavior='position'>
+        <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 27 ,alignSelf:'center',marginTop:20,   color :'#fff'}}>Зарегистрироваться</Text>
 
-      </View>  
-        </View>
-       
-     <View
-        style={{
-          justifyContent:'center',
-          flex: 12,
-          alignItems : 'center',
-          marginRight : 40,
-          marginTop : 10
-        }}
-      >
+        <View
+          style={{
+            marginTop: 40
+          }}
+        >
+        <View>       
         <InputLogin
-        label='First Name'
-        placeholder='first name'
-        onChangeText={this.onFirstNameChange.bind(this)}
-        value={this.state.firstName}
-      />
-      <InputLogin
-      label='Last Name'
-      placeholder='last name'
-      onChangeText={this.onLastNameChange.bind(this)}
-      value={this.state.lastName}
-    />  
-     <InputLogin
-        label='Patronymic'
-        placeholder='patronymic'
-        onChangeText={this.onPatronymicChange.bind(this)}
-        value={this.state.patronymic}
-      />
-      <InputLogin
-        label='Phone Number'
-        placeholder='555-555-555'
-        onChangeText={this.onPhoneChange.bind(this)}
-        value={this.state.phone}
-      />
-      <InputLogin
-        label='Email'
-        placeholder='Email'
-        onChangeText={this.onEmailChange.bind(this)}
-        value={this.props.email}
-      />
-      <InputLogin
-        secureTextEntry
-        label='Password'
-        placeholder='password'
-        onChangeText={this.onPasswordChange.bind(this)}
-        value={this.props.password}
-      />
+          label='Имя'
+          placeholder='Салидат'
+          onChangeText={this.onFirstNameChange.bind(this)}
+          value={this.state.firstName}
+          />
+          <InputLogin
+          label='Фамилия'
+          placeholder='Замирбекова'
+          onChangeText={this.onLastNameChange.bind(this)}
+          value={this.state.lastName}
+          />  
+          <InputLogin
+          label='Отчество'
+          placeholder='Замирбековна'
+          onChangeText={this.onPatronymicChange.bind(this)}
+          value={this.state.patronymic}
+          />
+          <InputLogin
+          label='Номер телефона'
+          placeholder='+(996) 778 000 000'
+          onChangeText={this.onPhoneChange.bind(this)}
+          value={this.state.phone}
+          />
+          <InputLogin
+          label='Email'
+          placeholder='example@gmail.com'
+          onChangeText={this.onEmailChange.bind(this)}
+          value={this.props.email}
+          />
+          <InputLogin
+          secureTextEntry
+          label='Пароль'
+          placeholder='Введите пароль'
+          onChangeText={this.onPasswordChange.bind(this)}
+          value={this.props.password}
+          />
+          </View>
+          <View style={{alignSelf:'center'}}>{this.renderButton()}</View>
+        </View>
+        </KeyboardAvoidingView>
+        <View style={{marginTop:60,justifyContent:'center',alignItems:'center',backgroundColor:'transparent',flex:1}}> 
+<View style={{flex:1}}>
+      </View>      
+      <View style={{flex:2,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
+        </View>
+         <View style={{flex : 1,marginBottom:40,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
+            <Text style={{color:'#d0d0d0',fontSize:13, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Уже есть аккаунт? </Text>
+            <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
+                
+                  Actions.pop()
+            }}     
+              >
+            <Text style={{   color:'#fff',fontSize:15, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,textDecorationLine: "underline",}}>Войти</Text></TouchableOpacity>
+      </View>
+        </View>
+        </View>
 
-      </View>
-
-        <View style={{position : 'absolute',marginTop:Dimensions.get('window').height/1.18,marginLeft : Dimensions.get('window').width/4.9}}>
-      <View style={{ flex: 1,marginBottom : 25,alignItems: 'center' }}>
-      {this.renderButton()}
-      </View>
-
-      <View style={{justifyContent:'center',backgroundColor:'transparent',flexDirection:'row',alignItems:'center',flex:1}}> 
-          
-          <Text style={{color:'#fff'}}>Already have an account? </Text>
-          
-          <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
-              Animated.timing(this.state.opacityValue, {
-                toValue: 0,
-                duration:300, 
-                easing: Easing.bezier(0.0, 0.0, 0.2, 1),
-            }).start(() => {
-                Actions.pop()
-              });
-            }}>
-          <Text style={{   color:'#fff', textDecorationLine: "underline",}}>Sign in</Text></TouchableOpacity>
-    
-      </View>
-      </View>
-      </View>
+      </Animated.View>
       : 
       this.renderPost()
       }
-      </View>
+      </ScrollView>
     )
   }
 
@@ -185,8 +185,16 @@ const styles = {
     height:Dimensions.get('window').height,
     width: Dimensions.get('window').width,
     backgroundColor:'#F65352',
-    position:'absolute',  
-  }
+      
+  },
+  defaultImage: {
+    borderWidth: 0.2,
+    borderRadius: 150/2,
+    width: 100,
+    height: 100,
+    resizeMode : 'stretch',
+    alignSelf:'center'
+  },
 }
 
 const mapStateToProps = ({ auth }) => {

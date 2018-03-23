@@ -34,16 +34,15 @@ class ListItem extends Component {
   }
   render() {
       return (
-      <View style={styles.li}>
+      <TouchableOpacity onPress={()=>{
+        const {item} = this.props
+        Actions.push('profileView',{item})
+      }} style={styles.li}>
       <View style={styles.image}> 
         <Icon type='ionicon' color='#E39291' style={{backgroundColor:'transparent'}} size={50} name='ios-camera-outline' /> 
         </View>
-        <TouchableOpacity onPress={()=>{
-          const { item } = this.props
-        Actions.profileView({item: item})
-        }} style={{flex : 1,flexDirection:'row'}}>
-<View>
-<View style={{flex : 1,margin: 10,marginTop : 0}}>
+<View style={{height : 50,}}>
+<View style={{flex : 1}}>
           <Text style={styles.title}>{this.props.item.firstName} {this.props.item.lastName}</Text>
           
 </View>
@@ -52,17 +51,17 @@ class ListItem extends Component {
 <Text style={{  fontSize: 14,
 color: '#d3d3d3',
 marginLeft: 5,
-fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Submitted blood to you !</Text> :
+fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Сдал вам кровь !</Text> :
 
 <Text style={{  fontSize: 14,
   color: '#d3d3d3',
   marginLeft: 5,
-  fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Need help !</Text>
+  fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Нужна помощь !</Text>
 }
 </View>
 </View>
         </TouchableOpacity>
-      </View>
+
     );
   }
 }
@@ -88,7 +87,7 @@ var styles = {
   title: {
     fontSize: 16,
     color: 'gray',
-    marginLeft: 5,
+    marginLeft: 15,
     fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null
     },
 

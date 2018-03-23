@@ -98,7 +98,7 @@ class SecondMain extends Component {
           firebase.database().ref(`/users/${s}`).on('value',function(snapshot){
               boolS=snapshot.val().visible
           })
-
+          
       }
       that.setState({  
           dataSource: that.state.dataSource.cloneWithRows(appropriates),
@@ -121,6 +121,7 @@ onPressThird(){
 }
 
 _handleToggleSwitch(){
+
     if(this.state.switchValue){
         let s = ''
         let email1 = firebase.auth().currentUser.email
@@ -134,7 +135,7 @@ _handleToggleSwitch(){
         s += email1.charAt(i)
         }
         var that=this
-        firebase.database().ref(`/users/${s}`).update({visible : false}).then(()=>{that.setState({switchValue:false})})
+        firebase.database().ref(`/users/${s}`).update({visible : false,requestTime : '' }).then(()=>{that.setState({switchValue:false})})
     }
     else{
         let s = ''
@@ -149,8 +150,8 @@ _handleToggleSwitch(){
         s += email1.charAt(i)
         }
         var that = this
-        firebase.database().ref(`/users/${s}`).update({visible : true}).then(()=>{that.setState({switchValue:true})})
-
+        firebase.database().ref(`/users/${s}`).update({visible : true,  requestTime : firebase.database.ServerValue.TIMESTAMP}).then(()=>{that.setState({switchValue:true})})
+        
     }
 }
 onFinishFillingForm(){ //finishing 3 step
@@ -187,9 +188,9 @@ onFinishFillingForm(){ //finishing 3 step
             if(this.state.dataSource.getRowCount()> 0)
             return (  
                 <View style={{flex : 1}}>
-                <View style={{flex : 1,justifyContent:'space-between',flexDirection:'row',}}>
+                <View style={{flex : 1,justifyContent:'space-between',flexDirection:'row',}}> 
                     <Text style={{fontSize : 17,color : 'gray',margin :10,marginTop : 45}}>Show me in donor's search</Text>
-                    <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :45}} value={this.state.switchValue} />
+                    <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :20}} value={this.state.switchValue} />
                 </View>
                 <View style={{flex : 4}}>
             <ListView
@@ -202,7 +203,7 @@ onFinishFillingForm(){ //finishing 3 step
             ) 
             else return(
                 <View style={{flex : 1}}>
-                <View style={{flex : 1,justifyContent:'space-between',flexDirection:'row',}}>
+                <View style={{flex : 1,justifyContent:'space-between',flexDirection:'row',}}> 
                     <Text style={{fontSize : 17,color : 'gray',margin :10,marginTop : 45}}>Show me in donor's search</Text>
                     <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :45}} value={this.state.switchValue} />
                 </View>

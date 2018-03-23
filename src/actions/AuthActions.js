@@ -64,8 +64,8 @@ export const loginUser = ({ email, password }) => {
                  else{
                         firebase.auth().signOut().then(()=>{
                             Alert.alert(
-                                'Verify your account',
-                                'Please confirm your email address',
+                                'Подтвердите ваш аккаунт',
+                                'Подтвердите ваш почтовый адрес',
                                 [
                                   {text: 'Ok'},
                                 ]
@@ -120,13 +120,14 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                     }
                     firebase.auth().currentUser.sendEmailVerification().then(()=>{
                         Alert.alert(
-                            'Verify your account',
-                            'Please confirm your email address',
+                            'Подтвердите ваш аккаунт',
+                            'Подтвердите ваш почтовый адрес',
                             [
                               {text: 'Ok'},
                             ]
                           )
-                        dispatch({ type: MESSAGE })                        
+                        dispatch({ type: MESSAGE })
+                        Actions.register()                        
                     }).catch(()=>{
                         console.log('do something if email sending has been failed')
                     })
@@ -138,7 +139,7 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
             console.log(error.message)
             
             Alert.alert(
-                'Try Again!',
+                'Попробуйте еще раз!',
                 error.message,
                 [
                   {text: 'Ok'},

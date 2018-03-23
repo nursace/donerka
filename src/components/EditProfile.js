@@ -7,8 +7,35 @@ import firebase from 'firebase'
 export default class EditProfile extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      role : null,
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber : ''
+    }
   }
 
+  componentWillMount(){
+    let d = ''
+    email1 = firebase.auth().currentUser.email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      if(email1.charAt(i)===`'`)
+      d+='='
+      else if(email1.charAt(i)==='.')
+      d+='+'
+      else
+    d += email1.charAt(i)
+    } 
+    var that = this
+    let role
+    firebase.database().ref(`users/${d.toLowerCase()}`).once('value',snapshot =>{
+      role = snapshot.val().role
+      that.setState({role,firstName: snapshot.val().firstName,lastName:snapshot.val().lastName,email : snapshot.val().email,phoneNumber:snapshot.val().phone})
+      
+    })
+  }
   renderContent() {
     return (
       <View style={styles.afterHeader}>
@@ -16,60 +43,69 @@ export default class EditProfile extends Component {
           <Icon name='user' type='entypo' raised size={50}/>
         </View>
         <View style={styles.flexTwo}>
-          <Text style={styles.almostRedText}>You can change your role</Text>
+          <Text style={styles.almostRedText}>Вы можете поменять вашу роль</Text>
           <Button
-            title='Change to RECIPIENT (xor me)'
+            title={this.state.role==='recipient' ?  'Изменить на донора' : 'Изменить на реципиента'}
             rounded
             backgroundColor='#4A90E2'
             onPress={() => {
               let {hui} = this.props
-              let s = hui.email
-              s = s.replace('.','+')
-              s = s.substr(0, s.indexOf('@'))
+              let s = ''
+              email1 = firebase.auth().currentUser.email
+              for(let i = 0; i < email1.length; i++) {
+                if (email1.charAt(i) === '@') break;
+                if(email1.charAt(i)===`'`)
+                s+='='
+                else if(email1.charAt(i)==='.')
+                s+='+'
+                else
+              s += email1.charAt(i)
+              } 
               let role = hui.role === 'donor' ? 'recipient' : 'donor'
               hui.role = role
-              firebase.database().ref(`users/${s}`).set(hui)
+              var that = this
+              firebase.database().ref(`users/${s}`).update(hui)
+              .then(()=>{
+                that.setState({role})
+              })
+              .then(()=>{
+                if(that.state.role==='donor'){
+                  firebase.database().ref(`users/${s}/`).update({visible : false,requestTime : null})
+                }
+              })
             }}
           />
         </View>
         <View style={styles.flexThree}>
           <View style={styles.itemSection}>
             <View style={styles.flexOne}>
-              <Text style={styles.leftTitle}>First name: </Text>
+              <Text style={styles.leftTitle}>Имя: </Text>
             </View>
             <View style={styles.flexOne}>
-              <Text>{this.props.hui.firstName}</Text>
-            </View>
-          </View>
-          <View style={styles.itemSection}>
-            <View style={styles.flexOne}>
-              <Text style={styles.leftTitle}>Last name: </Text>
-            </View>
-            <View style={styles.flexOne}>
-              <Text>{this.props.hui.lastName}</Text>
+              <Text>{this.state.firstName}</Text>
             </View>
           </View>
           <View style={styles.itemSection}>
             <View style={styles.flexOne}>
-              <Text style={styles.leftTitle}>Email:</Text>
+              <Text style={styles.leftTitle}>Фамилия: </Text>
             </View>
             <View style={styles.flexOne}>
-              <Text>{this.props.hui.email}</Text>
+              <Text>{this.state.lastName}</Text>
             </View>
           </View>
           <View style={styles.itemSection}>
             <View style={styles.flexOne}>
-              <Text style={styles.leftTitle}>Phone Number:</Text>
+              <Text style={styles.leftTitle}>Номер телефона:</Text>
             </View>
             <View style={styles.flexOne}>
-              <Text>{this.props.hui.phone}</Text>
+              <Text>{this.state.phoneNumber}</Text>
             </View>
           </View>
         </View>
         <View style={{flex: 1, marginBottom: 10}}>
           <TouchableOpacity style={styles.itemSection}>
             <View style={styles.flexOne}>
-              <Text style={styles.leftTitle}>Change my password</Text>
+              <Text style={styles.leftTitle}>Изменить мой пароль</Text>
             </View>
             <View style={[styles.flexOne, {alignItems: 'flex-end'}]}>
               <Icon name='chevron-small-right' type='entypo' />
@@ -85,10 +121,10 @@ export default class EditProfile extends Component {
       <View style={styles.mostView}>
         <View style={styles.headerView}>
           <View style={styles.arrowView}>
-            <Icon onPress={() => Actions.pop()} color='#fff' name='chevron-left' type='entypo' size={40}/>
+            <Icon onPress={() => Actions.thirdMain()} color='#fff' name='chevron-left' type='entypo' size={40}/>
           </View>
           <View style={{flex: 6, justifyContent: 'center', alignItems: 'center'}}>
-            <Text style={styles.title}>Edit Profile</Text>
+            <Text style={styles.title}>Редактировать профиль</Text>
           </View>
           <View style={{flex: 1,}}/>
         </View>

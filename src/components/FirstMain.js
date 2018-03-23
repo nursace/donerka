@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text,Alert,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
+import { ScrollView,Text,Alert,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {} from '../actions'
 import firebase from 'firebase'
@@ -16,27 +16,119 @@ class FirstMain extends Component {
           rowHasChanged: (row1, row2) => row1 !== row2,
         });
       this.state = {
-          x: true,
+          x: null,
           loading: false,
           data: [],
           page: 1,
           seed: 1,
           error: null,
-          refreshing: false,         
+          refreshing: false, 
+          logo :require('../../assets/logo.png'),     
+          role : null  
       }
-  }
 
+  }
+  componentWillMount(){
+if(firebase.auth().currentUser){
+    let d = ''
+    email1 = firebase.auth().currentUser.email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      if(email1.charAt(i)===`'`)
+      d+='='
+      else if(email1.charAt(i)==='.')
+      d+='+'
+      else
+    d += email1.charAt(i)
+    } 
+    let role
+    firebase.database().ref(`users/${d.toLowerCase()}`).once('value',snapshot =>{
+      role = snapshot.val().role
+    })
+    let ss
+    if(role === 'donor')
+    ss=true
+    else 
+    ss=false    
+    this.setState({role,x:ss})
+    if(this.state.x)
+    this.makeRemoteRequestDonor()
+    else
+    this.makeRemoteRequestRecipient()
+  }
+  }
   componentDidMount(){
-    this.makeRemoteRequest()
+   if(firebase.auth().currentUser){
+    let d = ''
+    email1 = firebase.auth().currentUser.email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      if(email1.charAt(i)===`'`)
+      d+='='
+      else if(email1.charAt(i)==='.')
+      d+='+'
+      else
+    d += email1.charAt(i)
+    } 
+    let role
+    firebase.database().ref(`users/${d.toLowerCase()}`).once('value',snapshot =>{
+      role = snapshot.val().role
+    })
+    let ss
+    if(role === 'donor')
+    ss=true
+    else 
+    ss=false    
+    this.setState({role,x:ss})
+    if(this.state.x)
+    this.makeRemoteRequestDonor()
+    else
+    this.makeRemoteRequestRecipient()
+  }
   }
  
-  makeRemoteRequest = () => {
+  makeRemoteRequestRecipient = () =>{
+
+let list = [], i =0
+firebase.database().ref(`users`).once('value',snapshot =>{
+snapshot.forEach(item => {
+let v=item.val()
+if(v.requestTime) {
+  list.push(v)
+}
+}
+)
+list.sort((s1,s2) => {
+  return s1.requestTime - s2.requestTime
+})
+list.forEach(item => {
+  item.i = ++i
+})
+
+if(list.length >=20){
+  list = list.slice(0,20)
+}
+this.setState({
+  data: list,
+  error : null,
+  loading : false,
+  refreshing:false
+})
+}).catch(error => {
+  this.setState({
+    error, loading: false
+  })
+})
+
+  }
+  makeRemoteRequestDonor = () => {
     let a = [], i = 0
     firebase.database().ref('users').once('value', snapshot => {
       snapshot.forEach(item => {
         let v = item.val()
         if(v.role === 'donor')
           a.push(v)
+        
       })
       a.sort((hui_1, hui_2) => {
         return hui_2.rescue_count - hui_1.rescue_count
@@ -47,7 +139,6 @@ class FirstMain extends Component {
       if(a.length >= 20) {
         a = a.slice(0, 20)
       }
-      console.log(a)
       this.setState({
         data: a,
         error: null,
@@ -68,7 +159,7 @@ class FirstMain extends Component {
       seed: this.state.seed + 1
     },
       () => {
-        this.makeRemoteRequest()
+     Actions.refresh()
       })
   }
  
@@ -92,34 +183,38 @@ class FirstMain extends Component {
   }
  
   _switch(x) {
-    this.setState({x})
+    this.setState({loading : true})
+    this.setState({x,loading : false})
   }
   renderContent(){
-    let {x} = this.state
-            
+    let {x} = this.state    
     return (
       <View style={styles.mostView}>
         <View style={styles.header}>
           <View style={styles.secondView}>
-            <View style={{flex: 1, alignItems: 'center'}}>
+            <View style={{flex: 1,justifyContent:'center', alignItems: 'center'}}>
               <Text onPress={() => {
                 this._switch(true)
+                this.makeRemoteRequestDonor()
               }} style={
                 x ? styles.active : styles.inactive
               }>TOP DONORS</Text>
             </View>
-            <View style={{flex: 1, alignItems: 'center'}}>
+            <View style={{flex: 1,justifyContent:'center', alignItems: 'center'}}>
               <Text onPress={() => {
                 this._switch(false)
+                this.makeRemoteRequestRecipient()
               }} style={
                 !x ? styles.active : styles.inactive
               }>REQUESTS</Text>
             </View>
           </View>
         </View>
+        <ScrollView>
         <List
           containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
         >
+        {this.state.x ?
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => (
@@ -128,7 +223,11 @@ class FirstMain extends Component {
               title={`${item.firstName} ${item.lastName}`}
               subtitle={item.email}
               containerStyle={{ borderBottomWidth: 0 }}
-              onPress={() => console.log(item.email)}
+              onPress={() => {
+
+      const h=item
+      Actions.push('profileView',{item :h})
+                    }}
               leftIcon={<View style={styles.leftIcon}><Text style={styles.leftIconText}>{item.i}</Text></View>}
               rightIcon={<View style={styles.rightIcon}><Text style={styles.rightIconText}>{item.rescue_count}</Text></View>}
             />
@@ -139,8 +238,34 @@ class FirstMain extends Component {
           ListFooterComponent={this.renderFooter}
           refreshing={this.state.refreshing}
           onRefresh={this.handleRefresh}
+        /> : 
+      
+      <FlatList
+      data={this.state.data}
+      renderItem={({ item }) => (
+        <ListItem
+          roundAvatar
+          title={`${item.firstName} ${item.lastName}`}
+          subtitle={item.email}
+          containerStyle={{ borderBottomWidth: 0 }}
+          onPress={() => {
+      const h=item
+      Actions.push('profileView',{item :h})
+      
+          }}
+          leftIcon={<View style={styles.leftIcon}><Text style={styles.leftIconText}>{item.i}</Text></View>}
+          
         />
+      )}
+      keyExtractor={item => item.email}
+      ItemSeparatorComponent={this.renderSeparator}
+      ListHeaderComponent={this.renderHeader}
+      ListFooterComponent={this.renderFooter}
+      refreshing={this.state.refreshing}
+      onRefresh={this.handleRefresh}
+    /> }
       </List>
+      </ScrollView>
       </View>
     )
 
@@ -148,14 +273,14 @@ class FirstMain extends Component {
  
   render(){  return (
     <View style={styles.container}>
-    <View style={{backgroundColor: '#F65352',flexDirection: 'row',height : Dimensions.get('window').height/10.5 }}>
-  <View style={{flex : 1,}} />
-    
-    <View style={{flex : 6,justifyContent: 'center',alignItems: 'center'}}>
-    <Image source={this.state.logo} style={{marginTop: 20,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
-    </View>
-    <View style={{flex : 1, }} />
-    </View>
+      <View style={{backgroundColor: '#F65352',flexDirection: 'row',height : Dimensions.get('window').height/10.5 }}>
+      <View style={{flex : 1,}} />
+        
+        <View style={{flex : 6,justifyContent: 'center',alignItems: 'center'}}>
+        <Image source={this.state.logo} style={{marginTop: 20,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
+        </View>
+        <View style={{flex : 1, }} />
+        </View>
  {this.renderContent()}
     </View>
   );
@@ -201,7 +326,7 @@ const styles = {
   },
   header: {
     backgroundColor: '#F65352',
-    height: 90,
+    height: 50,
   },
   secondView: {
     flex: 1,
