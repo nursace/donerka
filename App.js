@@ -11,12 +11,12 @@ import ReduxThunk from 'redux-thunk'
 export default class App extends React.Component {
     componentWillMount(){
         let config = {
-          apiKey: "AIzaSyBwoF-lXtFfYAYFYoti5cTAIxrpbT_nidg",
-          authDomain: "maps-f802a.firebaseapp.com",
-          databaseURL: "https://maps-f802a.firebaseio.com",
-          projectId: "maps-f802a",
-          storageBucket: "maps-f802a.appspot.com",
-          messagingSenderId: "465718551900",
+            apiKey: "AIzaSyCOanJGChFRmdRbVgUBoFpZXBIgxwd4YA0",
+            authDomain: "donerka-5dc8f.firebaseapp.com",
+            databaseURL: "https://donerka-5dc8f.firebaseio.com",
+            projectId: "donerka-5dc8f",
+            storageBucket: "donerka-5dc8f.appspot.com",
+            messagingSenderId: "1009366378628"
         };
         firebase.initializeApp(config)
     }

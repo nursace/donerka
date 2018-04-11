@@ -6,6 +6,7 @@ import MapComponent from './components/MapComponent'
 import EditProfile from './components/EditProfile'
 import LanguageForm from './components/LanguageForm'
 import LoginForm from './components/LoginForm'
+import PrivatePolicy from './components/PrivatePolicy'
 import Register from './components/Register'
 import Register1 from './components/Register1'
 import ProfileView from './components/ProfileView'
@@ -143,6 +144,7 @@ class RouterComponent extends Component {
         <Scene key='profileView' component={ProfileView} />
         <Scene key='lang' component={LanguageForm} />
         <Scene key='register1' component= {Register1} />
+        <Scene key='privatePolicy' component={PrivatePolicy} />
         <Scene
           key="tabbar"
           tabs={true}

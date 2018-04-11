@@ -260,7 +260,7 @@ null
            </Text>
 </View>
 <View style={{borderBottomWidth:1,borderColor:'#686868'}}>
-         <Text style={{margin:10,marginLeft:18,fontSize :19,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>
+         <Text onPress={()=>{Actions.privatePolicy()}} style={{margin:10,marginLeft:18,fontSize :19,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#686868'}}>
            Политика конфиденциальности
            </Text>
 </View>
