@@ -198,7 +198,7 @@ this.setState({
                 this.makeRemoteRequestDonor()
               }} style={
                 x ? styles.active : styles.inactive
-              }>TOP DONORS</Text>
+              }>Топ доноры</Text>
             </View>
             <View style={{flex: 1,justifyContent:'center', alignItems: 'center'}}>
               <Text onPress={() => {
@@ -206,7 +206,7 @@ this.setState({
                 this.makeRemoteRequestRecipient()
               }} style={
                 !x ? styles.active : styles.inactive
-              }>REQUESTS</Text>
+              }>Срочные заявки</Text>
             </View>
           </View>
         </View>

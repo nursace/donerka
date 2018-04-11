@@ -274,7 +274,8 @@ class ProfileView extends Component {
           .then((url) => {
             firebase.database().ref(`users/${d}/sentBlood`).child(`${s}`).update({
               image : url,  
-              email : s
+              email : s,
+              date : firebase.database.ServerValue.TIMESTAMP    
           })
             let userData = {}
             //userData[dpNo] = url

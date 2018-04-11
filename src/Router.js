@@ -8,7 +8,7 @@ import LanguageForm from './components/LanguageForm'
 import LoginForm from './components/LoginForm'
 import PrivatePolicy from './components/PrivatePolicy'
 import Register from './components/Register'
-import Register1 from './components/Register1'
+import ForgotPass from './components/ForgotPass'
 import ProfileView from './components/ProfileView'
 import firebase from 'firebase'
 import FirstMain from './components/FirstMain'
@@ -143,7 +143,7 @@ class RouterComponent extends Component {
         <Scene key='register' component={Register} />
         <Scene key='profileView' component={ProfileView} />
         <Scene key='lang' component={LanguageForm} />
-        <Scene key='register1' component= {Register1} />
+        <Scene key='forgotPass' component= {ForgotPass} />
         <Scene key='privatePolicy' component={PrivatePolicy} />
         <Scene
           key="tabbar"
