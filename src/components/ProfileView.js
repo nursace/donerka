@@ -30,7 +30,8 @@ class ProfileView extends Component {
       logo :require('../../assets/logo.png'),
       sentBlood : false,
       beenHelped: 0,
-      allowed : false
+      allowed : false,
+      days: null
       
     }
   
@@ -73,8 +74,10 @@ class ProfileView extends Component {
     })
     firebase.database().ref(`users/${d}`).once('value',snapshot =>{
       let a = new Date(snapshot.val().lastSubmitionDate)
-      a=new Date() - a
+    
+      a=new Date().getTime() - a.getTime()
       a=a/(1000*60*60*24)
+    that.setState({days :Math.floor(a)})
       if(Math.floor(a)>60){
         that.setState({allowed : true})
       }
@@ -357,11 +360,11 @@ class ProfileView extends Component {
       if(this.props.role === 'donor' && this.props.item.role==='recipient'){
       return(
       this.state.sentBlood&&this.state.submitted==true ? 
-      this.props.role==='donor' && this.state.allowed===false ?
+      this.state.allowed===false ?
       <View style={{flex : 1,alignItems: 'center'}}>
       {this.state.image!==null ? <Image source={{uri : this.state.image}} style={{width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/5,resizeMode:'stretch'}} /> : null}
             <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
-                  Вы уже сдавали кровь
+                  Вы сдавали кровь {this.state.days} дней(ь) назад
             </Text>
       </View>     :null
       :
