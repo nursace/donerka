@@ -82,6 +82,7 @@ _changeAvatar(){
        mediaType: 'photo'
      }).then(image => {
         let d = ''
+        console.log("ddd",image,'sdwd')
         email1 = firebase.auth().currentUser.email
         for(let i = 0; i < email1.length; i++) {
           if (email1.charAt(i) === '@') break;
@@ -109,7 +110,6 @@ _changeAvatar(){
             return imageRef.put(blob, { contentType: mime })
           })
         .then(() => {
-          
             uploadBlob.close()
             return imageRef.getDownloadURL()
           })
