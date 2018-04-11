@@ -10,7 +10,7 @@ import ReduxThunk from 'redux-thunk'
 
 export default class App extends React.Component {
     componentWillMount(){
-        let config = {   
+        let config = {
             apiKey: "AIzaSyCOanJGChFRmdRbVgUBoFpZXBIgxwd4YA0",
             authDomain: "donerka-5dc8f.firebaseapp.com",
             databaseURL: "https://donerka-5dc8f.firebaseio.com",
@@ -21,7 +21,7 @@ export default class App extends React.Component {
         firebase.initializeApp(config)
     }
   render() {
-    
+
     const store = createStore(reducer, {}, applyMiddleware(ReduxThunk))
     return (
         <Provider store={store}>
