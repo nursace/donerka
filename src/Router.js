@@ -2,23 +2,19 @@ import React, { Component } from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import {StatusBar,View, Image,Text,Easing, ActivityIndicator,Platform,Animated,TouchableWithoutFeedback, AsyncStorage} from 'react-native'
 import {Icon} from 'react-native-elements'
-
-import GrayScreen from './GrayScreen';
-import BlueScreen from './BlueScreen';
-import MaizeScreen from './MaizeScreen';
-import GoldScreen from './GoldScreen';
-import BlackScreen from './BlackScreen';
-import ModalScreen from './ModalScreen';
-
+import MapComponent from './components/MapComponent'
 import EditProfile from './components/EditProfile'
 import LanguageForm from './components/LanguageForm'
 import LoginForm from './components/LoginForm'
 import Register from './components/Register'
+import Register1 from './components/Register1'
 import ProfileView from './components/ProfileView'
 import firebase from 'firebase'
 import FirstMain from './components/FirstMain'
 import SecondMain from './components/SecondMain'
 import ThirdMain from './components/ThirdMain'
+import ModalScreen from './ModalScreen'
+
 
 class TabIconDonor extends Component {
   constructor(props){
@@ -133,8 +129,8 @@ class RouterComponent extends Component {
   }
 
   render() {
-    if(this.state.loading) { //splash screen or something here
-      return null
+    if(this.state.loading) { 
+      return null  //splash screen or something 
     } 
     return (
     <Router>
@@ -142,12 +138,11 @@ class RouterComponent extends Component {
 
       <Scene key='editProfile' component={EditProfile} />
 
+        <Scene key='login' initial={this.state.user==='0'}  component={LoginForm} />
         <Scene key='register' component={Register} />
         <Scene key='profileView' component={ProfileView} />
         <Scene key='lang' component={LanguageForm} />
-        
-        <Scene key='login' initial={this.state.user==='0'}  component={LoginForm} />
-
+        <Scene key='register1' component= {Register1} />
         <Scene
           key="tabbar"
           tabs={true}

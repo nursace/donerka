@@ -16,3 +16,5 @@ export const USER_FILLING_FORM = 'user_filling_form'
 export const USER_FILLING = 'user_filling'
 export const SUBMIT_BLOOD = 'submit_blood'
 export const SUBMIT_BLOOD_SUCCESS = 'submit_blood_success'
+
+export const POSITION_CHANGED = 'position_changed'

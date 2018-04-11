@@ -17,16 +17,12 @@ class Register extends Component {
       phone: '',
       email : '',
       password : '',
-      confirmPassword : '',
       loading: false,
       image : null,
       opacityValue: new Animated.Value(1),
       timeLineTop: null,
     }
   }   
-  onConfirmPasswordChange(confirmPassword){
-    this.setState({confirmPassword})
-  }
   onEmailChange(text) {
     this.props.emailChanged(text)
   }
@@ -53,7 +49,7 @@ class Register extends Component {
   submitToFirebase() {
 
 this.setState({loading : true})
-    const {confirmPassword,firstName,phone,lastName,patronymic } = this.state
+    const {firstName,phone,lastName,patronymic } = this.state
     const {email,password } = this.props
 
 if(firstName===''||lastName===''||phone===''||patronymic===''||email===''||password==='')
@@ -64,16 +60,7 @@ Alert.alert(
     {text: 'Ok'},
   ]
 )
-else if(confirmPassword!==password){
-  Alert.alert(
-    'Пароли не совпадают',
-    'Пожалуйста заполните подтвердите пароль',
-    [
-      {text: 'Ok'},
-    ]
-  )
-}  
-else
+else  
     this.props.registerUser({email, password,firstName,phone,lastName,patronymic})
 
 this.setState({loading:false})
@@ -122,19 +109,19 @@ this.setState({loading:false})
         <View>       
         <InputLogin
           label='Имя'
-          placeholder='Имя'
+          placeholder='Салидат'
           onChangeText={this.onFirstNameChange.bind(this)}
           value={this.state.firstName}
           />
           <InputLogin
           label='Фамилия'
-          placeholder='Фамилия'
+          placeholder='Замирбекова'
           onChangeText={this.onLastNameChange.bind(this)}
           value={this.state.lastName}
           />  
           <InputLogin
           label='Отчество'
-          placeholder='Отчество'
+          placeholder='Замирбековна'
           onChangeText={this.onPatronymicChange.bind(this)}
           value={this.state.patronymic}
           />
@@ -143,26 +130,6 @@ this.setState({loading:false})
           placeholder='+(996) 778 000 000'
           onChangeText={this.onPhoneChange.bind(this)}
           value={this.state.phone}
-          />
-          <InputLogin
-          label='Email'
-          placeholder='example@gmail.com'
-          onChangeText={this.onEmailChange.bind(this)}
-          value={this.props.email}
-          />
-          <InputLogin
-          secureTextEntry
-          label='Пароль'
-          placeholder='Введите пароль'
-          onChangeText={this.onPasswordChange.bind(this)}
-          value={this.props.password}
-          />      
-          <InputLogin
-          secureTextEntry
-          label='Подтвердите пароль'
-          placeholder='Подтвердите пароль'
-          onChangeText={this.onConfirmPasswordChange.bind(this)}
-          value={this.state.confirmPassword}
           />
           </View>
           <View style={{alignSelf:'center'}}>{this.renderButton()}</View>

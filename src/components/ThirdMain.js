@@ -41,7 +41,7 @@ email : '',
 user : {}
 }
 }
-componentWillMount(){
+componentDidMount(){
 
 if(firebase.auth().currentUser){
   
@@ -91,12 +91,13 @@ _changeAvatar(){
           d+='+'
           else
         d += email1.charAt(i)
-        } const Blob = RNFetchBlob.polyfill.Blob
+        } 
+        const Blob = RNFetchBlob.polyfill.Blob
         const fs = RNFetchBlob.fs
         window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
         window.Blob = Blob
         let uploadBlob = null
-        const imageRef = firebase.storage().ref(`users/${d}/avatar`).child("avatar.jpg")
+        const imageRef = firebase.storage().ref(`users/${d}/avatar/`).child("avatar.jpg")
         
         let mime = 'image/jpg'
         fs.readFile(image.path, 'base64')
@@ -105,10 +106,10 @@ _changeAvatar(){
         })
         .then((blob) => {
             uploadBlob = blob
-            console.log(blob)
             return imageRef.put(blob, { contentType: mime })
           })
         .then(() => {
+          
             uploadBlob.close()
             return imageRef.getDownloadURL()
           })
@@ -122,7 +123,6 @@ _changeAvatar(){
             
           })
         .then(()=>{
-            console.log('2')
             that.setState({loading : false})
           })
               .catch((error) => {
@@ -374,5 +374,5 @@ const mapStateToProps = ({ main }) => {
   return {filled,role,blood,factor,loading}
 }
 export default connect(mapStateToProps, {
-  logoutUser
+  logoutUser,userDataFetching
 })(thirdMain)

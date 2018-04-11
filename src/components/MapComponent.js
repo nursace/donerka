@@ -1,12 +1,15 @@
+
 import React, { Component } from 'react'
 import { Text,Image,ImageBackground,KeyboardAvoidingView,Platform,Animated,Easing,Alert, View,Dimensions,AsyncStorage, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { emailChanged, passwordChanged, loginUser,errorShowed } from '../actions'
+import { emailChanged,positionChanged, passwordChanged, loginUser,errorShowed } from '../actions'
 import { InputLogin, Spinner } from './common'
 import firebase from 'firebase'
+import MapView from 'react-native-maps';
+
 import { Actions } from 'react-native-router-flux'
 
-class LoginForm extends Component {
+class MapComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -58,6 +61,12 @@ let that = this
     that.setState({disabled:true})
   }
   else that.setState({disabled: false})
+   
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.props.positionChanged(position);
+        });
+    
+    
 }
   getBackColor(){
   if(this.state.disabled)
@@ -106,55 +115,17 @@ if(this.props.error==='Authentication Failed'){
   else this.setState({disabled: false})
 } 
    return (
-      <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
-        <View style={styles.mainView}>
-        <KeyboardAvoidingView behavior='position'>
-        <Image source={require('../../assets/logo.png')} style={{marginTop: Dimensions.get('window').height*0.2,alignSelf:'center',width: Dimensions.get('window').width*0.8,height: Dimensions.get('window').height/9}}></Image>
-        <View
-          style={{
-          }}
-        >
-          <View style={{marginTop:80}}>
-          <InputLogin
-          placeholder='Email адрес'
-          onChangeText={this.onEmailChange.bind(this)}
-          value={this.props.email}
-        />
-        <InputLogin
-          secureTextEntry
-          placeholder='Пароль'
-          onChangeText={this.onPasswordChange.bind(this)}
-          value={this.props.password}
-        />
-          </View>
-          <View style={{alignSelf:'center'}}>{this.renderButton()}</View>
-        </View>
-        </KeyboardAvoidingView>
-        <View style={{marginTop:60,justifyContent:'center',alignItems:'center',backgroundColor:'transparent',flex:1}}> 
-<View style={{flex:1}}>
-<TouchableOpacity style={{width : 105 ,height : 20,}}>
-        <Text style={{color:'#fff',fontSize:13,textDecorationLine: "underline",fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Забыли пароль? </Text>
-</TouchableOpacity>
-      </View>      
-      <View style={{flex:2,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
-      <View style={{height:1,marginRight:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
-      <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>или</Text>
-      <View style={{height:1,marginLeft:10,width:90,borderBottomWidth:1,borderColor:'#d0d0d0'}} />
-        </View>
-         <View style={{flex : 1,marginBottom:40,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
-            <Text style={{color:'#d0d0d0',fontSize:13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Еще нет аккаунта? </Text>
-            
-            <TouchableOpacity style={{width : 160,height:20}} onPress={()=>{
-                
-                  Actions.register()
-            }}     
-              >
-            <Text style={{   color:'#fff',fontSize:15, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,textDecorationLine: "underline",}}>Зарегистрироваться</Text></TouchableOpacity>
+      <View style={{flex:1,justifyContent : 'center',alignItems:'center',backgroundColor : '#f5fcff'}}>
+     <MapView
+      style={{top : 0,bottom : 0,left : 0,right : 0,position :'absolute'}}
+     initialRegion={{
+       latitude: 37.78825,
+       longitude: -122.4324,
+       latitudeDelta: 0.0922,
+       longitudeDelta: 0.0421,
+     }}
+   />
       </View>
-        </View>
-        </View>
-
-      </Animated.View>
     );
   }
 }
@@ -173,9 +144,9 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ auth }) => {
-  const { email, password, error, loading } = auth;
-  return { email, password, error, loading };
+const mapStateToProps = ({ map }) => {
+  const { position } = map;
+  return { position };
 };
 
 export default connect(mapStateToProps, {
@@ -183,4 +154,5 @@ export default connect(mapStateToProps, {
   passwordChanged,
   loginUser,
   errorShowed
-})(LoginForm);
+})(MapComponent);
+
