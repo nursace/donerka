@@ -15,6 +15,7 @@ import FirstMain from './components/FirstMain'
 import SecondMain from './components/SecondMain'
 import ThirdMain from './components/ThirdMain'
 import ModalScreen from './ModalScreen'
+import History from './components/History';
 
 
 class TabIconDonor extends Component {
@@ -40,7 +41,7 @@ onPressedIn() {
 onPressedOut() {
   Animated.timing(this.state.opacityValue, {
       toValue: 0,
-      duration:1,            
+      duration:1,
   }).start(() => {
       this.state.scaleValue.setValue(0.01);
       this.state.opacityValue.setValue(this.state.maxOpacity);
@@ -85,7 +86,7 @@ renderRippleView() {
   <Text style={{fontSize : 10,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,backgroundColor:'transparent',color:this.props.focused?'#F65352': '#9C9495',alignSelf:'center'}}>{this.props.text}</Text>
   </View>
   </View>
-   </View> 
+   </View>
   )
 }
 }
@@ -125,21 +126,23 @@ class RouterComponent extends Component {
   }
 
   componentDidMount(){
-    StatusBar.setHidden(true);    
-    
+    StatusBar.setHidden(true);
+
   }
 
   render() {
-    if(this.state.loading) { 
-      return null  //splash screen or something 
-    } 
+    if(this.state.loading) {
+      return null  //splash screen or something
+    }
     return (
     <Router>
       <Scene key="root" hideNavBar>
 
       <Scene key='editProfile' component={EditProfile} />
 
-        <Scene key='login' initial={this.state.user==='0'}  component={LoginForm} />
+      <Scene key='history' component={History} hideNavBar={false} title='История' />
+
+        <Scene key='login' initial={this.state.user==='0'} component={LoginForm} />
         <Scene key='register' component={Register} />
         <Scene key='profileView' component={ProfileView} />
         <Scene key='lang' component={LanguageForm} />
@@ -148,19 +151,19 @@ class RouterComponent extends Component {
         <Scene
           key="tabbar"
           tabs={true}
-          initial = {this.state.user==='1'}
+          initial={this.state.user === '1'}
           showLabel={false}
           tabBarStyle={{ backgroundColor: '#fff' }}
-          tabBarPosition='bottom' 
-          swipeEnabled  
+          tabBarPosition='bottom'
+          swipeEnabled
         >
 
           <Scene key="osu" hideNavBar text="Топ" name='md-list-box' size={25} icon={TabIconDonor}>
-           
+
           <Scene
           key="firstMain"
           component={FirstMain}
-        
+
         />
           </Scene>
 
@@ -168,7 +171,7 @@ class RouterComponent extends Component {
             <Scene
               key="secondMain"
               component={SecondMain}
-            
+
             />
           </Scene>
 
@@ -176,7 +179,7 @@ class RouterComponent extends Component {
           <Scene
           key="thirdMain"
           component={ThirdMain}
-        
+
         />
           </Scene>
         </Scene>
