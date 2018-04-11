@@ -190,7 +190,7 @@ onFinishFillingForm(){ //finishing 3 step
                 <View style={{flex : 1}}>
                 <View style={{flex : 1,justifyContent:'space-between',flexDirection:'row',}}> 
                     <Text style={{fontSize : 17,color : 'gray',margin :10,marginTop : 45}}>Show me in donor's search</Text>
-                    <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :20}} value={this.state.switchValue} />
+                    <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :15}} value={this.state.switchValue} />
                 </View>
                 <View style={{flex : 4}}>
             <ListView
@@ -205,7 +205,7 @@ onFinishFillingForm(){ //finishing 3 step
                 <View style={{flex : 1}}>
                 <View style={{flex : 1,justifyContent:'space-between',flexDirection:'row',}}> 
                     <Text style={{fontSize : 17,color : 'gray',margin :10,marginTop : 45}}>Show me in donor's search</Text>
-                    <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :45}} value={this.state.switchValue} />
+                    <Switch onValueChange={this._handleToggleSwitch.bind(this)} style={{margin: 10,marginTop :15}} value={this.state.switchValue} />
                 </View>
                 <View style={{flex : 4}}>
                 <View style={{marginTop : Dimensions.get('window').height/7,alignItems: 'center'}}>

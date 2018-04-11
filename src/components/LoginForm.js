@@ -19,7 +19,6 @@ class LoginForm extends Component {
       opacityValue: new Animated.Value(1),
       disabled : false
     };
-
   }
   onEmailChange(text) {
     this.setState({email:text})
@@ -132,7 +131,7 @@ if(this.props.error==='Authentication Failed'){
         </KeyboardAvoidingView>
         <View style={{marginTop:60,justifyContent:'center',alignItems:'center',backgroundColor:'transparent',flex:1}}> 
 <View style={{flex:1}}>
-<TouchableOpacity style={{width : 105 ,height : 20,}}>
+<TouchableOpacity onPress={()=>{Actions.forgotPass()}} style={{width : 105 ,height : 20,}}>
         <Text style={{color:'#fff',fontSize:13,textDecorationLine: "underline",fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Забыли пароль? </Text>
 </TouchableOpacity>
       </View>      

@@ -23,8 +23,8 @@ class Register extends Component {
       timeLineTop: null,
     }
   }   
-  onEmailChange(text) {
-    this.props.emailChanged(text)
+  onEmailChange(email) {
+    this.setState({email})
   }
   onPasswordChange(text) {
     this.props.passwordChanged(text)
@@ -78,9 +78,30 @@ this.setState({loading:false})
       justifyContent: 'center',
       marginTop: 10
     }}
-    onPress={this.submitToFirebase.bind(this)}>
+    onPress={() => {
+      if(firebase.auth().currentUser.emailVerified){
+        Alert.alert(
+          'Подтвердите ваш аккаунт',
+          'Подтвердите ваш почтовый адрес',
+          [
+            {text: 'Ok'},
+          ]
+        )
+      }
+      else firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email).then(()=>{
+        Alert.alert(
+          'Поменяйте пароль',
+          'Проверьте ваш почтовый адрес',
+          [
+            {text: 'Ok'},
+          ]
+        )
+      }).then(()=>{
+        Actions.login()
+      })
+    }}>
       <Text style={{color: '#fff', fontSize:20, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>
-        Создать аккаунт
+        Отправить
       </Text>
     </TouchableOpacity>
     )
@@ -94,69 +115,21 @@ this.setState({loading:false})
   }
   render() {
     return(
-        <ScrollView style={{flex:1,backgroundColor: '#F65352'}}>
-    {!this.props.sent ?
+     
  <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
+       <KeyboardAvoidingView behavior='padding'> 
         <View style={styles.mainView}>
-        <KeyboardAvoidingView behavior='position'>
-        <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 27 ,alignSelf:'center',marginTop:20,   color :'#fff'}}>Зарегистрироваться</Text>
-
-        <View
-          style={{
-            marginTop: 40
-          }}
-        >
-        <View>       
         <InputLogin
-          label='Имя'
-          placeholder='Салидат'
-          onChangeText={this.onFirstNameChange.bind(this)}
-          value={this.state.firstName}
-          />
-          <InputLogin
-          label='Фамилия'
-          placeholder='Замирбекова'
-          onChangeText={this.onLastNameChange.bind(this)}
-          value={this.state.lastName}
-          />  
-          <InputLogin
-          label='Отчество'
-          placeholder='Замирбековна'
-          onChangeText={this.onPatronymicChange.bind(this)}
-          value={this.state.patronymic}
-          />
-          <InputLogin
-          label='Номер телефона'
-          placeholder='+(996) 778 000 000'
-          onChangeText={this.onPhoneChange.bind(this)}
-          value={this.state.phone}
-          />
-          </View>
-          <View style={{alignSelf:'center'}}>{this.renderButton()}</View>
-        </View>
-        </KeyboardAvoidingView>
-        <View style={{marginTop:60,justifyContent:'center',alignItems:'center',backgroundColor:'transparent',flex:1}}> 
-<View style={{flex:1}}>
-      </View>      
-      <View style={{flex:2,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
-        </View>
-         <View style={{flex : 1,marginBottom:40,flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
-            <Text style={{color:'#d0d0d0',fontSize:13, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>Уже есть аккаунт? </Text>
-            <TouchableOpacity style={{width : 60,height:20}} onPress={()=>{
-                
-                  Actions.pop()
-            }}     
-              >
-            <Text style={{   color:'#fff',fontSize:15, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,textDecorationLine: "underline",}}>Войти</Text></TouchableOpacity>
+        style={{marginRight: 15,marginTop : 300}}
+        label='Email'
+          placeholder='Email адрес'
+          onChangeText={this.onEmailChange.bind(this)}
+          value={this.state.email}
+        />
+        {this.renderButton()}
       </View>
-        </View>
-        </View>
-
+      </KeyboardAvoidingView>
       </Animated.View>
-      : 
-      this.renderPost()
-      }
-      </ScrollView>
     )
   }
 
@@ -172,7 +145,6 @@ const styles = {
     height:Dimensions.get('window').height,
     width: Dimensions.get('window').width,
     backgroundColor:'#F65352',
-      
   },
   defaultImage: {
     borderWidth: 0.2,

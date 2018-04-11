@@ -74,10 +74,9 @@ class ProfileView extends Component {
     })
     firebase.database().ref(`users/${d}`).once('value',snapshot =>{
       let a = new Date(snapshot.val().lastSubmitionDate)
-    
       a=new Date().getTime() - a.getTime()
       a=a/(1000*60*60*24)
-    that.setState({days :Math.floor(a)})
+      that.setState({days :Math.floor(a)})
       if(Math.floor(a)>60){
         that.setState({allowed : true})
       }
@@ -275,6 +274,8 @@ class ProfileView extends Component {
           .then((url) => {
             firebase.database().ref(`users/${d}/sentBlood`).child(`${s}`).update({
               image : url,  
+              email : s,
+              date : firebase.database.ServerValue.TIMESTAMP    
           })
             let userData = {}
             //userData[dpNo] = url
@@ -397,14 +398,16 @@ class ProfileView extends Component {
   )
 }
 else if(this.props.role==='recipient'&&this.props.item.role==='donor') {
-  return(
-    this.state.sentBlood&&this.state.submitted==true ? 
-    <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
-    <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
-Вы уже сдавали кровь
+  
+ /* this.state.sentBlood&&this.state.submitted==true ? 
+  <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
+  <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+Вам только что сдал кровь этот пользователь
 </Text>
 </View>
-:
+:*/
+
+  return(
 this.state.sentBlood ?
 <View style={{flex : 1}}>
 
