@@ -29,12 +29,13 @@ class ProfileView extends Component {
       submitted : false,
       logo :require('../../assets/logo.png'),
       sentBlood : false,
-      beenHelped: 0
+      beenHelped: 0,
+      allowed : false
       
     }
   
    fetchData(this.props.userDataFetching).then(()=>{
-
+    
     let s = ''
     let email1 = this.props.item.email
     for(let i = 0; i < email1.length; i++) {
@@ -69,6 +70,14 @@ class ProfileView extends Component {
       that.setState({image : snapshot.val().image,sentBlood : true})
 
     })
+    })
+    firebase.database().ref(`users/${d}`).once('value',snapshot =>{
+      let a = new Date(snapshot.val().lastSubmitionDate)
+      a=new Date() - a
+      a=a/(1000*60*60*24)
+      if(Math.floor(a)>60){
+        that.setState({allowed : true})
+      }
     })
     firebase.database().ref(`/users/${s}/confirmedApplications`).once('value',snapshot =>{
       if(snapshot.hasChild(`${d}`))
@@ -137,6 +146,8 @@ class ProfileView extends Component {
       else
     d += email2.charAt(i)
     } 
+    firebase.database().ref(`users/${s}`).update({lastSubmitionDate : firebase.database.ServerValue.TIMESTAMP})
+    firebase.database().ref(`users/${d}`).update({visible : false})
     firebase.database().ref(`users/${d}/submittedBlood`).child(`${s}`).update({applied : true})
     .then(()=>{
       firebase.database().ref(`users/${d}/submittedBlood`).child(`${s}`).once('value',snapshot =>{
@@ -346,12 +357,13 @@ class ProfileView extends Component {
       if(this.props.role === 'donor' && this.props.item.role==='recipient'){
       return(
       this.state.sentBlood&&this.state.submitted==true ? 
+      this.props.role==='donor' && this.state.allowed===false ?
       <View style={{flex : 1,alignItems: 'center'}}>
       {this.state.image!==null ? <Image source={{uri : this.state.image}} style={{width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/5,resizeMode:'stretch'}} /> : null}
-                          <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+            <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
                   Вы уже сдавали кровь
-                  </Text>
-      </View>
+            </Text>
+      </View>     :null
       :
       this.state.sentBlood ?
       <View style={{flex : 1,alignItems:'center'}}>
