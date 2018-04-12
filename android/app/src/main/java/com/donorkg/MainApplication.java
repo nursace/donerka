@@ -30,7 +30,7 @@ public class MainApplication extends Application implements ReactApplication {
             new VectorIconsPackage(),
             new PickerPackage(),
             new RNFetchBlobPackage(),
- new MapsPackage()
+            new MapsPackage()
       );
     }
 

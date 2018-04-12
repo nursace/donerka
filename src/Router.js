@@ -15,6 +15,7 @@ import FirstMain from './components/FirstMain'
 import SecondMain from './components/SecondMain'
 import ThirdMain from './components/ThirdMain'
 import ModalScreen from './ModalScreen'
+import History from './components/History';
 
 
 class TabIconDonor extends Component {
@@ -131,13 +132,15 @@ class RouterComponent extends Component {
 
   render() {
     if(this.state.loading) {
-      return null  //splash screen or something 
+      return null  //splash screen or something
     }
     return (
     <Router>
       <Scene key="root" hideNavBar>
 
       <Scene key='editProfile' component={EditProfile} />
+
+      <Scene key='history' component={History} hideNavBar={false} title='История' />
 
         <Scene key='login' initial={this.state.user==='0'} component={LoginForm} />
         <Scene key='register' component={Register} />
@@ -148,7 +151,7 @@ class RouterComponent extends Component {
         <Scene
           key="tabbar"
           tabs={true}
-          initial = {this.state.user==='1'}
+          initial={this.state.user === '1'}
           showLabel={false}
           tabBarStyle={{ backgroundColor: '#fff' }}
           tabBarPosition='bottom'
