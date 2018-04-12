@@ -3,12 +3,15 @@ import ReactNative, {Image,Dimensions,Platform,TouchableOpacity} from 'react-nat
 import {Icon} from 'react-native-elements'
 import {Actions} from 'react-native-router-flux'
 import firebase from 'firebase'
+import {Spinner} from './common'
+
 const {View, TouchableHighlight, Text} = ReactNative;
 class ListItem extends Component {
   constructor(props){
     super(props)
     this.state = {
       role : '',
+      image : null
     }
     
   }
@@ -27,7 +30,7 @@ class ListItem extends Component {
     var that = this
     firebase.database().ref(`users/${s}`).once('value',function(snapshot){
        if(snapshot.val().role==='donor'){
-         that.setState({role : 'donor'})
+         that.setState({role : 'donor',image : snapshot.val().avatar})
        }
        
      })
@@ -38,8 +41,11 @@ class ListItem extends Component {
         const {item} = this.props
         Actions.push('profileView',{item})
       }} style={styles.li}>
-      <View style={styles.image}> 
-        <Icon type='ionicon' color='#E39291' style={{backgroundColor:'transparent'}} size={50} name='ios-camera-outline' /> 
+      <View style={styles.image}>
+      {this.state.image ? <Image            indicator={Spinner}
+ source={this.state.logo} imageStyle={{marginLeft : Dimensions.get('window').width*0.25,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
+   :     <Icon type='ionicon' color='#E39291' style={{backgroundColor:'transparent'}} size={50} name='ios-camera-outline' /> 
+  } 
         </View>
 <View style={{height : 50,}}>
 <View style={{flex : 1}}>

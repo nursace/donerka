@@ -38,7 +38,8 @@ constructor(props){
     firstName : '',
     phoneNumber: '',
     email : '',
-    user : {}
+    user : {},
+    avatar : null
   }
 }
 
@@ -64,7 +65,7 @@ componentDidMount() {
 
       firebase.database().ref(`users/${d}`).once('value', snapshot => {
         let user = snapshot.val()
-        that.setState({user})
+        that.setState({user,avatar : user.avatar})
       })
     })
   }
@@ -114,7 +115,7 @@ _changeAvatar(){
           })
         .then((url) => {
             firebase.database().ref(`users/`).child(`${d}`).update({
-              avatarUrl : url,
+              avatar : url,
           })
             let userData = {}
             //userData[dpNo] = url
@@ -152,14 +153,15 @@ _changeAvatar(){
               </Text>
             </View>
             <View style={styles.avatarView}>
+            {this.state.avatar ? 
             <Image 
-            source={{ uri: 'http://loremflickr.com/640/480/dog' }} 
+            source={{ uri: this.state.avatar }} 
             indicator={Spinner} 
             imageStyle={styles.avatar}
             style={{
               width: 120, 
               height: 120, 
-            }}/>
+            }}/> : null}
             </View>
             <View style={styles.givenBloodCountView}>
               <Text style={styles.givenBloodCountText}></Text>

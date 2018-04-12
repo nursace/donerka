@@ -303,8 +303,9 @@ onFinishFillingForm(){ //finishing 3 step
     <View style={{backgroundColor: '#F65352',flexDirection: 'row',height : Dimensions.get('window').height/10.5 }}>
   <View style={{flex : 1,}} />
     
-    <View style={{flex : 6,justifyContent: 'center',alignItems: 'center'}}>
-    <Image source={this.state.logo} style={{marginTop: 20,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
+    <View style={{flex : 6,justifyContent: 'center'}}>
+    <Image            indicator={Spinner}
+ source={this.state.logo} imageStyle={{marginLeft : Dimensions.get('window').width*0.25,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
     </View>
     <View style={{flex : 1, }} />
     </View>
