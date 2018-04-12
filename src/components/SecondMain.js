@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text,Alert,Switch,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
+import { Text,Alert,Switch,ListView,Platform,FlatList, View,Animated,Easing,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {userDataFetching,userDataUpdate} from '../actions'
 import firebase from 'firebase'
@@ -7,6 +7,7 @@ import {connect} from 'react-redux'
 import {Spinner} from './common'
 import ListItem from './ListItem'
 import { List, SearchBar, Icon} from 'react-native-elements'
+import Image from 'react-native-image-progress'
 
 //header marginTop : 20
 class SecondMain extends Component {

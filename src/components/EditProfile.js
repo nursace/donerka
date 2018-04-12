@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
-import {View, Text, Dimensions,Image, TouchableOpacity} from 'react-native'
+import {View, Text, Dimensions, TouchableOpacity} from 'react-native'
 import {Actions} from 'react-native-router-flux'
 import {Icon, Button, ListItem} from 'react-native-elements'
 import firebase from 'firebase'
 import ImagePicker from 'react-native-image-crop-picker'
 import RNFetchBlob from 'react-native-fetch-blob'
+import {Spinner} from './common'
+import Image from 'react-native-image-progress'
 
 export default class EditProfile extends Component {
   constructor(props) {
@@ -15,11 +17,12 @@ export default class EditProfile extends Component {
       lastName: '',
       email: '',
       phoneNumber : '',
-      image : null
+      image : null,
+      loading : false
     }
     
   }
-/*
+
   _handlePress(){
     //IF DONOR
     this.setState({loading: true})
@@ -71,11 +74,14 @@ export default class EditProfile extends Component {
             //userData[dpNo] = url
             //firebase.database().ref('users').child(uid).update({ ...userData})
         })
+      }).then(()=>{
+
+        that.setState({loading: false})
+        
+
       })
-      this.setState({loading: false})
-      
     }
-*/
+
   componentWillMount(){
     let d = ''
     email1 = firebase.auth().currentUser.email
@@ -96,18 +102,31 @@ export default class EditProfile extends Component {
       
     })
     
-  //    firebase.database().ref(`users/${d.toLocaleLowerCase()}`).once('value',snapshot =>{
-    //    if(snapshot.val().avatar)
-      //  that.setState({image : snapshot.val().avatar})  
-     // })
+      firebase.database().ref(`users/${d.toLocaleLowerCase()}`).once('value',snapshot =>{
+        if(snapshot.val().avatar)
+        that.setState({image : snapshot.val().avatar})  
+      })
     
   }
   renderContent() {
     return (
       <View style={styles.afterHeader}>
         <View  style={[styles.flexTwo, {justifyContent: 'center', alignItems: 'center'}]}>
-          <Icon type='ionicon'  color='#E39291' style={{backgroundColor:'transparent',}} size={100} name='ios-camera-outline' />
-        
+          {this.state.loading ?<Spinner size='large' /> :this.state.image ? 
+           <TouchableOpacity onPress={()=>{this._handlePress()}}>
+           <Image
+           imageStyle={styles.avatar}
+           style={{width: 110,
+             height: 110}}
+           source={{
+             uri:  this.state.image,
+             
+           }}
+           indicator={Spinner}
+         />
+         </TouchableOpacity>
+        :  <Icon type='ionicon' onPress={()=>{this._handlePress()}} color='#E39291' style={{backgroundColor:'transparent',}} size={100} name='ios-camera-outline' />
+        } 
         </View>
         <View style={styles.flexTwo}>
           <Text style={styles.almostRedText}>Вы можете поменять вашу роль</Text>
@@ -132,7 +151,7 @@ export default class EditProfile extends Component {
               hui.role = role
               var that = this
               firebase.database().ref(`users/${s}`).update(hui)
-           ``   .then(()=>{
+              .then(()=>{
                 that.setState({role})
               })
               .then(()=>{

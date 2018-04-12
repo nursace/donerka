@@ -4,7 +4,6 @@ import {
   AppRegistry,
   Dimensions,
   StyleSheet,
-  Image,
   TouchableHighlight,
   TouchableOpacity,
   Platform,
@@ -13,9 +12,11 @@ import {
   ListView,
   ScrollView
 } from 'react-native';
+import Image from 'react-native-image-progress'
 import firebase from 'firebase'
 import { userDataFetching,} from '../actions'
 import {connect} from 'react-redux'
+import {Spinner} from './common'
 import {logoutUser} from '../actions'
 import {Actions} from 'react-native-router-flux';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
@@ -70,7 +71,6 @@ componentDidMount() {
 }
 
 _changeAvatar(){
-<<<<<<< HEAD
   this.setState({loading: true})
   var that=this  
   ImagePicker.openPicker({
@@ -107,55 +107,8 @@ _changeAvatar(){
           uploadBlob = blob
           console.log('3',blob,'3')
           return imageRef.put(blob, { contentType: mime })
-=======
-    this.setState({loading: true})
-    var that=this
-    ImagePicker.openPicker({
-       width: 300,
-       height: 300,
-       cropping: true,
-       mediaType: 'photo'
-     }).then(image => {
-        let d = ''
-        console.log("ddd",image,'sdwd')
-        email1 = firebase.auth().currentUser.email
-        for(let i = 0; i < email1.length; i++) {
-          if (email1.charAt(i) === '@') break;
-          if(email1.charAt(i)===`'`)
-          d+='='
-          else if(email1.charAt(i)==='.')
-          d+='+'
-          else
-        d += email1.charAt(i)
-        }
-        const Blob = RNFetchBlob.polyfill.Blob
-        const fs = RNFetchBlob.fs
-        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-        window.Blob = Blob
-        let uploadBlob = null
-        const imageRef = firebase.storage().ref(`users/${d}/avatar/`).child("avatar.jpg")
-
-        let mime = 'image/jpg'
-        fs.readFile(image.path, 'base64')
-        .then((data) => {
-            return Blob.build(data, { type: `${mime};BASE64` })
->>>>>>> cdff47f3f5920edfb82b89aff92cb4f842cba4aa
         })
         .then(() => {
-<<<<<<< HEAD
-          console.log('4')
-          
-          uploadBlob.close()
-          return imageRef.getDownloadURL()
-        })
-        .then((url) => {
-          let userData = {}
-          //userData[dpNo] = url
-          //firebase.database().ref('users').child(uid).update({ ...userData})
-          
-        })
-      })
-=======
             uploadBlob.close()
             return imageRef.getDownloadURL()
           })
@@ -180,7 +133,6 @@ _changeAvatar(){
 
       })
 
->>>>>>> cdff47f3f5920edfb82b89aff92cb4f842cba4aa
 }
 
   render() {
@@ -199,16 +151,16 @@ _changeAvatar(){
                 {this.props.blood}{this.props.factor}
               </Text>
             </View>
-            <TouchableOpacity onPress={()=>{this._changeAvatar()}} style={styles.avatarView}>
-              <Image
-                style={ styles.avatar }
-                source={{
-                  uri:  'https://i.ytimg.com/vi/P-NZei5ANaQ/maxresdefault.jpg',
-                  width: AVATAR_SIZE,
-                  height: AVATAR_SIZE
-                }}
-              />
-            </TouchableOpacity>
+            <View style={styles.avatarView}>
+            <Image 
+            source={{ uri: 'http://loremflickr.com/640/480/dog' }} 
+            indicator={Spinner} 
+            imageStyle={styles.avatar}
+            style={{
+              width: 120, 
+              height: 120, 
+            }}/>
+            </View>
             <View style={styles.givenBloodCountView}>
               <Text style={styles.givenBloodCountText}></Text>
             </View>
@@ -304,7 +256,7 @@ const styles = {
     backgroundColor: '#fff',
   },
   avatar: {
-    marginBottom: 12,
+    marginBottom: 0,
     borderRadius: AVATAR_SIZE / 2
   },
   settingsText: {
@@ -401,7 +353,7 @@ const styles = {
   avatarView: {
     flex:1,
     alignItems:'center',
-    justifyContent:'center'
+    justifyContent:'center',
   },
 }
 
