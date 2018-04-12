@@ -312,7 +312,6 @@ onFinishFillingForm(){ //finishing 3 step
   );
 }
 _renderItem(item) {
-  
                     return (
                         <ListItem item={item}  />
                       );

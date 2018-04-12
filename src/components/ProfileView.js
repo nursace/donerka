@@ -370,9 +370,9 @@ class ProfileView extends Component {
       </View>     :null
       :
       this.state.sentBlood ?
-      <View style={{flex : 1,alignItems:'center'}}>
+      <View style={{flex : 1,alignItems:'center',justifyContent:'center'}}>
 {this.state.image ? <Image source={{uri : this.state.image}} style={{marginTop:20,width: Dimensions.get('window').width*0.4,height: Dimensions.get('window').height/5,resizeMode:'stretch'}} /> : null} 
-     <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+     <Text style={{fontSize: 17,marginLeft : 50,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
                   Реципиент должен подтвердить ваше изображение 
                   </Text>
        </View>

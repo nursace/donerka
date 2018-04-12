@@ -70,67 +70,56 @@ componentDidMount() {
 }
 
 _changeAvatar(){
-    this.setState({loading: true})
-    var that=this  
-    ImagePicker.openPicker({
-       width: 300,
-       height: 300,
-       cropping: true,
-       mediaType: 'photo'
-     }).then(image => {
-        let d = ''
-        console.log("ddd",image,'sdwd')
-        email1 = firebase.auth().currentUser.email
-        for(let i = 0; i < email1.length; i++) {
-          if (email1.charAt(i) === '@') break;
-          if(email1.charAt(i)===`'`)
-          d+='='
-          else if(email1.charAt(i)==='.')
-          d+='+'
-          else
-        d += email1.charAt(i)
-        } 
-        const Blob = RNFetchBlob.polyfill.Blob
-        const fs = RNFetchBlob.fs
-        window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
-        window.Blob = Blob
-        let uploadBlob = null
-        const imageRef = firebase.storage().ref(`users/${d}/avatar/`).child("avatar.jpg")
-        
-        let mime = 'image/jpg'
-        fs.readFile(image.path, 'base64')
-        .then((data) => {
-            return Blob.build(data, { type: `${mime};BASE64` })
-        })
-        .then((blob) => {
-            uploadBlob = blob
-            return imageRef.put(blob, { contentType: mime })
-          })
-        .then(() => {
-            uploadBlob.close()
-            return imageRef.getDownloadURL()
-          })
-        .then((url) => {
-            firebase.database().ref(`users/`).child(`${d}`).update({
-              avatarUrl : url,  
-          })
-            let userData = {}
-            //userData[dpNo] = url
-            //firebase.database().ref('users').child(uid).update({ ...userData})
-            
-          })
-        .then(()=>{
-            that.setState({loading : false})
-          })
-              .catch((error) => {
-                  console.log(error)
-                })
-        
-          
-          
-
-      })
+  this.setState({loading: true})
+  var that=this  
+  ImagePicker.openPicker({
+     width: 300,
+     height: 300,
+     cropping: true,
+     mediaType: 'photo'
+   }).then(image => {
   
+      let d = ''
+      email1 = firebase.auth().currentUser.email
+      for(let i = 0; i < email1.length; i++) {
+        if (email1.charAt(i) === '@') break;
+        if(email1.charAt(i)===`'`)
+        d+='='
+        else if(email1.charAt(i)==='.')
+        d+='+'
+        else
+      d += email1.charAt(i)
+      } const Blob = RNFetchBlob.polyfill.Blob
+      const fs = RNFetchBlob.fs
+      window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest
+      window.Blob = Blob
+      let uploadBlob = null
+      const imageRef = firebase.storage().ref(`users/${d}/avatar/`).child("blood.jpg")
+
+      let mime = 'image/jpg'
+      fs.readFile(image.path, 'base64')
+      .then((data) => {
+          //console.log(data);
+          return Blob.build(data, { type: `${mime};BASE64` })
+      })
+      .then((blob) => {
+          uploadBlob = blob
+          console.log('3',blob,'3')
+          return imageRef.put(blob, { contentType: mime })
+        })
+        .then(() => {
+          console.log('4')
+          
+          uploadBlob.close()
+          return imageRef.getDownloadURL()
+        })
+        .then((url) => {
+          let userData = {}
+          //userData[dpNo] = url
+          //firebase.database().ref('users').child(uid).update({ ...userData})
+          
+        })
+      })
 }
 
   render() {
