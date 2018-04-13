@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
-import ReactNative, {Image,Dimensions,Platform,TouchableOpacity} from 'react-native';
+import ReactNative, {Dimensions,Platform,TouchableOpacity} from 'react-native';
 import {Icon} from 'react-native-elements'
 import {Actions} from 'react-native-router-flux'
 import firebase from 'firebase'
 import {Spinner} from './common'
+import Image from 'react-native-image-progress'
+
 
 const {View, TouchableHighlight, Text} = ReactNative;
 class ListItem extends Component {
@@ -27,12 +29,33 @@ class ListItem extends Component {
       else
     s += email1.charAt(i)
     }
+
+    let d = ''
+email1 = this.props.item.email
+    for(let i = 0; i < email1.length; i++) {
+      if (email1.charAt(i) === '@') break;
+      if(email1.charAt(i)===`'`)
+      d+='='
+      else if(email1.charAt(i)==='.')
+      d+='+'
+      else
+    d += email1.charAt(i)
+    }
     var that = this
     firebase.database().ref(`users/${s}`).once('value',function(snapshot){
        if(snapshot.val().role==='donor'){
-         that.setState({role : 'donor',image : snapshot.val().avatar})
-       }
+         that.setState({role : 'donor'})
+
+        }
        
+     })
+     .then(()=>{
+       firebase.database().ref(`users/${d}`).once('value', snapshot => {
+         if(snapshot.hasChild('avatar')){
+           that.setState({image : snapshot.val().avatar})
+            
+          }
+       })
      })
   }
   render() {
@@ -42,8 +65,8 @@ class ListItem extends Component {
         Actions.push('profileView',{item})
       }} style={styles.li}>
       <View style={styles.image}>
-      {this.state.image ? <Image            indicator={Spinner}
- source={this.state.logo} imageStyle={{marginLeft : Dimensions.get('window').width*0.25,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
+      {this.state.image ?  <Image            indicator={Spinner}
+      source={{uri :this.state.image}} style={[styles.image,{marginRight : 20,borderRadius:55*55}]} imageStyle={{width: 55,height: 55,borderRadius: 55*55,resizeMode:'stretch'}} />
    :     <Icon type='ionicon' color='#E39291' style={{backgroundColor:'transparent'}} size={50} name='ios-camera-outline' /> 
   } 
         </View>
