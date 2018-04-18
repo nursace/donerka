@@ -93,13 +93,13 @@ let list = [], i =0
 firebase.database().ref(`users`).once('value',snapshot =>{
 snapshot.forEach(item => {
 let v=item.val()
-if(v.requestTime) {
+if(v.lastRequestTime) {
   list.push(v)
 }
 }
 )
 list.sort((s1,s2) => {
-  return s1.requestTime - s2.requestTime
+  return s1.lastRequestTime - s2.lastRequestTime
 })
 list.forEach(item => {
   item.i = ++i
