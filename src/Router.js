@@ -55,6 +55,11 @@ getPaddingLeft(){
   else
   return 5
 }
+getWidth(){
+  if(this.props.name === 'ios-cog')
+{
+  return 55
+}}
 renderRippleView() {
   const { scaleValue, opacityValue } = this.state;
 
@@ -83,7 +88,7 @@ renderRippleView() {
 {this.renderRippleView()}
 <View >
   <Icon type='ionicon' name={this.props.name} color={this.props.focused?'#F65352': '#9C9495'} style={{backgroundColor:'transparent',paddingLeft:this.getPaddingLeft()}} size={size} />
-  <Text style={{fontSize : 10,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,backgroundColor:'transparent',color:this.props.focused?'#F65352': '#9C9495',alignSelf:'center'}}>{this.props.text}</Text>
+  <Text style={{fontSize : 10,width : this.getWidth(),fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,backgroundColor:'transparent',color:this.props.focused?'#F65352': '#9C9495',alignSelf:'center'}}>{this.props.text}</Text>
   </View>
   </View>
    </View>
