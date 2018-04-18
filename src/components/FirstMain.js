@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView,Text,Alert,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions } from 'react-native'
+import { ScrollView,Text,Alert,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions, TouchableNativeFeedback } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 import {} from '../actions'
 import firebase from 'firebase'
@@ -28,6 +28,7 @@ class FirstMain extends Component {
       }
 
   }
+
   componentWillMount(){
 if(firebase.auth().currentUser){
     let d = ''
@@ -192,22 +193,22 @@ this.setState({
       <View style={styles.mostView}>
         <View style={styles.header}>
           <View style={styles.secondView}>
-            <View style={{flex: 1,justifyContent:'center', alignItems: 'center'}}>
-              <Text onPress={() => {
-                this._switch(true)
-                this.makeRemoteRequestDonor()
-              }} style={
-                x ? styles.active : styles.inactive
-              }>Топ доноры</Text>
-            </View>
-            <View style={{flex: 1,justifyContent:'center', alignItems: 'center'}}>
-              <Text onPress={() => {
-                this._switch(false)
-                this.makeRemoteRequestRecipient()
-              }} style={
-                !x ? styles.active : styles.inactive
-              }>Срочные заявки</Text>
-            </View>
+            <TouchableNativeFeedback onPress={() => {
+              this._switch(true)
+              this.makeRemoteRequestDonor()
+            }}>
+              <View style={ x ? styles.activeTab : styles.inactiveTab }>
+                <Text style={ x ? styles.active : styles.inactive }>Топ доноры</Text>
+              </View>
+            </TouchableNativeFeedback>
+            <TouchableNativeFeedback onPress={() => {
+              this._switch(false)
+              this.makeRemoteRequestRecipient()
+            }}>
+              <View style={ !x ? styles.activeTab : styles.inactiveTab }>
+                <Text style={ !x ? styles.active : styles.inactive }>Срочные заявки</Text>
+              </View>
+            </TouchableNativeFeedback>
           </View>
         </View>
         <ScrollView>
@@ -220,16 +221,23 @@ this.setState({
           renderItem={({ item }) => (
             <ListItem
               roundAvatar
-              title={`${item.firstName} ${item.lastName}`}
-              subtitle={item.email}
+              title={
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{fontSize: 18, color: '#464646'}}>{item.firstName} {item.lastName}</Text>
+                </View>
+              }
+              subtitle={
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text style={{fontSize: 13}}>количество спасений:</Text>
+                  <Text style={{fontSize: 13, color: '#F65352', fontWeight: '600'}}> {item.rescue_count}</Text>
+                </View>
+              }
               containerStyle={{ borderBottomWidth: 0 }}
               onPress={() => {
-
-      const h=item
-      Actions.push('profileView',{item :h})
-                    }}
+                const h=item
+                Actions.push('profileView',{item :h})
+              }}
               leftIcon={<View style={styles.leftIcon}><Text style={styles.leftIconText}>{item.i}</Text></View>}
-              rightIcon={<View style={styles.rightIcon}><Text style={styles.rightIconText}>{item.rescue_count}</Text></View>}
             />
           )}
           keyExtractor={item => item.email}
@@ -245,8 +253,10 @@ this.setState({
       renderItem={({ item }) => (
         <ListItem
           roundAvatar
-          title={`${item.firstName} ${item.lastName}`}
-          subtitle={item.email}
+          title={
+            <View>
+              <Text style={{fontSize: 18, color: '#464646'}}>{item.firstName} {item.lastName}</Text>
+            </View>}
           containerStyle={{ borderBottomWidth: 0 }}
           onPress={() => {
       const h=item
@@ -333,13 +343,12 @@ const styles = {
     flexDirection: 'row',
   },
   active: {
-    color: '#000',
-    fontWeight: 'bold',
-    fontSize: 14,
+    color: '#FFF',
+    fontSize: 16,
   },
   inactive: {
-    color: '#fff',
-    fontSize: 14,
+    color: '#656565',
+    fontSize: 16,
   },
   row: {
     padding: 10,
@@ -355,15 +364,14 @@ const styles = {
     color: '#F5A623',
   },
   rightIcon: {
-    backgroundColor: '#F65352',
+
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 7,
   },
   rightIconText: {
     fontSize: 20,
     padding: 14,
-    color: '#fff',
+    color: '#F65352',
   },
   mostView: {
     flex: 1,
@@ -376,6 +384,20 @@ const styles = {
   },
   iconStyle: {
     color: '#fff',
+  },
+  activeTab: {
+    flex: 1,
+    justifyContent:'center',
+    alignItems: 'center',
+    borderBottomWidth: 5,
+    borderColor: '#fff'
+  },
+  inactiveTab: {
+    flex: 1,
+    justifyContent:'center',
+    alignItems: 'center',
+    borderBottomWidth: 5,
+    borderColor: '#F65352'
   }
 }
 const mapStateToProps = ({ main }) => {
