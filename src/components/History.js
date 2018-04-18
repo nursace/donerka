@@ -18,6 +18,7 @@ class History extends Component {
   }
 
   getData() {
+    if(firebase.auth().currentUser){
     const email = firebase.auth().currentUser.email;
     let d = '';
     for(let i = 0; i < email.length; i++) {
@@ -47,6 +48,7 @@ class History extends Component {
 
       this.setState({ history: res });
     });
+  }
   }
 
 

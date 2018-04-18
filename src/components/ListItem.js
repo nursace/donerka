@@ -18,6 +18,7 @@ class ListItem extends Component {
     
   }
   componentWillMount(){
+    if(firebase.auth().currentUser.email){
     let s = ''
     let email1 = firebase.auth().currentUser.email
     for(let i = 0; i < email1.length; i++) {
@@ -57,6 +58,7 @@ email1 = this.props.item.email
           }
        })
      })
+    }
   }
   render() {
       return (

@@ -3,11 +3,11 @@ import { ScrollView,Text,Alert, View,Button,KeyboardAvoidingView,Image,Platform,
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-crop-picker'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
-import { Input, Spinner,InputLogin } from './common'
+import { Input, Spinner,InputLogin1 } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
-class Register extends Component {
+class Register4 extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -57,17 +57,19 @@ this.setState({loading : true})
     const {email,password } = this.props
 
 if(firstName===''||lastName===''||phone===''||patronymic===''||email===''||password==='')
-Alert.alert(
+{Alert.alert(
   'Ошибка ввода',
   'Пожалуйста заполните все поля',
   [
     {text: 'Ok'},
   ]
 )
+this.setState({current_step: ''})
+}
 else if(confirmPassword!==password){
   Alert.alert(
     'Пароли не совпадают',
-    'Пожалуйста заполните подтвердите пароль',
+    'Пожалуйста заполните подтверждение пароля',
     [
       {text: 'Ok'},
     ]
@@ -105,6 +107,95 @@ this.setState({loading:false})
     console.log('sign out failed')
   })
   }
+  renderInputs(){
+    if(this.state.current_step===''){
+     return( <View style={{}}>     
+      <InputLogin1
+      label='Имя'
+      placeholder='Данияр'
+      onChangeText={this.onFirstNameChange.bind(this)}
+      value={this.state.firstName}
+      />
+      <InputLogin1
+        label='Фамилия'
+        placeholder='Султанов'
+        onChangeText={this.onLastNameChange.bind(this)}
+        value={this.state.lastName}
+        /> 
+             
+     <InputLogin1
+     label='Отчество'
+     placeholder='Султанович'
+     onChangeText={this.onPatronymicChange.bind(this)}
+     value={this.state.patronymic}
+     />
+      <TouchableOpacity style={{
+      alignSelf:'center',
+      alignItems:'center',
+      justifyContent: 'center',
+      marginTop: 10
+    }}
+    onPress={()=>{this.setState({current_step : '1'})}}>
+      <Text style={{color: '#fff', marginTop: 10,fontSize:20, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>
+        Дальше
+      </Text>
+    </TouchableOpacity>
+
+      </View>
+      )
+    }
+  
+     else if(this.state.current_step==='1'){
+      return( <View style={{}}>     
+          <InputLogin1
+          label='Телефон'
+          placeholder='0778 000 000'
+          onChangeText={this.onPhoneChange.bind(this)}
+          value={this.state.phone}
+          /> 
+       <TouchableOpacity style={{
+       alignSelf:'center',
+       alignItems:'center',
+       justifyContent: 'center',
+       marginTop: 10
+     }}
+     onPress={()=>{this.setState({current_step : '2'})}}>
+       <Text style={{color: '#fff', fontSize:20, fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null}}>
+         Дальше
+       </Text>
+     </TouchableOpacity>
+ 
+       </View>
+       )
+     }
+    else
+    return(
+      <View>
+   
+      <InputLogin1
+      label='Email'
+      placeholder='example@gmail.com'
+      onChangeText={this.onEmailChange.bind(this)}
+      value={this.props.email}
+      />
+      <InputLogin1
+      secureTextEntry
+      label='Пароль'
+      placeholder='Введите пароль'
+      onChangeText={this.onPasswordChange.bind(this)}
+      value={this.props.password}
+      />      
+      <InputLogin1
+      secureTextEntry
+      label='Подтвердите пароль'
+      placeholder='Подтвердите пароль'
+      onChangeText={this.onConfirmPasswordChange.bind(this)}
+      value={this.state.confirmPassword}
+      />
+      <View style={{marginTop:50,alignSelf:'center'}}>{this.renderButton()}</View>
+     </View>
+    )
+  }
   render() {
     return(
         <ScrollView style={{flex:1,backgroundColor: '#F65352'}}>
@@ -112,60 +203,15 @@ this.setState({loading:false})
  <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
         <View style={styles.mainView}>
         <KeyboardAvoidingView behavior='position'>
-        <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 27 ,alignSelf:'center',marginTop:20,   color :'#fff'}}>Зарегистрироваться</Text>
+        <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize: 25 ,alignSelf:'center',paddingTop:Dimensions.get('window').height/4.0,   color :'#fff'}}>Зарегистрироваться</Text>
         <View
           style={{
-            backgroundColor:'green',
+           
             marginTop: 40
           }}
         >
-        <View>       
-        <InputLogin
-          label='Имя'
-          placeholder='Имя'
-          onChangeText={this.onFirstNameChange.bind(this)}
-          value={this.state.firstName}
-          />
-          <InputLogin
-          label='Фамилия'
-          placeholder='Фамилия'
-          onChangeText={this.onLastNameChange.bind(this)}
-          value={this.state.lastName}
-          />  
-          <InputLogin
-          label='Отчество'
-          placeholder='Отчество'
-          onChangeText={this.onPatronymicChange.bind(this)}
-          value={this.state.patronymic}
-          />
-          <InputLogin
-          label='Номер телефона'
-          placeholder='+(996) 778 000 000'
-          onChangeText={this.onPhoneChange.bind(this)}
-          value={this.state.phone}
-          />
-          <InputLogin
-          label='Email'
-          placeholder='example@gmail.com'
-          onChangeText={this.onEmailChange.bind(this)}
-          value={this.props.email}
-          />
-          <InputLogin
-          secureTextEntry
-          label='Пароль'
-          placeholder='Введите пароль'
-          onChangeText={this.onPasswordChange.bind(this)}
-          value={this.props.password}
-          />      
-          <InputLogin
-          secureTextEntry
-          label='Подтвердите пароль'
-          placeholder='Подтвердите пароль'
-          onChangeText={this.onConfirmPasswordChange.bind(this)}
-          value={this.state.confirmPassword}
-          />
-          </View>
-          <View style={{alignSelf:'center'}}>{this.renderButton()}</View>
+  
+         {this.state.current_step==='5' ? <View style={{alignSelf:'center'}}>{this.renderButton()}</View> : this.renderInputs()}
         </View>
         </KeyboardAvoidingView>
         <View style={{marginTop:60,justifyContent:'center',alignItems:'center',backgroundColor:'transparent',flex:1}}> 
@@ -224,4 +270,4 @@ const mapStateToProps = ({ auth }) => {
 
 export default connect(mapStateToProps, {
   emailChanged, passwordChanged, registerUser,
-})(Register)
+})(Register4)

@@ -3,7 +3,7 @@ import { ScrollView,Text,Alert, View,Button,KeyboardAvoidingView,Image,Platform,
 import { connect } from 'react-redux'
 import ImagePicker from 'react-native-image-crop-picker'
 import { emailChanged, passwordChanged, registerUser } from '../actions'
-import { Input, Spinner,InputLogin } from './common'
+import { Input, Spinner,InputLogin1 } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
@@ -79,16 +79,7 @@ this.setState({loading:false})
       marginTop: 10
     }}
     onPress={() => {
-      if(firebase.auth().currentUser.emailVerified){
-        Alert.alert(
-          'Подтвердите ваш аккаунт',
-          'Подтвердите ваш почтовый адрес',
-          [
-            {text: 'Ok'},
-          ]
-        )
-      }
-      else firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email).then(()=>{
+       firebase.auth().sendPasswordResetEmail(firebase.auth().currentUser.email).then(()=>{
         Alert.alert(
           'Поменяйте пароль',
           'Проверьте ваш почтовый адрес',
@@ -119,14 +110,31 @@ this.setState({loading:false})
  <Animated.View style={{flex:1,opacity: this.state.opacityValue,}}>
        <KeyboardAvoidingView behavior='padding'> 
         <View style={styles.mainView}>
-        <InputLogin
+        <View style={{flex : 1,flexDirection:'row',backgroundColor:'#fff'}}>
+        <TouchableOpacity onPress={()=>{Actions.pop()}} style={{flex : 1,justifyContent:'center',}}>
+        <Icon type='ionicon' name='ios-arrow-back' color='#F65352' size={33} />
+
+        </TouchableOpacity>
+        <View style={{flex : 7,justifyContent:'center',alignItems:'center'}}>
+        <Text style={{color:'#F65352',fontSize : 23}}>Забыли пароль?</Text>
+          </View>
+          <View style={{flex : 1}}>
+          </View>
+        
+          </View>
+<View style={{flex : 8,alignItems:'center',justifyContent : 'center'}}>
+<InputLogin1
         style={{marginRight: 15,marginTop : 300}}
         label='Email'
-          placeholder='Email адрес'
+          placeholder='user@gmail.com'
           onChangeText={this.onEmailChange.bind(this)}
           value={this.state.email}
         />
         {this.renderButton()}
+
+</View>
+<View style={{flex : 1}}>
+          </View>
       </View>
       </KeyboardAvoidingView>
       </Animated.View>

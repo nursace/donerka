@@ -577,10 +577,11 @@ else {
 
       </View>
       <View style={{flex : 3,justifyContent:'center'}}>
-      <TouchableOpacity onPress={()=>{this._handlePress()}} style={{width: 40,height:40,justifyContent:'center',alignItems: 'center',marginRight : 10,marginTop: 10}}>
-      <Icon type='ionicon' name='ios-star-outline' color='#fff' size={33} />
-</TouchableOpacity>
-      </View>
+{//<TouchableOpacity onPress={()=>{this._handlePress()}} style={{width: 40,height:40,justifyContent:'center',alignItems: 'center',marginRight : 10,marginTop: 10}}>
+   //   <Icon type='ionicon' name='ios-star-outline' color='#fff' size={33} />
+//</TouchableOpacity>
+  } 
+   </View>
          </View>
          <View style={{flex :44}}>
         {this.renderContent()}

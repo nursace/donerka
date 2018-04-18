@@ -195,12 +195,12 @@ _changeAvatar(){
 
         <View style={{flex: 1, marginTop: 10}}>
           <View style={{flex:1}}>
-            <TouchableOpacity onPress={() => Actions.history()} style={styles.settingsView}>
+            <TouchableOpacity onPress={() => Actions.history()} style={styles.firstSettingsView}>
               <Text style={styles.settingsText}>
                 История передач
               </Text>
             </TouchableOpacity>
-            <View style={styles.firstSettingsView}>
+            <View style={styles.settingsView}>
               <Text style={styles.settingsText}>
                 Язык
               </Text>
