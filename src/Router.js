@@ -16,6 +16,7 @@ import SecondMain from './components/SecondMain'
 import ThirdMain from './components/ThirdMain'
 import ModalScreen from './ModalScreen'
 import History from './components/History';
+import Ads from './components/Ads';
 
 
 class TabIconDonor extends Component {
@@ -145,6 +146,9 @@ class RouterComponent extends Component {
 
       <Scene key='editProfile' component={EditProfile} />
 
+
+      <Scene key='ads' component={Ads} hideNavBar={false} title='Реклама' />
+
       <Scene key='history' component={History} hideNavBar={false} title='История' />
 
         <Scene key='login' initial={this.state.user==='0'} component={LoginForm} />
@@ -156,6 +160,7 @@ class RouterComponent extends Component {
         <Scene
           key="tabbar"
           tabs={true}
+          swipeEnabled={false}
           initial={this.state.user === '1'}
           showLabel={false}
           tabBarStyle={{ backgroundColor: '#fff' }}

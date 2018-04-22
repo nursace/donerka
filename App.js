@@ -18,7 +18,11 @@ export default class App extends React.Component {
             storageBucket: "donerka-5dc8f.appspot.com",
             messagingSenderId: "1009366378628"
         };
+        try {
+            
         firebase.initializeApp(config)
+            } catch (err) {
+            }
     }
   render() {
 

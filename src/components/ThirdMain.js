@@ -22,6 +22,8 @@ import {Actions} from 'react-native-router-flux';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import RNFetchBlob from 'react-native-fetch-blob'
 import ImagePicker from 'react-native-image-crop-picker'
+import {Icon, Button, ListItem} from 'react-native-elements'
+
 async function fetchData(userDataFetching){
   await userDataFetching()
 
@@ -161,7 +163,8 @@ _changeAvatar(){
             style={{
               width: 120, 
               height: 120, 
-            }}/> : null}
+            }}/> : 
+            <Icon type='ionicon' color='#E39291' style={{backgroundColor:'transparent',}} size={100} name='ios-camera-outline' />}
             </View>
             <View style={styles.givenBloodCountView}>
               <Text style={styles.givenBloodCountText}></Text>
@@ -205,11 +208,11 @@ _changeAvatar(){
                 Язык
               </Text>
             </View>
-            <View style={styles.settingsView}>
-              <Text style={styles.settingsText}>
-                Черный список
-              </Text>
-            </View>
+            <TouchableOpacity onPress={() => Actions.ads()} style={styles.firstSettingsView}>
+            <Text style={styles.settingsText}>
+Реклама
+            </Text>
+          </TouchableOpacity>
             <TouchableOpacity onPress={()=>{Actions.privatePolicy()}} style={styles.settingsView}>
               <Text style={styles.settingsText}>
                 Политика конфиденциальности

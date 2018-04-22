@@ -7,7 +7,7 @@ import { Input, Spinner,InputLogin1 } from './common'
 import firebase from 'firebase'
 import { Actions } from 'react-native-router-flux'
 import {Icon} from 'react-native-elements'
-class ForgotPass extends Component {
+class AboutUs extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -116,21 +116,14 @@ this.setState({loading:false})
 
         </TouchableOpacity>
         <View style={{flex : 7,justifyContent:'center',alignItems:'center'}}>
-        <Text style={{color:'#F65352',fontSize : 23}}>Забыли пароль?</Text>
+        <Text style={{color:'#F65352',fontSize : 23}}>О нас</Text>
           </View>
           <View style={{flex : 1}}>
           </View>
         
           </View>
 <View style={{flex : 8,alignItems:'center',justifyContent : 'center'}}>
-<InputLogin1
-        style={{marginRight: 15,marginTop : 300}}
-        label='Email'
-          placeholder='user@gmail.com'
-          onChangeText={this.onEmailChange.bind(this)}
-          value={this.state.email}
-        />
-        {this.renderButton()}
+<Text style={{fontSize : 17}}>Контент временно не доступен</Text>
 
 </View>
 <View style={{flex : 1}}>
@@ -171,4 +164,4 @@ const mapStateToProps = ({ auth }) => {
 
 export default connect(mapStateToProps, {
   emailChanged, passwordChanged, registerUser,
-})(ForgotPass)
+})(AboutUs)

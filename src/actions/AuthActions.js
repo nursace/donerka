@@ -112,6 +112,7 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                 rescue_count : 0,
                 visible : false
               }).then(()=>{
+                Actions.login()
                 AsyncStorage.getItem("LoggedInWithEmail").then(LoggedInWithEmail => {
                     if(LoggedInWithEmail === email){        
                     }
@@ -127,7 +128,7 @@ export const registerUser = ({email,password,firstName,phone,lastName,patronymic
                             ]
                           )
                         dispatch({ type: MESSAGE })
-                        Actions.register()                        
+                                               
                     }).catch(()=>{
                         console.log('do something if email sending has been failed')
                     })

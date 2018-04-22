@@ -78,7 +78,7 @@ else if(confirmPassword!==password){
 else
     this.props.registerUser({email, password,firstName,phone,lastName,patronymic})
 
-this.setState({loading:false})
+this.setState({loading:false,confirmPassword:''})
     
     
   }

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { ScrollView,Text,Alert,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions, TouchableNativeFeedback } from 'react-native'
-import { Actions } from 'react-native-router-flux'
-import {} from '../actions'
-import firebase from 'firebase'
-import {connect} from 'react-redux'
-import {Spinner} from './common'
-import { List, ListItem, SearchBar, Icon} from 'react-native-elements'
+import { ScrollView,Text,Alert,ListView,Platform,FlatList, View,Animated,Easing, Image,TouchableWithoutFeedback,TouchableHighlight,TouchableOpacity,Dimensions, TouchableNativeFeedback } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import {} from '../actions';
+import firebase from 'firebase';
+import {connect} from 'react-redux';
+import {Spinner} from './common';
+import { List, ListItem, SearchBar, Icon} from 'react-native-elements';
 
 //header marginTop : 20
 class FirstMain extends Component {
