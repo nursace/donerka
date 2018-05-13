@@ -232,8 +232,8 @@ onFinishFillingForm(){ //finishing 3 step
       alignSelf:'center',
       borderRadius: 15,
       borderWidth: 0.6,
-      borderColor: '#F65352',
-      backgroundColor: '#F65352',
+      borderColor: '#e5385d',
+      backgroundColor: '#e5385d',
       height: 40,
       marginTop: 85,
       alignItems: 'center',
@@ -300,15 +300,19 @@ onFinishFillingForm(){ //finishing 3 step
   }
   render(){  return (
     <View style={styles.container}>
-    <View style={{backgroundColor: '#F65352',flexDirection: 'row',height : Dimensions.get('window').height/10.5 }}>
-  <View style={{flex : 1,}} />
-    
-    <View style={{flex : 6,justifyContent: 'center'}}>
-    <Image            indicator={Spinner}
- source={this.state.logo} imageStyle={{marginLeft : Dimensions.get('window').width*0.25,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
-    </View>
-    <View style={{flex : 1, }} />
-    </View>
+      <View style={{backgroundColor: '#e5385d',flexDirection: 'row',height : Dimensions.get('window').height/10.5 }}>
+        <View style={{flex : 1,}} />
+
+        <View style={{flex : 6,justifyContent: 'center'}}>
+          {/*<Image*/}
+            {/*indicator={Spinner}*/}
+            {/*source={this.state.logo}*/}
+            {/*imageStyle={{marginLeft : Dimensions.get('window').width*0.25,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}}*/}
+          {/*/>*/}
+          <Text style={{alignSelf: 'center', fontSize: 22, color: '#fff'}}>Заявки</Text>
+        </View>
+      <View style={{flex : 1, }} />
+      </View>
     {this.renderContent()}
     </View>
   );

@@ -245,7 +245,7 @@ const styles = {
   },
   almostRedText: {
     paddingBottom: 15,
-    color: '#F65353',
+    color: '#e5385d',
     fontSize: 16,
     alignSelf: 'center',
   },
@@ -268,7 +268,7 @@ const styles = {
     flex: 1,
   },
   headerView: {
-    backgroundColor: '#F65352',
+    backgroundColor: '#e5385d',
     flexDirection: 'row',
     height: Dimensions.get('window').height / 10.5
   },

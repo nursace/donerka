@@ -145,7 +145,7 @@ _changeAvatar(){
       >
         <View style={{flex: 1}}>
           <View style={styles.headerView}>
-            <Text style={styles.headerText}>Settings</Text>
+            <Text style={styles.headerText}>Настройки</Text>
           </View>
 
           <View style={{flexDirection:'row', justifyContent: 'space-between', paddingTop: 10}}>
@@ -208,9 +208,9 @@ _changeAvatar(){
                 Язык
               </Text>
             </View>
-            <TouchableOpacity onPress={() => Actions.ads()} style={styles.firstSettingsView}>
+            <TouchableOpacity onPress={() => Actions.ads()} style={styles.settingsView}>
             <Text style={styles.settingsText}>
-Реклама
+                Реклама
             </Text>
           </TouchableOpacity>
             <TouchableOpacity onPress={()=>{Actions.privatePolicy()}} style={styles.settingsView}>
@@ -245,7 +245,7 @@ const styles = {
   headerView: {
     width:Dimensions.get('window').width,
     height:65,
-    backgroundColor:'#F65352',
+    backgroundColor:'#e5385d',
     justifyContent:'center',
     alignItems:'center'
   },
@@ -291,7 +291,7 @@ const styles = {
   exitText: {
     fontSize :19,
     fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,
-    color: '#F65352',
+    color: '#e5385d',
   },
   changeProfileButton: {
     paddingHorizontal: 10,
@@ -300,7 +300,7 @@ const styles = {
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F65352'
+    backgroundColor: '#e5385d'
   },
   changeProfileButtonText: {
     fontSize: 17,

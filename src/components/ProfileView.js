@@ -364,7 +364,7 @@ class ProfileView extends Component {
       this.state.allowed===false ?
       <View style={{flex : 1,alignItems: 'center'}}>
       {this.state.image!==null ? <Image source={{uri : this.state.image}} style={{width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/5,resizeMode:'stretch'}} /> : null}
-            <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+            <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#e5385d'}}>
                   Вы сдавали кровь {this.state.days} дней(ь) назад
             </Text>
       </View>     :null
@@ -372,7 +372,7 @@ class ProfileView extends Component {
       this.state.sentBlood ?
       <View style={{flex : 1,alignItems:'center',justifyContent:'center'}}>
 {this.state.image ? <Image source={{uri : this.state.image}} style={{marginTop:20,width: Dimensions.get('window').width*0.4,height: Dimensions.get('window').height/5,resizeMode:'stretch'}} /> : null} 
-     <Text style={{fontSize: 17,marginLeft : 50,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+     <Text style={{fontSize: 17,marginLeft : 50,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#e5385d'}}>
                   Реципиент должен подтвердить ваше изображение 
                   </Text>
        </View>
@@ -387,8 +387,8 @@ class ProfileView extends Component {
         }).start(() => {  
           this.setState({modalVisible: true})  
         });
-          }} style={{height : 60,width: 150,borderColor:'#F65352',borderRadius: 150/2,borderWidth: 1,alignItems: 'center',justifyContent: 'center'}}>
-          <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+          }} style={{height : 60,width: 150,borderColor:'#e5385d',borderRadius: 150/2,borderWidth: 1,alignItems: 'center',justifyContent: 'center'}}>
+          <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#e5385d'}}>
             Помочь
             </Text>
           </TouchableOpacity>
@@ -401,7 +401,7 @@ else if(this.props.role==='recipient'&&this.props.item.role==='donor') {
   
  /* this.state.sentBlood&&this.state.submitted==true ? 
   <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
-  <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+  <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#e5385d'}}>
 Вам только что сдал кровь этот пользователь
 </Text>
 </View>
@@ -432,7 +432,7 @@ this.state.sentBlood ?
 </View> 
 : 
 <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
-  <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+  <Text style={{fontSize: 17,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#e5385d'}}>
   У вас еще нет заявок 
 </Text>
 </View>
@@ -441,7 +441,7 @@ this.state.sentBlood ?
 else {
   return(
   <View style={{flex : 1,alignItems: 'center',justifyContent: 'center'}}>
-  <Text style={{fontSize: 13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#F65352'}}>
+  <Text style={{fontSize: 13,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#e5385d'}}>
   Вы смотрите аккаунт с аналогичной ролью как у вас 
 </Text>
 </View>
@@ -490,7 +490,7 @@ else {
               this.setState({modalVisible: false})
               this._handlePress()
            });}}>
-            <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 30,color: '#F65352'}}>Ok!</Text>
+            <Text style={{fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,fontSize : 30,color: '#e5385d'}}>Ok!</Text>
             
       </TouchableOpacity>
             </View>
@@ -549,7 +549,7 @@ else {
         </View>
         </View>
       </View>
-      <View style={{marginTop : 40,flex: 1,backgroundColor:'#F65352',alignItems: 'center',justifyContent: 'center'}}>
+      <View style={{marginTop : 40,flex: 1,backgroundColor:'#e5385d',alignItems: 'center',justifyContent: 'center'}}>
       
       <Text style={{fontSize: 14,fontFamily : Platform.OS ==='ios'? 'AvenirNext-DemiBold':null,color: '#fff'}}>Мой номер телефона : {this.props.item.phone}</Text>
           
@@ -567,13 +567,13 @@ else {
     
     return (
       <View style={[styles.mainView]}>
-      <View style={{flex:5,flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#F65352',backgroundColor:'#F65352'}}>
+      <View style={{flex:5,flexDirection: 'row',borderBottomWidth:1,borderBottomColor:'#e5385d',backgroundColor:'#e5385d'}}>
       <View style={{flex:2,justifyContent: 'center',}}><TouchableOpacity onPress={()=>{Actions.pop()}} style={{width: 40,height:40,justifyContent:'center',alignItems: 'center',marginLeft : 10,marginTop: 10}}>
       <Icon type='ionicon' name='ios-arrow-back' color='#fff' size={33} />
 </TouchableOpacity>
 </View>
 <View style={{flex :18 ,justifyContent: 'center',alignItems: 'center',}}>
-<Image source={this.state.logo} style={{marginTop: 20,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
+<Text style={{fontSize: 20, color: '#fff'}}>{this.props.item.firstName} {this.props.item.lastName}</Text>
 
       </View>
       <View style={{flex : 3,justifyContent:'center'}}>

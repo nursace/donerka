@@ -229,7 +229,7 @@ this.setState({
               subtitle={
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text style={{fontSize: 13}}>количество спасений:</Text>
-                  <Text style={{fontSize: 13, color: '#F65352', fontWeight: '600'}}> {item.rescue_count}</Text>
+                  <Text style={{fontSize: 13, color: '#e5385d', fontWeight: '600'}}> {item.rescue_count}</Text>
                 </View>
               }
               containerStyle={{ borderBottomWidth: 0 }}
@@ -283,14 +283,7 @@ this.setState({
  
   render(){  return (
     <View style={styles.container}>
-      <View style={{backgroundColor: '#F65352',flexDirection: 'row',height : Dimensions.get('window').height/10.5 }}>
-      <View style={{flex : 1,}} />
-        
-        <View style={{flex : 6,justifyContent: 'center',alignItems: 'center'}}>
-        <Image source={this.state.logo} style={{marginTop: 20,width: Dimensions.get('window').width*0.3,height: Dimensions.get('window').height/25,resizeMode:'stretch'}} />
-        </View>
-        <View style={{flex : 1, }} />
-        </View>
+
  {this.renderContent()}
     </View>
   );
@@ -335,7 +328,7 @@ const styles = {
     color: '#fff',
   },
   header: {
-    backgroundColor: '#F65352',
+    backgroundColor: '#e5385d',
     height: 50,
   },
   secondView: {
@@ -347,7 +340,7 @@ const styles = {
     fontSize: 16,
   },
   inactive: {
-    color: '#656565',
+    color: '#5a5a5a',
     fontSize: 16,
   },
   row: {
@@ -371,7 +364,7 @@ const styles = {
   rightIconText: {
     fontSize: 20,
     padding: 14,
-    color: '#F65352',
+    color: '#e5385d',
   },
   mostView: {
     flex: 1,
@@ -397,7 +390,7 @@ const styles = {
     justifyContent:'center',
     alignItems: 'center',
     borderBottomWidth: 5,
-    borderColor: '#F65352'
+    borderColor: '#e5385d'
   }
 }
 const mapStateToProps = ({ main }) => {
