@@ -78,7 +78,7 @@ renderRippleView() {
               backgroundColor: '#F65352',
           }}
       />
-  );
+  )
 }
 
  render(){

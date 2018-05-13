@@ -84,6 +84,7 @@ export default class EditProfile extends Component {
 
   componentWillMount(){
     let d = ''
+    if(firebase.auth().currentUser.email){
     email1 = firebase.auth().currentUser.email
     for(let i = 0; i < email1.length; i++) {
       if (email1.charAt(i) === '@') break;
@@ -106,7 +107,7 @@ export default class EditProfile extends Component {
         if(snapshot.val().avatar)
         that.setState({image : snapshot.val().avatar})  
       })
-    
+    }
   }
   renderContent() {
     return (

@@ -19,7 +19,7 @@ class Register4 extends Component {
       password : '',
       confirmPassword : '',
       loading: false,
-      current_step: '',
+      current_step: 'null',
       opacityValue: new Animated.Value(1),
       
     }
@@ -57,28 +57,33 @@ this.setState({loading : true})
     const {email,password } = this.props
 
 if(firstName===''||lastName===''||phone===''||patronymic===''||email===''||password==='')
-{Alert.alert(
+{
+  Alert.alert(
   'Ошибка ввода',
   'Пожалуйста заполните все поля',
   [
     {text: 'Ok'},
   ]
 )
-this.setState({current_step: ''})
+this.setState({current_step: 'null',loading : false})
 }
 else if(confirmPassword!==password){
   Alert.alert(
     'Пароли не совпадают',
-    'Пожалуйста заполните подтверждение пароля',
+    'Пожалуйста заполните подтверждение пароля еще раз',
     [
       {text: 'Ok'},
     ]
   )
+  this.setState({loading:false})
+  
 }  
-else
-    this.props.registerUser({email, password,firstName,phone,lastName,patronymic})
-
-this.setState({loading:false,confirmPassword:''})
+else{
+   
+  this.props.registerUser({email, password,firstName,phone,lastName,patronymic})
+  this.setState({loading:false})
+  
+}
     
     
   }
@@ -108,7 +113,7 @@ this.setState({loading:false,confirmPassword:''})
   })
   }
   renderInputs(){
-    if(this.state.current_step===''){
+    if(this.state.current_step==='null'){
      return( <View style={{}}>     
       <InputLogin1
       label='Имя'
